@@ -25,6 +25,7 @@ def main():
     plt.imshow(img)
     # [N, C, H, W]
     img = data_transform(img)
+    # plt.imshow(img.numpy().transpose(1,2,0))
     # expand batch dimension
     img = torch.unsqueeze(img, dim=0)
 
@@ -38,7 +39,7 @@ def main():
     # create model
     model = create_model(num_classes=5, has_logits=False).to(device)
     # load model weights
-    model_weight_path = "./weights/model-9.pth"
+    model_weight_path = "./weights/best_model.pth"
     model.load_state_dict(torch.load(model_weight_path, map_location=device))
     model.eval()
     with torch.no_grad():
