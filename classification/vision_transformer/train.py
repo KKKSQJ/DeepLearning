@@ -7,11 +7,13 @@ import torch.optim as optim
 import torch.optim.lr_scheduler as lr_scheduler
 from torch.utils.tensorboard import SummaryWriter
 from torchvision import transforms
+import sys
 
 
 from my_dataset import MyDataSet
 from vit_model import vit_base_patch16_224_in21k as create_model
 from utils import read_split_data, train_one_epoch, evaluate
+import numpy as np
 
 
 def main(args):
@@ -62,6 +64,13 @@ def main(args):
                                              collate_fn=val_dataset.collate_fn)
 
     model = create_model(num_classes=5, has_logits=False).to(device)
+    if device.type=='cuda':
+        graph_inputs = torch.from_numpy(np.random.rand(1, 3, 224, 224)).type(
+            torch.FloatTensor).cuda()
+    else:
+        graph_inputs = torch.from_numpy(np.random.rand(1, 3, 224, 224)).type(torch.FloatTensor)
+    tb_writer.add_graph(model, (graph_inputs,))
+
 
     if args.weights != "":
         assert os.path.exists(args.weights), "weights file: '{}' not exist.".format(args.weights)
@@ -121,10 +130,14 @@ if __name__ == '__main__':
     parser.add_argument('--lr', type=float, default=0.001)
     parser.add_argument('--lrf', type=float, default=0.01)
 
+    # # 如果当前项目不是根目录，则将当前项目路径加入sys.path中
+    # parser.add_argument('--proj-path',type=str,
+    #                     default=sys.path.append(os.path.dirname(os.path.abspath(__file__))))
+
     # 数据集所在根目录
     # http://download.tensorflow.org/example_images/flower_photos.tgz
     parser.add_argument('--data-path', type=str,
-                        default="/data/flower_photos")
+                        default=r"D:\dataset\flow_data\train")
     parser.add_argument('--model-name', default='', help='create model name')
 
     # 预训练权重路径，如果不想载入就设置为空字符
