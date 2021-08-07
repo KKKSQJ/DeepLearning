@@ -1,6 +1,7 @@
 import os
 import math
 import argparse
+import shutil
 
 import torch
 import torch.optim as optim
@@ -64,6 +65,7 @@ def main(args):
                                              collate_fn=val_dataset.collate_fn)
 
     model = create_model(num_classes=5, has_logits=False).to(device)
+    # 将网络添加进SW
     if device.type=='cuda':
         graph_inputs = torch.from_numpy(np.random.rand(1, 3, 224, 224)).type(
             torch.FloatTensor).cuda()
@@ -96,13 +98,16 @@ def main(args):
     lf = lambda x: ((1 + math.cos(x * math.pi / args.epochs)) / 2) * (1 - args.lrf) + args.lrf  # cosine
     scheduler = lr_scheduler.LambdaLR(optimizer, lr_lambda=lf)
 
+    best_acc = -np.inf
+    best_epoch = 0
     for epoch in range(args.epochs):
         # train
         train_loss, train_acc = train_one_epoch(model=model,
                                                 optimizer=optimizer,
                                                 data_loader=train_loader,
                                                 device=device,
-                                                epoch=epoch)
+                                                epoch=epoch
+                                               )
 
         scheduler.step()
 
@@ -110,16 +115,28 @@ def main(args):
         val_loss, val_acc = evaluate(model=model,
                                      data_loader=val_loader,
                                      device=device,
-                                     epoch=epoch)
+                                     epoch=epoch,
+                                     )
 
-        tags = ["train_loss", "train_acc", "val_loss", "val_acc", "learning_rate"]
+        tags = ["train_loss", "train_acc", "val_loss", "val_acc", "learning_rate","images"]
         tb_writer.add_scalar(tags[0], train_loss, epoch)
         tb_writer.add_scalar(tags[1], train_acc, epoch)
         tb_writer.add_scalar(tags[2], val_loss, epoch)
         tb_writer.add_scalar(tags[3], val_acc, epoch)
         tb_writer.add_scalar(tags[4], optimizer.param_groups[0]["lr"], epoch)
+        batch_images = next(iter(train_loader))[0]
+        tb_writer.add_images(tags[5],batch_images,epoch)
 
-        torch.save(model.state_dict(), "./weights/model-{}.pth".format(epoch))
+        is_best = val_acc>best_acc
+        if is_best:
+            best_acc=val_acc
+            best_epoch = epoch+1
+
+        model_path = "./weights/model-{}.pth".format(epoch)
+        torch.save(model.state_dict(), model_path)
+        if is_best:
+            shutil.copy(model_path, "./weights/best_model.pth")
+    tb_writer.close()
 
 
 if __name__ == '__main__':
