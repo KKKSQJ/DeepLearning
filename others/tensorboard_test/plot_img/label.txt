@@ -1,0 +1,6 @@
+4.jpg tulip
+daisy.jpg daisy
+dandelion.jpg dandelion
+rose.jpg rose
+sunflower.jpg sunflower
+tulip.jpg tulip
