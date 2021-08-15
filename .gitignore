@@ -1,0 +1,7 @@
+*.idea
+*.zip
+__pycache__
+*.pth
+*__pycache__
+*save_weights
+
