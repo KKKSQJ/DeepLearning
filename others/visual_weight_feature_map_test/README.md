@@ -8,6 +8,7 @@
   ├── weights: 预训练模型目录
   ├── test_img: 测试图片目录
   visual_feature_map.py: 可视化特征图脚本
+  visual_kernel_weight.py: 可视化卷积核脚本
 ```
 
 ## 预训练模型下载地址：
