@@ -56,5 +56,7 @@ def main(model):
         plt.show()
 
 if __name__ == '__main__':
-    model = init_model(name='resnet',weights='./weights/resnet34.pth')
+    model_name = 'resnet'
+    weights = './weights/resnet34.pth'
+    model = init_model(name=model_name,weights=weights)
     main(model=model)

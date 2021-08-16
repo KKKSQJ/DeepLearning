@@ -88,8 +88,10 @@ def main(model, img, every_channel=True):
 
 if __name__ == '__main__':
     # 可视化分析网络中的某层特征图
-    model = init_model(name='alexnet', weights='./weights/alexnet.pth')
-    img = init_image(image_path='./test_img/sunflower.jpg',transformer_type='alexnet')
+    model_name = 'resnet'
+    weights = './weights/resnet34.pth'
+    model = init_model(name=model_name, weights=weights)
+    img = init_image(image_path='./test_img/sunflower.jpg',transformer_type=model_name)
     main(model=model, img=img)
 
 
