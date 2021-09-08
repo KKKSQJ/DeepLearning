@@ -9,6 +9,7 @@
 ## detection
 - RetinaNet(完成) 包含focal_loss
 - FPN(半完成) 实现resnet50 + fpn
+- YOLOV5(完成) 实现注释
 
 ## metric_learning
 
