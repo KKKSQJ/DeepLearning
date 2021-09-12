@@ -10,7 +10,6 @@ from torch.utils.tensorboard import SummaryWriter
 from torchvision import transforms
 import sys
 
-
 from my_dataset import MyDataSet
 from vit_model import vit_base_patch16_224_in21k as create_model
 from utils import read_split_data, train_one_epoch, evaluate
@@ -66,13 +65,12 @@ def main(args):
 
     model = create_model(num_classes=5, has_logits=False).to(device)
     # 将网络添加进SW
-    if device.type=='cuda':
+    if device.type == 'cuda':
         graph_inputs = torch.from_numpy(np.random.rand(1, 3, 224, 224)).type(
             torch.FloatTensor).cuda()
     else:
         graph_inputs = torch.from_numpy(np.random.rand(1, 3, 224, 224)).type(torch.FloatTensor)
     tb_writer.add_graph(model, (graph_inputs,))
-
 
     if args.weights != "":
         assert os.path.exists(args.weights), "weights file: '{}' not exist.".format(args.weights)
@@ -107,7 +105,7 @@ def main(args):
                                                 data_loader=train_loader,
                                                 device=device,
                                                 epoch=epoch
-                                               )
+                                                )
 
         scheduler.step()
 
@@ -118,19 +116,19 @@ def main(args):
                                      epoch=epoch,
                                      )
 
-        tags = ["train_loss", "train_acc", "val_loss", "val_acc", "learning_rate","images"]
+        tags = ["train_loss", "train_acc", "val_loss", "val_acc", "learning_rate", "images"]
         tb_writer.add_scalar(tags[0], train_loss, epoch)
         tb_writer.add_scalar(tags[1], train_acc, epoch)
         tb_writer.add_scalar(tags[2], val_loss, epoch)
         tb_writer.add_scalar(tags[3], val_acc, epoch)
         tb_writer.add_scalar(tags[4], optimizer.param_groups[0]["lr"], epoch)
         batch_images = next(iter(train_loader))[0]
-        tb_writer.add_images(tags[5],batch_images,epoch)
+        tb_writer.add_images(tags[5], batch_images, epoch)
 
-        is_best = val_acc>best_acc
+        is_best = val_acc > best_acc
         if is_best:
-            best_acc=val_acc
-            best_epoch = epoch+1
+            best_acc = val_acc
+            best_epoch = epoch + 1
 
         model_path = "./weights/model-{}.pth".format(epoch)
         torch.save(model.state_dict(), model_path)
