@@ -5,6 +5,7 @@
 
 ## classification
 - vision_transformer(完成)
+- mnist 手写字符(完成)
 
 ## detection
 - RetinaNet(完成) 包含focal_loss
