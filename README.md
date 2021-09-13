@@ -22,3 +22,4 @@
 - tensorboard test(完成) 可视化网络，图片，训练过程以及卷积核
 - load weights test(完成) 权重部分加载
 - visual weights map test(完成) 特征图、卷积核可视化分析
+- label_convert(完成) 三种不同标注文件之间的转换以及box可视化
