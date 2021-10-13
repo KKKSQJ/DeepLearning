@@ -43,6 +43,9 @@ def export_torchscript(model, img, file, optimize):
 def export_onnx(model, img, file, opset, train, dynamic, simplify):
     # ONNX model export
     prefix = colorstr('ONNX:')
+    detect_module = model.model[-1]
+    print("==============\nexclude the detect module in onnx\n==============")
+    detect_module.export_detect = False
     try:
         check_requirements(('onnx', 'onnx-simplifier'))
         import onnx

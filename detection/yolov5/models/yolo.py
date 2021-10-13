@@ -78,8 +78,15 @@ class Detect(nn.Module):
             # 20, 20：特征图size，640/32=20,32表示经过5次下采样操作
             x[i] = x[i].view(bs, self.na, self.no, ny, nx).permute(0, 1, 3, 4, 2).contiguous()
 
+            # 为了导出onnx新增
+            if not hasattr(self, 'export_detect'):
+                self.export_detect = True  # export_detect表示要不要导出box decode处理
+
             # 表示推理阶段
-            if not self.training:  # inference
+            # if not self.training:  # inference
+
+            # 为了导出onnx新增
+            if (not self.training) and self.export_detect:  # inference
                 # 如果是前向推理, 创建网格坐标
                 # 判断一下网格和特征图的维度大小(20, 20, 85)是否一致
                 if self.grid[i].shape[2:4] != x[i].shape[2:4] or self.onnx_dynamic:
@@ -99,7 +106,10 @@ class Detect(nn.Module):
                     y = torch.cat((xy, wh, y[..., 4:]), -1)
                 z.append(y.view(bs, -1, self.no))
 
-        return x if self.training else (torch.cat(z, 1), x)
+        #return x if self.training else (torch.cat(z, 1), x)
+
+        # 为了导出onnx新增
+        return x if self.training or (not self.export_detect) else (torch.cat(z, 1), x)
 
     @staticmethod
     def _make_grid(nx=20, ny=20):
