@@ -23,8 +23,8 @@ warnings.filterwarnings("ignore")
 def run(opt):
     model = init_model(opt.weights, opt.use_gpu)
     galleryloader, galleryloaderFlip = init_gallery(
-        r'C:\Users\admin\Desktop\data\train\5_FA2041', opt)
-    queryloader, queryloaderFlip = init_query(r'C:\Users\admin\Desktop\data\train\9_FA2076', opt)
+        opt.gallery_path, opt)
+    queryloader, queryloaderFlip = init_query(opt.query_path, opt)
     infer(model, galleryloader, galleryloaderFlip, queryloader, queryloaderFlip, opt)
 
 

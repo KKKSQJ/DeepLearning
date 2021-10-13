@@ -21,10 +21,10 @@ For example: 0_people
 
 ## 训练
 ```
-python train.py --data-path='./data' --batch-size=256 
+python train.py --data-path './data' --batch-size=256 
 ```
 
 ## 推理
 ```
-python inference.py
+python inference.py --query-path qpath --gallery-path gpath --weights wpath
 ```
