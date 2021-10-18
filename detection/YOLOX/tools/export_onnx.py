@@ -113,4 +113,7 @@ def main():
 
 
 if __name__ == "__main__":
+    """
+    -f exps/example/yolox_voc/yolox_voc_s.py -c best_ckpt.pth
+    """
     main()
