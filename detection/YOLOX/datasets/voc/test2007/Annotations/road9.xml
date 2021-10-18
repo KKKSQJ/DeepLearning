@@ -1,0 +1,24 @@
+
+<annotation>
+    <folder>images</folder>
+    <filename>road9.png</filename>
+    <size>
+        <width>300</width>
+        <height>400</height>
+        <depth>3</depth>
+    </size>
+    <segmented>0</segmented>
+    <object>
+        <name>trafficlight</name>
+        <pose>Unspecified</pose>
+        <truncated>0</truncated>
+        <occluded>0</occluded>
+        <difficult>0</difficult>
+        <bndbox>
+            <xmin>81</xmin>
+            <ymin>119</ymin>
+            <xmax>158</xmax>
+            <ymax>336</ymax>
+        </bndbox>
+    </object>
+</annotation>
