@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
 # Copyright (c) 2014-2021 Megvii Inc. All rights reserved.
+import math
 
 import torch
 import torch.nn as nn
@@ -32,6 +33,7 @@ class IOUloss(nn.Module):
         area_u = area_p + area_g - area_i
         iou = (area_i) / (area_u + 1e-16)
 
+
         if self.loss_type == "iou":
             loss = 1 - iou ** 2
         elif self.loss_type == "giou":
@@ -44,6 +46,27 @@ class IOUloss(nn.Module):
             area_c = torch.prod(c_br - c_tl, 1)
             giou = iou - (area_c - area_u) / area_c.clamp(1e-16)
             loss = 1 - giou.clamp(min=-1.0, max=1.0)
+        elif self.loss_type == 'alpha_iou':
+            b1_x1, b1_x2 = pred[:, 0] - pred[:,2] / 2, pred[:, 0] + pred[:, 2] / 2
+            b1_y1, b1_y2 = pred[:, 1] - pred[:,3] / 2, pred[:, 1] + pred[:, 3] / 2
+            b2_x1, b2_x2 = target[:, 0] - target[0:, 2] / 2, target[:, 0] + target[0:, 2] / 2
+            b2_y1, b2_y2 = target[:, 1] - target[0:, 3] / 2, target[:, 1] + target[0:, 3] / 2
+            w1, h1 = b1_x2 - b1_x1, b1_y2 - b1_y1 + 1e-16
+            w2, h2 = b2_x2 - b2_x1, b2_y2 - b2_y1 + 1e-16
+            # w1, h1 = pred[:, 2] + 1e-16, pred[:, 3] + 1e-16
+            # w2, h2 = target[:, 2]+1e-16, target[:, 3]+1e-16
+            beta = 4
+            cw = torch.max(b1_x2, b2_x2) - torch.min(b1_x1, b2_x1)  # convex (smallest enclosing box) width
+            ch = torch.max(b1_y2, b2_y2) - torch.min(b1_y1, b2_y1)
+            c2 = cw ** beta + ch ** beta + 1e-16  # convex diagonal
+            rho_x = torch.abs(b2_x1 + b2_x2 - b1_x1 - b1_x2)
+            rho_y = torch.abs(b2_y1 + b2_y2 - b1_y1 - b1_y2)
+            rho2 = (rho_x ** beta + rho_y ** beta) / (2 ** beta)
+            v = (4/math.pi ** 2) *torch.pow(torch.atan(w2/h2) - torch.atan(w1/h1),2)
+            with torch.no_grad():
+                alpha_ciou = v / ((1 + 1e-16) - area_i / area_u + v)
+                ciou = pow(iou,2) - (rho2 / c2 + torch.pow(v * alpha_ciou + 1e-16, 2))
+                loss = 1.0 - ciou
 
         if self.reduction == "mean":
             loss = loss.mean()
