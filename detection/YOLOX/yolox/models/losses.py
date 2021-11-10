@@ -47,6 +47,9 @@ class IOUloss(nn.Module):
             giou = iou - (area_c - area_u) / area_c.clamp(1e-16)
             loss = 1 - giou.clamp(min=-1.0, max=1.0)
         elif self.loss_type == 'alpha_iou':
+            alpha = 3
+            iou = torch.pow(iou, alpha)
+            beta = 2*alpha
             b1_x1, b1_x2 = pred[:, 0] - pred[:,2] / 2, pred[:, 0] + pred[:, 2] / 2
             b1_y1, b1_y2 = pred[:, 1] - pred[:,3] / 2, pred[:, 1] + pred[:, 3] / 2
             b2_x1, b2_x2 = target[:, 0] - target[0:, 2] / 2, target[:, 0] + target[0:, 2] / 2
@@ -55,7 +58,6 @@ class IOUloss(nn.Module):
             w2, h2 = b2_x2 - b2_x1, b2_y2 - b2_y1 + 1e-16
             # w1, h1 = pred[:, 2] + 1e-16, pred[:, 3] + 1e-16
             # w2, h2 = target[:, 2]+1e-16, target[:, 3]+1e-16
-            beta = 4
             cw = torch.max(b1_x2, b2_x2) - torch.min(b1_x1, b2_x1)  # convex (smallest enclosing box) width
             ch = torch.max(b1_y2, b2_y2) - torch.min(b1_y1, b2_y1)
             c2 = cw ** beta + ch ** beta + 1e-16  # convex diagonal
@@ -65,7 +67,7 @@ class IOUloss(nn.Module):
             v = (4/math.pi ** 2) *torch.pow(torch.atan(w2/h2) - torch.atan(w1/h1),2)
             with torch.no_grad():
                 alpha_ciou = v / ((1 + 1e-16) - area_i / area_u + v)
-                ciou = pow(iou,2) - (rho2 / c2 + torch.pow(v * alpha_ciou + 1e-16, 2))
+                ciou = iou - (rho2 / c2 + torch.pow(v * alpha_ciou + 1e-16, alpha))
                 loss = 1.0 - ciou
 
         if self.reduction == "mean":
