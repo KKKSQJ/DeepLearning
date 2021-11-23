@@ -190,5 +190,8 @@ def main(opt):
 
 
 if __name__ == "__main__":
+    """
+    python export.py --weights best.pt --img 640 --batch 1 --simplify
+    """
     opt = parse_opt()
     main(opt)
