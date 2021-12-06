@@ -1,0 +1,29 @@
+# backbone
+backbone: 'resnet50'
+pretrained: True
+freeze_stage_1: True
+freeze_bn: True
+
+# fpn
+neck: 'fpn'
+fpn_in_channel: [512,1024,2048]
+fpn_out_channel: 256
+use_p5: True
+
+# head
+head_out_channle: 256
+class_num: 20 # voc:20 coco:80
+use_GN_head: True
+prior: 0.01
+add_centerness: True
+cnt_on_re: True
+
+# training
+strides: [8, 16, 32, 64, 128]
+limit_range: [[-1, 64], [64, 128], [128, 256], [256, 512], [512, 999999]]
+
+# inference
+score_threshold: 0.05
+nms_iou_threshold:  0.6
+max_detection_boxes_num: 1000
+
