@@ -58,35 +58,7 @@ if __name__ == "__main__":
     cmap = plt.get_cmap('tab20b')
     colors = [cmap(i) for i in np.linspace(0, 1, 20)]
 
-
-    class Config():
-        # backbone
-        pretrained = False
-        freeze_stage_1 = True
-        freeze_bn = True
-
-        # fpn
-        fpn_out_channels = 256
-        use_p5 = True
-
-        # head
-        class_num = 20
-        use_GN_head = True
-        prior = 0.01
-        add_centerness = True
-        cnt_on_reg = False
-
-        # training
-        strides = [8, 16, 32, 64, 128]
-        limit_range = [[-1, 64], [64, 128], [128, 256], [256, 512], [512, 999999]]
-
-        # inference
-        score_threshold = 0.3
-        nms_iou_threshold = 0.4
-        max_detection_boxes_num = 300
-
-
-    model = FCOSDetector(mode="inference", config=Config)
+    model = FCOSDetector(mode="inference", cfg='inference.yaml')
     # model=torch.nn.SyncBatchNorm.convert_sync_batchnorm(model)
     # print("INFO===>success convert BN to SyncBN")
     model = torch.nn.DataParallel(model)
@@ -131,7 +103,7 @@ if __name__ == "__main__":
             bbox = patches.Rectangle((box[0], box[1]), width=box[2] - box[0], height=box[3] - box[1], linewidth=1,
                                      facecolor='none', edgecolor=b_color)
             ax.add_patch(bbox)
-            plt.text(box[0], box[1], s="%s %.3f" % (VOCDataset.CLASSES_NAME[int(classes[i])], scores[i]), color='white',
+            plt.text(box[0], box[1], s="%s %.3f" % (VOCDetection.classes[int(classes[i])], scores[i]), color='white',
                      verticalalignment='top',
                      bbox={'color': b_color, 'pad': 0})
         plt.axis('off')
