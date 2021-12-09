@@ -5,11 +5,11 @@ import torch
 import torchvision
 from torchsummary import summary
 
-from backbone.resnet import resnet50
-from fpn_neck import FeaturePyramidNetwork as fpn
-from fpn_neck import LastLevelP6P7
-from head import ClsCntRegHead
-from loss import GenTargets, Loss, coords_featureMap2original
+from .backbone.resnet import resnet50
+from .fpn_neck import FeaturePyramidNetwork as fpn
+from .fpn_neck import LastLevelP6P7
+from .head import ClsCntRegHead
+from .loss import GenTargets, Loss, coords_featureMap2original
 
 
 class FCOS(nn.Module):
