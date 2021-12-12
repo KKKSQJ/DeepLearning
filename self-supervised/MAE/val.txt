@@ -1,0 +1,3 @@
+D:\practice\DeepLearning\self-supervised\MAE\assets\1.jpeg
+D:\practice\DeepLearning\self-supervised\MAE\assets\2.jpeg
+D:\practice\DeepLearning\self-supervised\MAE\assets\3.jpeg
