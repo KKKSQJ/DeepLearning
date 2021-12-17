@@ -11,13 +11,15 @@
 ## detection
 - RetinaNet(完成) 包含focal_loss
 - FPN(半完成) 实现resnet50 + fpn
-- YOLOV5(完成) 实现注释，更新pt->onnx代码
+- YOLOV5 V5.0(完成) 实现注释，更新pt->onnx代码
 - yolox(完成) 修改了voc数据读取方式
+- FCOS (完成)
 
 ## metric_learning
 - BDB(完成) 用于图像检索
 
 ## self-supervised
+- MAE(完成) 实现VIT+MAE
 
 
 ## other
