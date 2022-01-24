@@ -7,6 +7,8 @@
 - vision_transformer(完成)
 - mnist 手写字符(完成)
 - efficientNet(完成)
+- vggNet(完成)
+- resnet(完成)
 
 ## detection
 - RetinaNet(完成) 包含focal_loss
