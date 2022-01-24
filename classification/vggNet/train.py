@@ -123,8 +123,8 @@ def main(opt):
 
     if args.freeze_layers:
         for name, para in model.named_parameters():
-            # 除fc外，其他权重全部冻结
-            if "fc" in name:
+            # 除classifier外，其他权重全部冻结
+            if "classifier" not in name:
                 para.requires_grad_(False)
             else:
                 print("training {}".format(name))
@@ -184,7 +184,7 @@ if __name__ == '__main__':
     # vgg16预训练权重
     # https://download.pytorch.org/models/vgg16-397923af.pth
     parser.add_argument('--weights', type=str, default='vgg16-397923af.pth', help='initial weights path')  #
-    parser.add_argument('--freeze-layers', type=bool, default=False)
+    parser.add_argument('--freeze-layers', type=bool, default=True)
     parser.add_argument('--use_cuda', default=False)
     parser.add_argument('--optimizer', type=str, default='Adam')  # Adam
 
