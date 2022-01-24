@@ -112,16 +112,16 @@ def main(opt):
         graph_inputs = torch.from_numpy(np.random.rand(1, 3, 224, 224)).type(torch.FloatTensor)
     tb_writer.add_graph(model, (graph_inputs,))
 
-    if args.weights != "":
-        assert os.path.exists(args.weights), "weights file: '{}' not exist.".format(args.weights)
-        weights_dict = torch.load(args.weights, map_location=device)
+    if opt.weights != "":
+        assert os.path.exists(opt.weights), "weights file: '{}' not exist.".format(args.weights)
+        weights_dict = torch.load(opt.weights, map_location=device)
         # 删除不需要的权重
         del_keys = ['classifier.6.weight', 'classifier.6.bias']
         for k in del_keys:
             del weights_dict[k]
         print(model.load_state_dict(weights_dict, strict=False))
 
-    if args.freeze_layers:
+    if opt.freeze_layers:
         for name, para in model.named_parameters():
             # 除classifier外，其他权重全部冻结
             if "classifier" not in name:
