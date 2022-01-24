@@ -119,7 +119,7 @@ def main(opt):
     if args.freeze_layers:
         for name, para in model.named_parameters():
             # 除fc外，其他权重全部冻结
-            if "fc" in name:
+            if "fc" not in name:
                 para.requires_grad_(False)
             else:
                 print("training {}".format(name))
