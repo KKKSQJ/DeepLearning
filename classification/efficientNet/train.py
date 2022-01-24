@@ -116,16 +116,16 @@ def main(opt):
         graph_inputs = torch.from_numpy(np.random.rand(1, 3, img_size[num_model], img_size[num_model])).type(torch.FloatTensor)
     tb_writer.add_graph(model, (graph_inputs,))
 
-    if args.weights != "":
-        if os.path.exists(args.weights):
-            weights_dict = torch.load(args.weights, map_location=device)
+    if opt.weights != "":
+        if os.path.exists(opt.weights):
+            weights_dict = torch.load(opt.weights, map_location=device)
             load_weights_dict = {k: v for k, v in weights_dict.items()
                                  if model.state_dict()[k].numel() == v.numel()}
             print(model.load_state_dict(load_weights_dict, strict=False))
         else:
-            raise FileNotFoundError("not found weights file: {}".format(args.weights))
+            raise FileNotFoundError("not found weights file: {}".format(opt.weights))
 
-    if args.freeze_layers:
+    if opt.freeze_layers:
         for name, para in model.named_parameters():
             # 除最后一个卷积层和全连接层外，其他权重全部冻结
             if ("features.top" not in name) and ("classifier" not in name):
