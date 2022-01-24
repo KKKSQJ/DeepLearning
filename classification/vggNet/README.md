@@ -16,7 +16,7 @@ python train.py --data-path [data_path] --weights [weights_path]
 
 ## test
 ```
-python test.py --weights [weights_path] --source [data_path] --view-img True
+python test.py --weights [weights_path] --source [data_path] --class-indices [json_path] --view-img True
 ```
 
 ## tensorboard
