@@ -50,13 +50,8 @@ class MBConv(nn.Module):
         if self.downsample:
             # 只有第一层的时候，进行下采样
             # self.pool = nn.MaxPool2d(kernel_size=2,stride=2)
-            # self.pool = nn.MaxPool2d(kernel_size=3, stride=2, padding=1)
-            # self.proj = nn.Conv2d(in_c, out_c, 1, 1, 0, bias=False)
-
-            self.downsample_layer = nn.Sequential(
-                nn.MaxPool2d(kernel_size=3, stride=2, padding=1),
-                nn.Conv2d(in_c, out_c, 1, 1, 0, bias=False)
-            )
+            self.pool = nn.MaxPool2d(kernel_size=3, stride=2, padding=1)
+            self.proj = nn.Conv2d(in_c, out_c, 1, 1, 0, bias=False)
 
         layers = OrderedDict()
         # expand
@@ -88,7 +83,7 @@ class MBConv(nn.Module):
 
     def forward(self, x):
         if self.downsample:
-            return self.downsample_layer(x) + self.block(x)
+            return self.proj(self.pool(x)) + self.block(x)
         else:
             return x + self.block(x)
 
@@ -267,7 +262,6 @@ class CoAtNet(nn.Module):
             elif isinstance(m, (nn.BatchNorm2d, nn.GroupNorm, nn.LayerNorm)):
                 nn.init.constant_(m.weight, 1)
                 nn.init.constant_(m.bias, 0)
-
 
     def forward(self, x):
         x = self.s0(x)
