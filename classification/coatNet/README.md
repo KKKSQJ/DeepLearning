@@ -1,4 +1,4 @@
-# resnet
+# coatNet
 
 ## 数据集下载
 花分类数据集
