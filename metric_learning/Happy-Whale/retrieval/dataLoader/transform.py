@@ -5,6 +5,7 @@ from dataLoader.data_augment import *
 
 
 def transform_train(image, mask):
+    add_ = 0
     image = cv2.resize(image, (256, 256))
     mask = cv2.resize(mask, (256, 256))
     mask = mask[:, :, None]
@@ -14,6 +15,8 @@ def transform_train(image, mask):
     if 1:
         if random.random() < 0.5:
             image = np.fliplr(image)
+            # 15587指的是类别数量，这里将翻转后的图片视为一个新的类别label
+            add_ += 15587
         image, mask = image[:, :, :3], image[:, :, 3]
     if random.random() < 0.5:
         image, mask = random_angle_rotate(image, mask, angles=(-25, 25))
@@ -49,7 +52,7 @@ def transform_train(image, mask):
     image = np.transpose(image, (2, 0, 1))
     image = image.copy().astype(np.float)
     image = torch.from_numpy(image).div(255).float()
-    return image
+    return image,add_
 
 
 def transform_valid(image, mask):
@@ -86,6 +89,7 @@ def train_collate(batch):
     images = torch.stack(images, 0)
     labels = torch.from_numpy(np.array(labels))
     return images, labels
+
 
 def valid_collate(batch):
     batch_size = len(batch)

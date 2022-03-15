@@ -59,7 +59,7 @@ def train(args):
     # images, labels,names = next(dataiter)
 
     # 模型
-    model = model_whale(num_classes=args.num_classes, inchannels=3, model_name=args.model_name).to(device)
+    model = model_whale(num_classes=args.num_classes*2, inchannels=3, model_name=args.model_name).to(device)
     i = 0
     iter_smooth = 50
     iter_valid = 200
@@ -168,14 +168,22 @@ def train(args):
                 train_map5_sum = 0
                 sum = 0
 
-            print(
+            # print(
+            #     '\r%0.5f %5.2f k %5.2f  | %0.3f    %0.3f    %0.3f    %0.4f    %0.4f | %0.3f    %0.3f    %0.3f | %0.3f     %0.3f    %0.3f | %s  %d %d' % ( \
+            #         args.lr, i / 1000, epoch,
+            #         valid_loss, top1, top5, map5, best_t,
+            #         train_loss, top1_train, map5_train,
+            #         batch_loss, top1_batch, map5_batch,
+            #         time_to_str((timer() - start) / 60), args.checkpoint_start, i)
+            #     , end='', flush=True)
+            log.write(
                 '\r%0.5f %5.2f k %5.2f  | %0.3f    %0.3f    %0.3f    %0.4f    %0.4f | %0.3f    %0.3f    %0.3f | %0.3f     %0.3f    %0.3f | %s  %d %d' % ( \
                     args.lr, i / 1000, epoch,
                     valid_loss, top1, top5, map5, best_t,
                     train_loss, top1_train, map5_train,
                     batch_loss, top1_batch, map5_batch,
                     time_to_str((timer() - start) / 60), args.checkpoint_start, i)
-                , end='', flush=True)
+                )
             i += 1
         pass
 
@@ -195,9 +203,9 @@ def eval(model, dataLoader_valid, device):
             # 这里之所以取[::2]前一半的数据，是因为images是两倍的原始数据，后一半做了翻转操作
             model.getLoss(feature[::2], local_feat[::2], results[::2], labels)
             results = torch.sigmoid(results)
-            # results_zeros = (results[::2, :5004] + results[1::2, 5004:]) / 2
+            results_zeros = (results[::2, :15587] + results[1::2, 15587:]) / 2
             # 前一半是原图，后一半是翻转后的图
-            results_zeros = (results[::2, :] + results[1::2, :]) / 2
+            # results_zeros = (results[::2, :] + results[1::2, :]) / 2
             all_results.append(results_zeros)
             all_labels.append(labels)
             b = len(labels)

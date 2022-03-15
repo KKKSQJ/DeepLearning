@@ -67,13 +67,21 @@ class WhaleDataset(Dataset):
         negative_label = random.choice(list(set(self.ids) ^ set([id])))
         negative_name = random.choice(self.dict_train[negative_label])
 
-        anchor_image = self.get_image(anchor_name, self.transform)
-        positive_image = self.get_image(positive_name, self.transform)
-        negative_image = self.get_image(negative_name, self.transform)
+        anchor_image, anchor_add = self.get_image(anchor_name, self.transform)
+        positive_image, positive_add = self.get_image(positive_name, self.transform)
+        negative_image, negative_add = self.get_image(negative_name, self.transform)
 
-        anchor_label = self.labels[id]
-        positive_label = self.labels[id]
-        negative_label = self.labels[negative_label]
+        anchor_label = self.labels[id] + anchor_add
+        positive_label = self.labels[id] + positive_add
+        negative_label = self.labels[negative_label] + negative_add
+
+        # anchor_image = self.get_image(anchor_name, self.transform)
+        # positive_image = self.get_image(positive_name, self.transform)
+        # negative_image = self.get_image(negative_name, self.transform)
+        #
+        # anchor_label = self.labels[id]
+        # positive_label = self.labels[id]
+        # negative_label = self.labels[negative_label]
 
         assert anchor_name != negative_name
 
@@ -113,34 +121,41 @@ class WhaleDataset(Dataset):
 class WhaleTestDataset(Dataset):
     def __init__(self,
                  data: dict,
-                 class_id_label_file,
+                 class_id_label_file=None,
                  mode='test',
                  transform=None,
                  ):
         super(WhaleTestDataset, self).__init__()
 
-        self.names = data["name"]
-        self.ids = data["id"]
-        self.image_path = data["img_path"]
-        self.mask_path = data["mask_path"]
-        self.mode = mode
-        self.transform = transform
-        if isinstance(class_id_label_file,dict):
-            self.labels = class_id_label_file
+        if mode in ["test"]:
+            self.names = data["name"]
+            self.image_path = data["img_path"]
+            self.mode = mode
+            self.transform = transform
+            self.mask_path = ""
         else:
-            self.labels = json.loads('./data/class_indices.json')
+            self.names = data["name"]
+            self.ids = data["id"]
+            self.image_path = data["img_path"]
+            self.mask_path = data["mask_path"]
+            self.mode = mode
+            self.transform = transform
+            if isinstance(class_id_label_file, dict):
+                self.labels = class_id_label_file
+            else:
+                self.labels = json.loads('./data/class_indices.json')
 
-        #self.labels = self.id2label(self.ids)
-        self.filename_to_id = {Image: Id for Image, Id in zip(self.names, self.ids)}
+            # self.labels = self.id2label(self.ids)
+            self.filename_to_id = {Image: Id for Image, Id in zip(self.names, self.ids)}
 
     def __len__(self):
-        return len(self.ids)
+        return len(self.names)
 
     def __getitem__(self, index):
         if self.mode in ["test"]:
             name = self.names[index]
             image = self.get_image(name, self.transform)
-            return image
+            return image, name
         elif self.mode in ["valid", "train"]:
             name = self.names[index]
             label = self.labels[self.ids[index]]
@@ -159,7 +174,7 @@ class WhaleTestDataset(Dataset):
         image = cv2.imread(os.path.join(self.image_path, "{}").format(name))
         if image is None:
             # TODO
-            print('image is None {}'.format(os.path.join(self.image_path,name)))
+            print('image is None {}'.format(os.path.join(self.image_path, name)))
         mask = cv2.imread(os.path.join(self.mask_path, "{}").format(name))
         if mask is None:
             mask = np.zeros_like(image[:, :, 0])
