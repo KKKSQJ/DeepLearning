@@ -1,0 +1,7 @@
+[
+  ["disparity_decoder_6"],
+  ["disparity_decoder_5"],
+  ["disparity_decoder_4"],
+  ["disparity_decoder_3"],
+  ["disparity_decoder_2","refinement_module"]
+]

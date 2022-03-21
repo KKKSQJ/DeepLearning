@@ -9,6 +9,9 @@
 - efficientNet(完成)
 - vggNet(完成)
 - resnet(完成)
+- coatNet(完成)
+- convNext(完成)
+- seNet(完成)
 
 ## detection
 - RetinaNet(完成) 包含focal_loss
@@ -19,9 +22,13 @@
 
 ## metric_learning
 - BDB(完成) 用于图像检索
+- Happy-Whale(完成) 鲸鱼竞赛检索baseline
 
 ## self-supervised
 - MAE(完成) 实现VIT+MAE
+
+## deep_stereo
+- Real_time_self_adaptive_deep_stereo(实时双目里立体匹配，细节待完善)
 
 
 ## other
