@@ -225,3 +225,9 @@ if __name__ == '__main__':
     print(y)
 
     summary(model, input_size=(3, 224, 224))
+    from thop import profile
+    model = convnext_tiny(num_classes=5)
+    input = torch.randn(1, 3, 224, 224)
+    flops, params = profile(model, inputs=(input,))
+    print("flops:{:.3f}G".format(flops/1e9))
+    print("params:{:.3f}M".format(params/1e6))
