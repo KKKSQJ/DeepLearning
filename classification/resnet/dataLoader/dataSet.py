@@ -33,7 +33,7 @@ def read_split_data(data_root, save_dir, val_rate=0.2, plot_iamge=False):
     # 存放每个类别的图片数量
     every_class_num = []
     # 图片文件所能支持的格式
-    supported = ['.jpg', '.jpeg', 'png']
+    supported = ['.jpg', '.jpeg', '.png']
 
     # 遍历每一个标签文件夹，读取图片
     for cla in tqdm(classes):
