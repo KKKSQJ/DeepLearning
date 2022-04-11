@@ -1,3 +1,4 @@
+import torch
 import torchvision.models as tvm
 import torch.nn.functional as F
 from models.modelZoo import *
@@ -5,7 +6,6 @@ from models.arcFaceloss import *
 from models.triplet_loss import *
 from models.utils import *
 import torch.nn.utils.weight_norm as weightNorm
-
 
 
 class model_whale(nn.Module):
@@ -27,13 +27,13 @@ class model_whale(nn.Module):
             self.basemodel = dpn92(pretrained=True)
             planes = 2688
         elif model_name == "dpn98":
-            self.basemodel = dpn98( pretrained=True)
+            self.basemodel = dpn98(pretrained=True)
             planes = 2688
         elif model_name == "dpn107":
-            self.basemodel = dpn107( pretrained=True)
+            self.basemodel = dpn107(pretrained=True)
             planes = 2688
         elif model_name == "dpn131":
-            self.basemodel = dpn131( pretrained=True)
+            self.basemodel = dpn131(pretrained=True)
             planes = 2688
         elif model_name == 'seresnext50':
             self.basemodel = se_resnext50_32x4d(inchannels=inchannels, pretrained='imagenet')
@@ -42,7 +42,7 @@ class model_whale(nn.Module):
             self.basemodel = se_resnext101_32x4d(inchannels=inchannels, pretrained='imagenet')
             planes = 2048
         elif model_name == 'seresnet101':
-            self.basemodel = se_resnet101(pretrained='imagenet',  inchannels=inchannels)
+            self.basemodel = se_resnet101(pretrained='imagenet', inchannels=inchannels)
             planes = 2048
         elif model_name == 'senet154':
             self.basemodel = senet154(pretrained='imagenet', inchannels=inchannels)
@@ -55,7 +55,7 @@ class model_whale(nn.Module):
             planes = 4032
         else:
             assert False, "{} is error".format(model_name)
-  
+
         local_planes = 512
         self.local_conv = nn.Conv2d(planes, local_planes, 1)
         self.local_bn = nn.BatchNorm2d(local_planes)
@@ -69,19 +69,21 @@ class model_whale(nn.Module):
         init.constant_(self.fc.bias, 0)
 
     def forward(self, x, label=None):
-        feat = self.basemodel(x)
+        # x:[2,3,224,224]
+
+        feat = self.basemodel(x)  # feat:[2,2048,7,7]
         # global feat
-        global_feat = F.avg_pool2d(feat, feat.size()[2:])
-        global_feat = global_feat.view(global_feat.size(0), -1)
+        global_feat = F.avg_pool2d(feat, feat.size()[2:])  # global_feat:[2,2048,1,1]
+        global_feat = global_feat.view(global_feat.size(0), -1)  # [2,2048]
         global_feat = F.dropout(global_feat, p=0.2)
         global_feat = self.bottleneck_g(global_feat)
-        global_feat = l2_norm(global_feat)
+        global_feat = l2_norm(global_feat)  # [2,2048]
 
         # local feat
-        local_feat = torch.mean(feat, -1, keepdim=True)
-        local_feat = self.local_bn(self.local_conv(local_feat))
-        local_feat = local_feat.squeeze(-1).permute(0, 2, 1)
-        local_feat = l2_norm(local_feat, axis=-1)
+        local_feat = torch.mean(feat, -1, keepdim=True)  # [2,2048,7,1]
+        local_feat = self.local_bn(self.local_conv(local_feat))  # [2,512,7,1]
+        local_feat = local_feat.squeeze(-1).permute(0, 2, 1)  # [2,7,512]
+        local_feat = l2_norm(local_feat, axis=-1)  # [2,7,512]
 
         out = self.fc(global_feat) * 16
         return global_feat, local_feat, out
@@ -118,19 +120,19 @@ class model_whale(nn.Module):
                 param.requires_grad = True
         elif self.model_name.find('xception') > -1:
 
-            for param in self.basemodel.block4.parameters():param.requires_grad = True
-            for param in self.basemodel.block5.parameters():param.requires_grad = True
-            for param in self.basemodel.block6.parameters():param.requires_grad = True
-            for param in self.basemodel.block7.parameters():param.requires_grad = True
-            for param in self.basemodel.block8.parameters():param.requires_grad = True
-            for param in self.basemodel.block9.parameters():param.requires_grad = True
-            for param in self.basemodel.block10.parameters():param.requires_grad = True
-            for param in self.basemodel.block11.parameters():param.requires_grad = True
-            for param in self.basemodel.block12.parameters():param.requires_grad = True
-            for param in self.basemodel.conv3.parameters():param.requires_grad = True
-            for param in self.basemodel.bn3.parameters():param.requires_grad = True
-            for param in self.basemodel.conv4.parameters():param.requires_grad = True
-            for param in self.basemodel.bn4.parameters():param.requires_grad = True
+            for param in self.basemodel.block4.parameters(): param.requires_grad = True
+            for param in self.basemodel.block5.parameters(): param.requires_grad = True
+            for param in self.basemodel.block6.parameters(): param.requires_grad = True
+            for param in self.basemodel.block7.parameters(): param.requires_grad = True
+            for param in self.basemodel.block8.parameters(): param.requires_grad = True
+            for param in self.basemodel.block9.parameters(): param.requires_grad = True
+            for param in self.basemodel.block10.parameters(): param.requires_grad = True
+            for param in self.basemodel.block11.parameters(): param.requires_grad = True
+            for param in self.basemodel.block12.parameters(): param.requires_grad = True
+            for param in self.basemodel.conv3.parameters(): param.requires_grad = True
+            for param in self.basemodel.bn3.parameters(): param.requires_grad = True
+            for param in self.basemodel.conv4.parameters(): param.requires_grad = True
+            for param in self.basemodel.bn4.parameters(): param.requires_grad = True
         elif self.model_name.find('dense') > -1:
             for param in self.basemodel.features[8:].parameters():
                 param.requires_grad = True
@@ -149,16 +151,12 @@ class model_whale(nn.Module):
             for param in self.basemodel.cell_16.parameters(): param.requires_grad = True
             for param in self.basemodel.cell_17.parameters(): param.requires_grad = True
 
-
-
-    def getLoss(self, global_feat, local_feat, results,labels):
+    def getLoss(self, global_feat, local_feat, results, labels):
         triple_loss = global_loss(TripletLoss(margin=0.3), global_feat, labels)[0] + \
                       local_loss(TripletLoss(margin=0.3), local_feat, labels)[0]
         loss_ = sigmoid_loss(results, labels, topk=30)
 
         self.loss = triple_loss + loss_
-
-
 
     def load_pretrain(self, pretrain_file, skip=[]):
         pretrain_state_dict = torch.load(pretrain_file)
@@ -175,5 +173,8 @@ class model_whale(nn.Module):
         self.load_state_dict(state_dict)
 
 
-
-
+if __name__ == '__main__':
+    x = torch.rand(2, 3, 224, 224)
+    model = model_whale(num_classes=10, inchannels=3, model_name='senet154')
+    y = model(x)
+    loss  = model.getloss()
