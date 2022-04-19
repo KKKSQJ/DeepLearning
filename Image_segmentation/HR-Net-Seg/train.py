@@ -29,7 +29,7 @@ def parse_config():
 
     parser_args = parser.parse_args()
 
-    with open(vars(parser_args)["config_name"], "r") as config_file:
+    with open(vars(parser_args)["config_name"], "r", encoding='utf-8') as config_file:
         hyperparams = yaml.full_load(config_file)
 
     return hyperparams
@@ -64,8 +64,8 @@ def run(hyperparams):
 
     criterion_params["params"]["ignore_label"] = ignore_label
     criterion_params["params"]["weight"] = loader["train_dataset"].dataset.class_weights if \
-    hyperparams["dataset"]["val"][
-        "image_path"] is None else loader["train_dataset"].class_weights
+        hyperparams["dataset"]["val"][
+            "image_path"] is None else loader["train_dataset"].class_weights
 
     optim = build_optim(model, optimizer_params, scheduler_params, criterion_params)
     criterion, optimizer, scheduler = (

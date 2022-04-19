@@ -1,40 +1,40 @@
 dataset:
   name: car
   train:
-    image_path: 'E:\dataset\car\train_images'
-    label_path: 'E:\dataset\car\train_masks'
+    image_path: 'E:\dataset\car\train_images'  # 训练数据图片
+    label_path: 'E:\dataset\car\train_masks'   # 训练数据标签
   val:
-    image_path: 'E:\dataset\car\train_images'
-    label_path: 'E:\dataset\car\train_masks'
+    image_path:                                 # 若为空 ，则从train中自动划分20%作为验证集
+    label_path:                                 # 同上
   test:
-    image_path:
-  num_classes: 1
+    image_path:                                 # 测试数据，推理时用！可不填。
+  num_classes: 1                                # 训练的类别数(标签从1开始)，当前数字不含背景类。在训练时会自动加上背景类(标签：0)
 
 train:
-  logging_name: hrnet_w48_train_1024_1024_sgd_lr1e-2_bs_4_epoch_100
-  resume: False
-  print_freq: 30
-  eval_step: 1
+  logging_name: hrnet_w48_train_1024_1024_sgd_lr1e-2_bs_4_epoch_100         # 生成的日志名字
+  resume: False                                                             # 断点续传
+  print_freq: 30                                                            # 每30个iter输出一次日志
+  eval_step: 1                                                              # 每个epoch进行一个验证
 
-  base_size: 256
-  image_size: [256, 256] # h,w
+  base_size: 1024                                                           # 当multi_scale为True时，进行尺度变化，为base_size为基准进行随机尺度变换
+  image_size: [1024, 1024] # h,w                                            # 当multi_scale为True时，送入网络的图像大小。若显存爆炸可减少image_size
 
-  num_sample: 50
-  multi_scale: True
-  flip: True
-  brightness: False
-  downsample_rate: 1
-  scale_factor: 16
+  num_sample:                                                               # 截取训练数据数量，为空时。送入全部数据
+  multi_scale: True                                                         # 数据增强，生成多尺度训练数据
+  flip: True                                                                # 数据增强，图像翻转
+  brightness: False                                                         # 数据增强，颜色空间明亮
+  downsample_rate: 1                                                        # 下采样倍率，只对标签生效。当downsample_rate！=1时，mask变为原来的1/downsample_rate
+  scale_factor: 16                                                          # 当multi_scale为True时，尺寸缩放因子
 
-  batch_size: 2
-  num_workers: 0
+  batch_size: 2                                                             # bs
+  num_workers: 4                                                            # nw
 
-  n_epochs: 100
-  amp: True # set this to True, if your GPU supports FP16. 2080Ti - okay, 1080Ti - not okay
-  ema: True # optional, but I recommend it, since the training might get unstable otherwise
-  ema_decay_per_epoch: 0.3 # 0.3 for middle/big datasets. Increase, if you have low amount of samples
+  n_epochs: 100                                                             # epochs
+  amp: True                                                                 # 混合精度训练，设置为True开启。如果你的GPU支持FP16，如2080Ti支持，1080Ti不支持
+  ema: True                                                                 # 指数平均移动，设置为True开启，训练可能不稳定
+  ema_decay_per_epoch: 0.3                                                  # 对于中/大型数据集，该值为0.3。对于小样本数据集，请增大该值
 
-test:
+test:                                                                       # 测试数据,训练时用不到，推理时也用到！
   base_size: 256
   image_size: [256, 256] # h, w
   batch_size: 1
@@ -45,7 +45,7 @@ test:
   num_sample:
   downsample_rate: 1.0
 
-optimizer:
+optimizer:                                                                  # 优化器
   name: SGD
   params:
     lr: 0.001
@@ -53,28 +53,26 @@ optimizer:
     weight_decay: 0.0001
     nesterov: False
 
-#scheduler:
-#  name: CosineAnnealingLR
-#  params:
-#    T_max: 100
-#    eta_min: 0.01
-
-scheduler:
-
-
-
-
-criterion:
-  name: 'CEloss'
+scheduler:                                                                # 学习策略，不为空，则按照epoch更新学习率
+  name: CosineAnnealingLR
   params:
-    ignore_label: -1
-    weight:
+    T_max: 100
+    eta_min: 0.01
+
+#scheduler:                                                                # 学习策略，若为空，则按照每个iter更新学习率
+
+
+criterion:                                                                 # 损失函数
+  name: 'CEloss'                                                           # 训练中采用cross_entropy loss + dice loss
+  params:
+    ignore_label: -1                                                       # ignore_label不参与训练，在dataset对标签进行修正
+    weight:                                                                # 每个类别的权重
   #  thres:
   #  min_kept:
 
-model:
+model:                                                                      # 网络结构
   name: seg_hrnet
-  pretrained: #"pretrained_models/hrnetv2_w48_imagenet_pretrained.pth"
+  pretrained: #"pretrained_models/hrnetv2_w48_imagenet_pretrained.pth"      # 预训练模型，可为空
   extra:
     in_channel: 3
     norm_layer:
