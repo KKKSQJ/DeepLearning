@@ -1,0 +1,114 @@
+dataset:
+  name: car
+  train:
+    image_path: 'E:\dataset\car\train_images'
+    label_path: 'E:\dataset\car\train_masks'
+  val:
+    image_path: 'E:\dataset\car\train_images'
+    label_path: 'E:\dataset\car\train_masks'
+  test:
+    image_path:
+  num_classes: 1
+
+train:
+  logging_name: hrnet_w48_train_1024_1024_sgd_lr1e-2_bs_4_epoch_100
+  resume: False
+  print_freq: 30
+  eval_step: 1
+
+  base_size: 256
+  image_size: [256, 256] # h,w
+
+  num_sample: 50
+  multi_scale: True
+  flip: True
+  brightness: False
+  downsample_rate: 1
+  scale_factor: 16
+
+  batch_size: 2
+  num_workers: 0
+
+  n_epochs: 100
+  amp: True # set this to True, if your GPU supports FP16. 2080Ti - okay, 1080Ti - not okay
+  ema: True # optional, but I recommend it, since the training might get unstable otherwise
+  ema_decay_per_epoch: 0.3 # 0.3 for middle/big datasets. Increase, if you have low amount of samples
+
+test:
+  base_size: 256
+  image_size: [256, 256] # h, w
+  batch_size: 1
+  num_workers: 0
+  multi_scale: False
+  flip: False
+  brightness: False
+  num_sample:
+  downsample_rate: 1.0
+
+optimizer:
+  name: SGD
+  params:
+    lr: 0.001
+    momentum: 0.9
+    weight_decay: 0.0001
+    nesterov: False
+
+#scheduler:
+#  name: CosineAnnealingLR
+#  params:
+#    T_max: 100
+#    eta_min: 0.01
+
+scheduler:
+
+
+
+
+criterion:
+  name: 'CEloss'
+  params:
+    ignore_label: -1
+    weight:
+  #  thres:
+  #  min_kept:
+
+model:
+  name: seg_hrnet
+  pretrained: #"pretrained_models/hrnetv2_w48_imagenet_pretrained.pth"
+  extra:
+    in_channel: 3
+    norm_layer:
+    final_conv_kernel: 1
+
+    stage1:
+      block: Bottleneck
+      num_modules: 1
+      num_branches: 1
+      num_blocks: [4]
+      num_channels: [64]
+      fuse_method: sum
+
+    stage2:
+      block: BasicBlock
+      num_modules: 1
+      num_branches: 2
+      num_blocks: [4,4]
+      num_channels: [48,96]
+      fuse_method: sum
+
+    stage3:
+      block: BasicBlock
+      num_modules: 4
+      num_branches: 3
+      num_blocks: [ 4,4,4 ]
+      num_channels: [ 48,96,192 ]
+      fuse_method: sum
+
+    stage4:
+      block: BasicBlock
+      num_modules: 3
+      num_branches: 4
+      num_blocks: [ 4,4,4,4 ]
+      num_channels: [ 48,96,192,384 ]
+      fuse_method: sum
+
