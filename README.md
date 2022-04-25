@@ -27,11 +27,12 @@
 ## segmentation
 - FCN(完成)
 - U-Net(完成)
+- HR-Net-Seg(完成)
 
 ## metric_learning
 - BDB(完成) 用于图像检索
 - Happy-Whale(完成) 鲸鱼竞赛检索baseline
-- HR-Net-Seg(完成)
+
 
 ## self-supervised
 - MAE(完成) 实现VIT+MAE
