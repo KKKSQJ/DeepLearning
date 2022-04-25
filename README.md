@@ -31,9 +31,11 @@
 ## metric_learning
 - BDB(完成) 用于图像检索
 - Happy-Whale(完成) 鲸鱼竞赛检索baseline
+- HR-Net-Seg(完成)
 
 ## self-supervised
 - MAE(完成) 实现VIT+MAE
+- SupCon(完成) 实现自对比学习+t-SNE可视化+swa
 
 ## deep_stereo
 - Real_time_self_adaptive_deep_stereo(实时双目里立体匹配，细节待完善)
