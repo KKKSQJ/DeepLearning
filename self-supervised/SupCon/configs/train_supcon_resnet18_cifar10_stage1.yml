@@ -1,0 +1,37 @@
+model:
+  backbone: resnet18
+  ckpt_pretrained:
+  num_classes: # in the first stage of training we don't need num_classes, since we don't have a FC head
+
+train:
+  n_epochs: 100
+  amp: True # set this to True, if your GPU supports FP16. 2080Ti - okay, 1080Ti - not okay
+  ema: True # optional, but I recommend it, since the training might get unstable otherwise
+  ema_decay_per_epoch: 0.3 # 0.3 for middle/big datasets. Increase, if you have low amount of samples
+  logging_name: supcon_first_stage_cifar10
+  target_metric: precision_at_1
+  stage: first # first = Supcon, second = FC finetuning for classification
+
+dataset: data/cifar10
+
+dataloaders:
+  train_batch_size: 200 # the higher - the better
+  valid_batch_size: 200
+  num_workers: 12 # set this to num of threads in your CPU
+
+optimizer:
+  name: SGD
+  params:
+    lr: 0.1
+
+scheduler:
+  name: CosineAnnealingLR
+  params:
+    T_max: 100
+    eta_min: 0.01
+
+criterion:
+  name: 'SupCon'
+  params:
+    temperature: 0.1
+

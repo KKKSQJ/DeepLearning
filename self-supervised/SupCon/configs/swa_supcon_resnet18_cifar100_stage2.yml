@@ -1,0 +1,17 @@
+model:
+  backbone: resnet18
+  num_classes: 100
+  top_k_checkoints: 3
+
+train:
+  amp: True # set this to True, if your GPU supports FP16. 2080Ti - okay, 1080Ti - not okay
+  weights_dir: weights/supcon_second_stage_cifar100
+  stage: second
+
+dataset: data/cifar100
+
+dataloaders:
+  train_batch_size: 200 # the higher - the better
+  valid_batch_size: 200
+  num_workers: 12 # set this to num of threads in your CPU
+
