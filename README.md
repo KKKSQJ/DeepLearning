@@ -69,7 +69,6 @@
 - [x] SupCon (实现自对比学习+t-SNE可视化+swa)
 - [ ] MoCo
 - [ ] SwAV
-- [ ]
 
 ## deep_stereo
 - [x] Real_time_self_adaptive_deep_stereo (实时双目里立体匹配，细节待完善)
