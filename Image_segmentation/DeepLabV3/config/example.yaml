@@ -21,7 +21,7 @@ model:
 train:
   # log
   logging_name: deeplabv3_voc                                               # logging file name
-  num_classes: 2                                                           # classes number without backbone
+  num_classes: 1                                                           # classes number without background
 
   # train loader
   batch_size: 16                                                             # bs
