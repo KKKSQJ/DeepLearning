@@ -8,43 +8,76 @@
 每个项目都有对应论文解读，解读详情搜 [知乎] - 琪小钧
 
 ## classification
-- vision_transformer(完成)
-- mnist 手写字符(完成)
-- efficientNet(完成)
-- vggNet(完成)
-- resnet(完成)
-- coatNet(完成)
-- convNext(完成)
-- seNet(完成)
+- [x] vision_transformer
+- [x] [mnist](https://zhuanlan.zhihu.com/p/459616884)
+- [x] efficientNet
+- [x] [vggNet](https://zhuanlan.zhihu.com/p/460777014)
+- [x] [resnet](https://zhuanlan.zhihu.com/p/462190341)
+- [x] [coatNet](https://zhuanlan.zhihu.com/p/463033740)
+- [x] [convNext](https://zhuanlan.zhihu.com/p/473657956)
+- [x] [seNet](https://zhuanlan.zhihu.com/p/479992312)
+- [ ] swin-transformer
+- [ ] inception
+- [ ] denseNet
+- [ ] googleNet
+- [ ] CBAM
+- [ ] shuffleNet
+- [ ] mobileNet
+- [ ] resNeXt
+- [ ] Xception
+- [ ] SqueezeNet
+- [ ] RepVgg
 
 ## detection
-- RetinaNet(完成) 包含focal_loss
-- FPN(半完成) 实现resnet50 + fpn
-- YOLOV5 V5.0(完成) 实现注释，更新pt->onnx代码
-- yolox(完成) 修改了voc数据读取方式
-- FCOS (完成)
+- [x] RetinaNet (包含focal_loss)
+- [x] FPN (实现resnet50 + fpn)
+- [x] YOLOV5 V5.0 (实现注释，更新pt->onnx代码)
+- [x] yolox (修改了voc数据读取方式)
+- [x] FCOS
+- [ ] yoloF
+- [ ] yoloR
+- [ ] detr
+- [ ] ssd
+- [ ] Faster-rcnn
+- [ ] Mask-rcnn
+- [ ] Cascade-rcnn
+- [ ] SPPNet
+- [ ] CenterNet
+- [ ] RepPoints
+- [ ] OTA
+- [ ] ATSS
 
 ## segmentation
-- FCN(完成)
-- U-Net(完成)
-- HR-Net-Seg(完成)
+- [x] FCN
+- [x] [U-Net](https://zhuanlan.zhihu.com/p/485647940)
+- [x] [HR-Net-Seg](https://zhuanlan.zhihu.com/p/501094171)
+- [x] DeepLabv3
+- [ ] Mask-rcnn
+- [ ] Cascade-rcnn
+- [ ] UNet++
+- [ ] DeepLabv3Plus
+- [ ] PSPNet
+- [ ] Segmenter
 
 ## metric_learning
-- BDB(完成) 用于图像检索
-- Happy-Whale(完成) 鲸鱼竞赛检索baseline
+- [x] BDB (用于图像检索)
+- [x] Happy-Whale (鲸鱼竞赛检索baseline)
 
 
 ## self-supervised
-- MAE(完成) 实现VIT+MAE
-- SupCon(完成) 实现自对比学习+t-SNE可视化+swa
+- [x] MAE (实现VIT+MAE)
+- [x] SupCon (实现自对比学习+t-SNE可视化+swa)
+- [ ] MoCo
+- [ ] SwAV
+- [ ]
 
 ## deep_stereo
-- Real_time_self_adaptive_deep_stereo(实时双目里立体匹配，细节待完善)
+- [x] Real_time_self_adaptive_deep_stereo (实时双目里立体匹配，细节待完善)
 
 
 ## other
-- tensorboard test(完成) 可视化网络，图片，训练过程以及卷积核
-- load weights test(完成) 权重部分加载
-- visual weights map test(完成) 特征图、卷积核可视化分析
-- label_convert(完成) 三种不同标注文件之间的转换以及box可视化
-- class_Activation_Map_Visual(完成) 可视化CNN的类激活图
+- [x] tensorboard test (可视化网络，图片，训练过程以及卷积核)
+- [x] load weights test (权重部分加载)
+- [x] visual weights map test (特征图、卷积核可视化分析)
+- [x] [label_convert](https://zhuanlan.zhihu.com/p/461488682) (三种不同标注文件之间的转换以及box可视化)
+- [x] class_Activation_Map_Visual (可视化CNN的类激活图)
