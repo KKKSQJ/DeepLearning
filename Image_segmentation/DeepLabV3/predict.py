@@ -31,31 +31,6 @@ def time_sync():
     return time.time()
 
 
-def preprocess(img, scale):
-    w, h = img.size
-    newW, newH = int(scale * w), int(scale * h)
-    assert newW > 0 and newH > 0, 'Scale is too small, resized images would have no pixel'
-    pil_img = img.resize((newW, newH), resample=Image.BICUBIC)
-    img_ndarray = np.asarray(pil_img)
-    return pil_img
-
-
-def plot_img_and_mask(img, mask):
-    classes = mask.shape[0] if len(mask.shape) > 2 else 1
-    fig, ax = plt.subplots(1, classes + 1)
-    ax[0].set_title('Input image')
-    ax[0].imshow(img)
-    if classes > 1:
-        for i in range(classes):
-            ax[i + 1].set_title(f'Output mask (class {i + 1})')
-            ax[i + 1].imshow(mask[i, :, :])
-    else:
-        ax[1].set_title(f'Output mask')
-        ax[1].imshow(mask)
-    plt.xticks([]), plt.yticks([])
-    plt.show()
-
-
 @torch.no_grad()
 def run(
         cfg='config/example.yaml',  # 配置文件，主要用于读取模型配置
@@ -64,7 +39,6 @@ def run(
         use_cuda=True,  # 是否使用cuda
         view_img=False,  # 是否可视化测试图片
         save_mask=True,  # 是否将保存mask
-        scale=0.5,
         palette_path="palette.json",
         project='result'  # 结果输出路径
 ):
@@ -98,6 +72,12 @@ def run(
     # Run once
     y = model(torch.rand(1, 3, 480, 480).to(device))
 
+    # Data transform
+    data_transform = transforms.Compose([transforms.Resize(520),
+                                         transforms.ToTensor(),
+                                         transforms.Normalize(mean=(0.485, 0.456, 0.406),
+                                                              std=(0.229, 0.224, 0.225))])
+
     # Load img
     assert os.path.exists(source), "data source: {} does not exists".format(source)
     if os.path.isdir(source):
@@ -114,11 +94,10 @@ def run(
     images = tqdm(images)
     for img_path in images:
         full_img = Image.open(img_path)
-        img = preprocess(full_img, scale)
-        img = transforms.ToTensor()(img)
-        img_tensor = img[None].to(device, dtype=torch.float32)
+        img = data_transform(full_img)
+        img = torch.unsqueeze(img, dim=0)
         t1 = time_sync()
-        output = model(img_tensor.to(device))
+        output = model(img.to(device))
         t2 = time_sync()
 
         print("inference time: {}".format(t2 - t1))
@@ -129,7 +108,7 @@ def run(
         file_name = img_path.split(os.sep)[-1][:-4]
         mask = Image.fromarray(prediction)
         mask.putpalette(pallette)
-        mask.resize((full_img.size[1],full_img.size[0]),resample=Image.NEAREST)
+        mask.resize((full_img.size[1], full_img.size[0]), resample=Image.NEAREST)
 
         if view_img:
             fig, ax = plt.subplots(1, 2)
@@ -156,8 +135,6 @@ if __name__ == '__main__':
     parser.add_argument('--view_img', '-v', action='store_true', default=False,
                         help='Visualize the images as they are processed')
     parser.add_argument('--save-mask', '-sm', action='store_true', default=True, help='Whether save the output masks')
-    parser.add_argument('--scale', '-s', type=float, default=1.0,
-                        help='Scale factor for the input images')
     parser.add_argument('--palette_path', default='palette.json', help='Plot Mask by different color')
     parser.add_argument('--project', '-p', metavar='OUTPUT', default='result', help='Output of img path')
 
