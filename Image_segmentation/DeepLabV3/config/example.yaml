@@ -20,7 +20,7 @@ model:
 
 train:
   # log
-  logging_name: deeplabv3_voc                                               # logging file name
+  logging_name: deeplabv3_car_sgd_lr_0.001                                               # logging file name
   num_classes: 1                                                           # classes number without background
 
   # train loader
