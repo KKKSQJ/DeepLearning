@@ -38,6 +38,9 @@ LOSSES = {
 
 def build_optim(params_to_optimize, optimizer_params, loss_params, scheduler_params):
     if 'params' in loss_params:
+        weight = torch.FloatTensor(loss_params['params']['weight'])
+        if weight is not None:
+            loss_params["params"]["weight"] = weight.cuda()
         criterion = LOSSES[loss_params['name']](**loss_params['params'])
     else:
         criterion = LOSSES[loss_params['name']]()
@@ -104,6 +107,7 @@ def lr_scheduler(
             return (1 - (x - warmup_epochs * num_step) / ((epochs - warmup_epochs) * num_step)) ** 0.9
 
     return f
+
 
 class AverageMeter(object):
     """Computes and stores the average and current value"""
