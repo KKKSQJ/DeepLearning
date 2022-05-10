@@ -30,7 +30,7 @@ class ConfusionMatrix(object):
         # 计算每个类别的准确率
         acc = torch.diag(h) / h.sum(1)
         # 计算每个类别预测与真实目标的iou
-        iu = torch.diag(h) / (h.sum(1) + h.sum(0) - torch.diag(h))
+        iu = torch.diag(h) / (h.sum(1) + h.sum(0) - torch.diag(h) + 1e-6)
         return acc_gloabl, acc, iu
 
     def reduce_from_all_processes(self):
