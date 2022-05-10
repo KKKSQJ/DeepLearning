@@ -27,7 +27,7 @@ def pad_if_smaller(img, size, fill=0):
     min_size = min(img.size)
     ow, oh = img.size
 
-    if size.isdigit():
+    if isinstance(size, int):
         if min_size < size:
             padh = size - oh if oh < size else 0
             padw = size - ow if ow < size else 0
@@ -42,34 +42,39 @@ def pad_if_smaller(img, size, fill=0):
 
 
 # 随机缩放
+# class RandomResize(object):
+#     def __init__(self, min_size, max_size=None):
+#         self.min_size = min_size
+#         if max_size is None:
+#             max_size = min_size
+#         self.max_size = max_size
+#
+#     def __call__(self, image, target):
+#         size = random.randint(self.min_size, self.max_size)
+#         # 这里size传入的是int类型，所以是将图像的最小边长缩放到size大小
+#         image = F.resize(image, size)
+#         # 这里的interpolation注意下，在torchvision(0.9.0)以后才有InterpolationMode.NEAREST
+#         # 如果是之前的版本需要使用PIL.Image.NEAREST
+#         # target = F.resize(target, size, interpolation=T.InterpolationMode.NEAREST)
+#         target = F.resize(target, size, interpolation=Image.NEAREST)
+#         return image, target
+
+# 随机缩放
 class RandomResize(object):
-    def __init__(self, min_size, max_size=None):
-        self.min_size = min_size
-        if max_size is None:
-            max_size = min_size
-        self.max_size = max_size
+    def __init__(self, size, ratio=(0.5, 2.0)):
+        self.size = size
+        self.ratio = ratio
 
     def __call__(self, image, target):
-        size = random.randint(self.min_size, self.max_size)
-        # 这里size传入的是int类型，所以是将图像的最小边长缩放到size大小
+        r = random.uniform(self.ratio[0], self.ratio[1])
+        # size = int(self.size * r)
+        size = int(self.size * r) if isinstance(self.size, int) else tuple(int(s * r) for s in self.size)
         image = F.resize(image, size)
         # 这里的interpolation注意下，在torchvision(0.9.0)以后才有InterpolationMode.NEAREST
         # 如果是之前的版本需要使用PIL.Image.NEAREST
         # target = F.resize(target, size, interpolation=T.InterpolationMode.NEAREST)
         target = F.resize(target, size, interpolation=Image.NEAREST)
         return image, target
-
-
-class RandomResizeKeepRatio(object):
-    def __init__(self, size):
-        assert len(size) == 2, f"size is (H W)"
-        if not isinstance(size, tuple):
-            size = tuple(size)
-
-        self.size = size
-
-    def __call__(self, image, target):
-        ow, oh = image.size
 
 
 # 随机翻转
@@ -87,12 +92,16 @@ class RandomHorizontalFlip(object):
 # 随机裁剪
 class RandomCrop(object):
     def __init__(self, size):
+        if isinstance(size, int):
+            size = (size, size)
+        elif isinstance(size, list):
+            size = tuple(size)
         self.size = size
 
     def __call__(self, image, target):
         image = pad_if_smaller(image, self.size)
         target = pad_if_smaller(target, self.size, fill=255)
-        crop_params = T.RandomCrop.get_params(image, (self.size, self.size))
+        crop_params = T.RandomCrop.get_params(image, (self.size[0], self.size[1]))
         image = F.crop(image, *crop_params)
         target = F.crop(target, *crop_params)
         return image, target
@@ -196,11 +205,9 @@ class Compose(object):
 
 
 class SegmentationPresetTrain:
-    def __init__(self, base_size, crop_size, hflip_prob=0.5, mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)):
-        min_size = int(0.8 * base_size)
-        max_size = int(1.5 * base_size)
-
-        trans = [RandomResize(min_size, max_size)]
+    def __init__(self, base_size, crop_size, ratio=(0.5, 2.0), hflip_prob=0.5, mean=(0.485, 0.456, 0.406),
+                 std=(0.229, 0.224, 0.225)):
+        trans = [RandomResize(base_size, ratio)]
         if hflip_prob > 0:
             trans.append(RandomHorizontalFlip(hflip_prob))
         trans.extend([
@@ -217,7 +224,7 @@ class SegmentationPresetTrain:
 class SegmentationPresetEval:
     def __init__(self, base_size, mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)):
         self.transforms = Compose([
-            RandomResize(base_size, base_size),
+            RandomResize(base_size, ratio=(1., 1.)),
             ToTensor(),
             Normalize(mean=mean, std=std),
         ])
@@ -239,19 +246,23 @@ def build_transform(cfg="config/example.yaml", train=True):
     crop_size = config["train"]["crop_size"]
     mean = tuple(config["train"]["mean"])
     std = tuple(config["train"]["std"])
+    ratio = config["train"]["ratio"]
 
-    return SegmentationPresetTrain(base_size, crop_size, mean=mean, std=std) if train else SegmentationPresetEval(
+    return SegmentationPresetTrain(base_size, crop_size, ratio=ratio, mean=mean,
+                                   std=std) if train else SegmentationPresetEval(
         base_size, mean=mean, std=std)
+
 
 # if __name__ == '__main__':
 #     mean = (0.485, 0.456, 0.406)
 #     std = (0.229, 0.224, 0.225)
 #     trans = [
-#         RandomResize(100, 300),
+#         RandomRotation(1.0),
+#         RandomResize(size=200, ratio=(0.5, 2.0)),
 #         RandomHorizontalFlip(1.0),
-#         RandomCrop(248),
-#         GaussianBlur(11,2),
-#         ColorJitter(),
+#         RandomCrop((224, 500)),
+#         # GaussianBlur(11,2),
+#         # ColorJitter(),
 #         # ToTensor(),
 #         # Normalize(mean=mean, std=std),
 #     ]
@@ -266,8 +277,10 @@ def build_transform(cfg="config/example.yaml", train=True):
 #         print(a.size)
 #         import matplotlib.pyplot as plt
 #
-#         plt.figure()
-#         plt.imshow(a)
-#         plt.figure()
-#         plt.imshow(b)
+#         fig, ax = plt.subplots(1, 2)
+#         ax[0].set_title('image')
+#         ax[0].imshow(a)
+#         ax[1].set_title(f'mask')
+#         ax[1].imshow(b)
+#         plt.xticks([]), plt.yticks([])
 #         plt.show()
