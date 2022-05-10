@@ -20,6 +20,7 @@ from torch.utils.data import DataLoader
 from torchvision import transforms
 
 from models.network import build_model
+from utils.label import label2rgb
 
 IMG_FORMATS = ['bmp', 'jpg', 'jpeg', 'png', 'tif', 'tiff', 'dng', 'webp', 'mpo']
 
@@ -39,6 +40,7 @@ def run(
         use_cuda=True,  # 是否使用cuda
         view_img=False,  # 是否可视化测试图片
         save_mask=True,  # 是否将保存mask
+        save_viz=True,  # 是否保存融合图
         palette_path="palette.json",
         project='result'  # 结果输出路径
 ):
@@ -52,7 +54,9 @@ def run(
 
     device = torch.device("cuda" if torch.cuda.is_available() and use_cuda else "cpu")
     if save_mask:
-        os.makedirs(project, exist_ok=True)
+        os.makedirs(project + "/mask", exist_ok=True)
+    if save_viz:
+        os.makedirs(project + "/viz", exist_ok=True)
 
     # Load model
     assert os.path.exists(weights), "model path: {} does not exists".format(weights)
@@ -93,7 +97,7 @@ def run(
     images = [x for x in files if x.split('.')[-1].lower() in IMG_FORMATS]
     images = tqdm(images)
     for img_path in images:
-        full_img = Image.open(img_path)
+        full_img = Image.open(img_path).convert("RGB")
         img = data_transform(full_img)
         img = torch.unsqueeze(img, dim=0)
         t1 = time_sync()
@@ -108,19 +112,26 @@ def run(
         file_name = img_path.split(os.sep)[-1][:-4]
         mask = Image.fromarray(prediction)
         mask.putpalette(pallette)
-        mask.resize((full_img.size[1], full_img.size[0]), resample=Image.NEAREST)
+        mask = mask.resize((full_img.size[0], full_img.size[1]), resample=Image.NEAREST)
+
+        viz = label2rgb(np.asarray(mask), np.asarray(full_img), font_size=15, loc="rb")
 
         if view_img:
-            fig, ax = plt.subplots(1, 2)
+            fig, ax = plt.subplots(1, 3)
             ax[0].set_title('Input image')
             ax[0].imshow(full_img)
             ax[1].set_title(f'Output mask')
             ax[1].imshow(mask)
+            ax[2].set_title(f'Vis')
+            ax[2].imshow(viz)
             plt.xticks([]), plt.yticks([])
             plt.show()
 
         if save_mask:
-            mask.save(os.path.join(project, "{}.png".format(file_name)))
+            mask.save(os.path.join(project+"/mask", "{}.png".format(file_name)))
+        if save_viz:
+            viz = Image.fromarray(viz)
+            viz.save(os.path.join(project+"/viz", "{}.png".format(file_name)))
 
 
 if __name__ == '__main__':
@@ -135,6 +146,7 @@ if __name__ == '__main__':
     parser.add_argument('--view_img', '-v', action='store_true', default=False,
                         help='Visualize the images as they are processed')
     parser.add_argument('--save-mask', '-sm', action='store_true', default=True, help='Whether save the output masks')
+    parser.add_argument('--save-viz', '-sv', action='store_true', default=True, help='Whether save the output vizs')
     parser.add_argument('--palette_path', default='palette.json', help='Plot Mask by different color')
     parser.add_argument('--project', '-p', metavar='OUTPUT', default='result', help='Output of img path')
 
