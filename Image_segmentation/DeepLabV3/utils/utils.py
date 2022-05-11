@@ -38,9 +38,9 @@ LOSSES = {
 
 def build_optim(params_to_optimize, optimizer_params, loss_params, scheduler_params):
     if 'params' in loss_params:
-        weight = torch.FloatTensor(loss_params['params']['weight'])
+        weight = loss_params['params']['weight']
         if weight is not None:
-            loss_params["params"]["weight"] = weight.cuda()
+            loss_params["params"]["weight"] = torch.FloatTensor(loss_params['params']['weight']).cuda()
         criterion = LOSSES[loss_params['name']](**loss_params['params'])
     else:
         criterion = LOSSES[loss_params['name']]()

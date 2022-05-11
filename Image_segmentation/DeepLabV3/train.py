@@ -211,6 +211,7 @@ def run(hyperparams):
 
                     confmat.reduce_from_all_processes()
             val_info = str(confmat)
+            print(val_info)
             acc_global, acc, iu = confmat.get_result()
             mIoU = iu.mean().item()
 
