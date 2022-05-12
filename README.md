@@ -51,7 +51,7 @@
 - [x] FCN
 - [x] [U-Net](https://zhuanlan.zhihu.com/p/485647940)
 - [x] [HR-Net-Seg](https://zhuanlan.zhihu.com/p/501094171)
-- [x] DeepLabv3
+- [x] [DeepLabv3](https://zhuanlan.zhihu.com/p/513233049)
 - [ ] Mask-rcnn
 - [ ] Cascade-rcnn
 - [ ] UNet++
