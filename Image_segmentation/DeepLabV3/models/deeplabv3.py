@@ -84,6 +84,15 @@ class DeepLabv3(nn.Module):
         self.backbone = backbone
         self.classifier = classifier
         self.aux_classifier = aux_classifier
+        self._init_weight()
+
+    def _init_weight(self):
+        for m in self.modules():
+            if isinstance(m, nn.Conv2d):
+                nn.init.kaiming_normal_(m.weight)
+            elif isinstance(m, (nn.BatchNorm2d, nn.GroupNorm)):
+                nn.init.constant_(m.weight, 1)
+                nn.init.constant_(m.bias, 0)
 
     def forward(self, x: Tensor) -> Dict[str, Tensor]:
         # x.shape:B C H W
