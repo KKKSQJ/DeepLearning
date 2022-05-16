@@ -210,7 +210,7 @@ class SegmentationPresetTrain:
         trans = [
             RandomResize(base_size, ratio),
             #ColorJitter(),
-            RandomRotation(rotation_prob=0.5),
+            #RandomRotation(rotation_prob=0.5),
             #GaussianBlur(),
         ]
         if hflip_prob > 0:
