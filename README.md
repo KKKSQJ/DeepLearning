@@ -52,10 +52,10 @@
 - [x] [U-Net](https://zhuanlan.zhihu.com/p/485647940)
 - [x] [HR-Net-Seg](https://zhuanlan.zhihu.com/p/501094171)
 - [x] [DeepLabv3](https://zhuanlan.zhihu.com/p/513233049)
+- [x] DeepLabv3Plus
 - [ ] Mask-rcnn
 - [ ] Cascade-rcnn
 - [ ] UNet++
-- [x] DeepLabv3Plus
 - [ ] PSPNet
 - [ ] Segmenter
 
