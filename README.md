@@ -55,7 +55,7 @@
 - [ ] Mask-rcnn
 - [ ] Cascade-rcnn
 - [ ] UNet++
-- [ ] DeepLabv3Plus
+- [x] DeepLabv3Plus
 - [ ] PSPNet
 - [ ] Segmenter
 
