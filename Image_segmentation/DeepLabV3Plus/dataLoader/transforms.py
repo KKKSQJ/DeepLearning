@@ -209,9 +209,9 @@ class SegmentationPresetTrain:
                  std=(0.229, 0.224, 0.225)):
         trans = [
             RandomResize(base_size, ratio),
-            ColorJitter(),
-            RandomRotation(rotation_prob=0.5),
-            GaussianBlur(),
+            # ColorJitter(),
+            # RandomRotation(rotation_prob=0.5),
+            # GaussianBlur(),
         ]
         if hflip_prob > 0:
             trans.append(RandomHorizontalFlip(hflip_prob))
