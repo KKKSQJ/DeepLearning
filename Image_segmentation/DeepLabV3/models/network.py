@@ -36,6 +36,8 @@ def build_model(cfg='config/example.yaml', num_classes=21, pretrain=True):
         assert os.path.exists(pretrain_weights), f"{pretrain_weights} does not exists!"
         logging.info(f"====>  Load pretrin weights from: {pretrain_weights}   <=====")
         weights_dict = torch.load(pretrain_weights, map_location='cpu')
+        if "model" in weights_dict.keys():
+            weights_dict = weights_dict["model"]
 
         if num_classes != 21:
             # 官方提供的预训练权重是21类(包括背景)
