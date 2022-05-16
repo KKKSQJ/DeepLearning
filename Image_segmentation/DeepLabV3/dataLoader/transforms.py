@@ -130,7 +130,7 @@ class RandomRotation(object):
             image = F.rotate(image, angle, expand=True, fill=0)
             target = F.rotate(target, angle, expand=True, fill=255)
             assert image.size == target.size
-            return image, target
+        return image, target
 
 
 # 高斯模糊
@@ -207,7 +207,12 @@ class Compose(object):
 class SegmentationPresetTrain:
     def __init__(self, base_size, crop_size, ratio=(0.5, 2.0), hflip_prob=0.5, mean=(0.485, 0.456, 0.406),
                  std=(0.229, 0.224, 0.225)):
-        trans = [RandomResize(base_size, ratio)]
+        trans = [
+            RandomResize(base_size, ratio),
+            #ColorJitter(),
+            RandomRotation(rotation_prob=0.5),
+            #GaussianBlur(),
+        ]
         if hflip_prob > 0:
             trans.append(RandomHorizontalFlip(hflip_prob))
         trans.extend([
