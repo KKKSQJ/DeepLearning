@@ -62,7 +62,7 @@ def run(
     assert os.path.exists(weights), "model path: {} does not exists".format(weights)
     num_classes = config["train"]["num_classes"] + 1
     model = build_model(config, num_classes, pretrain=False)
-    checkpoint = torch.load(weights, map_location='cpu')["model"]
+    checkpoint = torch.load(weights, map_location='cpu')["model_state"]
     model.load_state_dict(checkpoint, strict=True)
     model.eval().to(device)
 
