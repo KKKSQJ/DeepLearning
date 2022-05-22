@@ -114,7 +114,8 @@ def run(
         mask.putpalette(pallette)
         mask = mask.resize((full_img.size[0], full_img.size[1]), resample=Image.NEAREST)
 
-        viz = label2rgb(np.asarray(mask), np.asarray(full_img), font_size=15, loc="rb")
+        viz = label2rgb(np.asarray(mask), np.asarray(full_img), font_size=15, loc="rb",
+                        colormap=np.asarray(list(pallette_dict.values())))
 
         if view_img:
             fig, ax = plt.subplots(1, 3)
