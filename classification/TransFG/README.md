@@ -8,6 +8,12 @@
 - [NABirds](https://dl.allaboutbirds.org/nabirds)
 - [iNaturalist 2017](https://github.com/visipedia/inat_comp/tree/master/2017)
 
+## 预训练模型
+[模型链接](https://console.cloud.google.com/storage/browser/vit_models) ViT-B_16, ViT-B_32...
+```
+wget https://storage.googleapis.com/vit_models/imagenet21k/{MODEL_NAME}.npz
+```
+
 注意：在本项目中，我只验证了CUB-200-2011数据集。如果你想要训练你自己的数据，你可以在dataLoader/dataset.py中diy你的数据，然后把它在utils/builder.py下的build_loader函数中进行加载。
 
 ## Train
