@@ -209,9 +209,9 @@ def run(hyperparams):
                     torch.nn.utils.clip_grad_norm_(amp.master_params(optimizer), hyperparams["train"]["max_grad_norm"])
                 else:
                     torch.nn.utils.clip_grad_norm_(model.parameters(), hyperparams["train"]["max_grad_norm"])
-                scheduler.step()
-                optimizer.step()
                 optimizer.zero_grad()
+                optimizer.step()
+                scheduler.step()
                 global_step += 1
 
                 epoch_iterator.set_description(
