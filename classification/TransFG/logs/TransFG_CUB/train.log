@@ -1,0 +1,654 @@
+05/29/2022 16:14:30 - WARNING - root - Process rank: -1, device: cuda, n_gpu: 1, distributed training: False, 16-bits training: False
+05/29/2022 16:14:31 - INFO - root - load_pretrained: resized variant: torch.Size([1, 197, 768]) to torch.Size([1, 785, 768])
+05/29/2022 16:14:32 - INFO - root - ===>  Load pretrain weights from pretrain_weights/imagenet21k_ViT-B_16.npz  <====
+05/29/2022 16:14:32 - INFO - root - ===> Create model successful  ... <===
+05/29/2022 16:14:32 - INFO - root - ===> Model:	VisionTransformer(
+  (part_head): Linear(in_features=768, out_features=200, bias=True)
+  (transformer): Transformer(
+    (embeddings): Embeddings(
+      (patch_embeddings): Conv2d(3, 768, kernel_size=(16, 16), stride=(16, 16))
+      (dropout): Dropout(p=0.1, inplace=False)
+    )
+    (encoder): Encoder(
+      (layer): ModuleList(
+        (0): Block(
+          (attention_norm): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+          (ffn_norm): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+          (ffn): MLP(
+            (fc1): Linear(in_features=768, out_features=3072, bias=True)
+            (fc2): Linear(in_features=3072, out_features=768, bias=True)
+            (act_fn): GELU()
+            (dropout): Dropout(p=0.1, inplace=False)
+          )
+          (attn): Attention(
+            (query): Linear(in_features=768, out_features=768, bias=True)
+            (key): Linear(in_features=768, out_features=768, bias=True)
+            (value): Linear(in_features=768, out_features=768, bias=True)
+            (out): Linear(in_features=768, out_features=768, bias=True)
+            (attn_dropout): Dropout(p=0.0, inplace=False)
+            (proj_dropout): Dropout(p=0.0, inplace=False)
+            (softmax): Softmax(dim=-1)
+          )
+        )
+        (1): Block(
+          (attention_norm): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+          (ffn_norm): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+          (ffn): MLP(
+            (fc1): Linear(in_features=768, out_features=3072, bias=True)
+            (fc2): Linear(in_features=3072, out_features=768, bias=True)
+            (act_fn): GELU()
+            (dropout): Dropout(p=0.1, inplace=False)
+          )
+          (attn): Attention(
+            (query): Linear(in_features=768, out_features=768, bias=True)
+            (key): Linear(in_features=768, out_features=768, bias=True)
+            (value): Linear(in_features=768, out_features=768, bias=True)
+            (out): Linear(in_features=768, out_features=768, bias=True)
+            (attn_dropout): Dropout(p=0.0, inplace=False)
+            (proj_dropout): Dropout(p=0.0, inplace=False)
+            (softmax): Softmax(dim=-1)
+          )
+        )
+        (2): Block(
+          (attention_norm): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+          (ffn_norm): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+          (ffn): MLP(
+            (fc1): Linear(in_features=768, out_features=3072, bias=True)
+            (fc2): Linear(in_features=3072, out_features=768, bias=True)
+            (act_fn): GELU()
+            (dropout): Dropout(p=0.1, inplace=False)
+          )
+          (attn): Attention(
+            (query): Linear(in_features=768, out_features=768, bias=True)
+            (key): Linear(in_features=768, out_features=768, bias=True)
+            (value): Linear(in_features=768, out_features=768, bias=True)
+            (out): Linear(in_features=768, out_features=768, bias=True)
+            (attn_dropout): Dropout(p=0.0, inplace=False)
+            (proj_dropout): Dropout(p=0.0, inplace=False)
+            (softmax): Softmax(dim=-1)
+          )
+        )
+        (3): Block(
+          (attention_norm): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+          (ffn_norm): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+          (ffn): MLP(
+            (fc1): Linear(in_features=768, out_features=3072, bias=True)
+            (fc2): Linear(in_features=3072, out_features=768, bias=True)
+            (act_fn): GELU()
+            (dropout): Dropout(p=0.1, inplace=False)
+          )
+          (attn): Attention(
+            (query): Linear(in_features=768, out_features=768, bias=True)
+            (key): Linear(in_features=768, out_features=768, bias=True)
+            (value): Linear(in_features=768, out_features=768, bias=True)
+            (out): Linear(in_features=768, out_features=768, bias=True)
+            (attn_dropout): Dropout(p=0.0, inplace=False)
+            (proj_dropout): Dropout(p=0.0, inplace=False)
+            (softmax): Softmax(dim=-1)
+          )
+        )
+        (4): Block(
+          (attention_norm): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+          (ffn_norm): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+          (ffn): MLP(
+            (fc1): Linear(in_features=768, out_features=3072, bias=True)
+            (fc2): Linear(in_features=3072, out_features=768, bias=True)
+            (act_fn): GELU()
+            (dropout): Dropout(p=0.1, inplace=False)
+          )
+          (attn): Attention(
+            (query): Linear(in_features=768, out_features=768, bias=True)
+            (key): Linear(in_features=768, out_features=768, bias=True)
+            (value): Linear(in_features=768, out_features=768, bias=True)
+            (out): Linear(in_features=768, out_features=768, bias=True)
+            (attn_dropout): Dropout(p=0.0, inplace=False)
+            (proj_dropout): Dropout(p=0.0, inplace=False)
+            (softmax): Softmax(dim=-1)
+          )
+        )
+        (5): Block(
+          (attention_norm): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+          (ffn_norm): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+          (ffn): MLP(
+            (fc1): Linear(in_features=768, out_features=3072, bias=True)
+            (fc2): Linear(in_features=3072, out_features=768, bias=True)
+            (act_fn): GELU()
+            (dropout): Dropout(p=0.1, inplace=False)
+          )
+          (attn): Attention(
+            (query): Linear(in_features=768, out_features=768, bias=True)
+            (key): Linear(in_features=768, out_features=768, bias=True)
+            (value): Linear(in_features=768, out_features=768, bias=True)
+            (out): Linear(in_features=768, out_features=768, bias=True)
+            (attn_dropout): Dropout(p=0.0, inplace=False)
+            (proj_dropout): Dropout(p=0.0, inplace=False)
+            (softmax): Softmax(dim=-1)
+          )
+        )
+        (6): Block(
+          (attention_norm): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+          (ffn_norm): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+          (ffn): MLP(
+            (fc1): Linear(in_features=768, out_features=3072, bias=True)
+            (fc2): Linear(in_features=3072, out_features=768, bias=True)
+            (act_fn): GELU()
+            (dropout): Dropout(p=0.1, inplace=False)
+          )
+          (attn): Attention(
+            (query): Linear(in_features=768, out_features=768, bias=True)
+            (key): Linear(in_features=768, out_features=768, bias=True)
+            (value): Linear(in_features=768, out_features=768, bias=True)
+            (out): Linear(in_features=768, out_features=768, bias=True)
+            (attn_dropout): Dropout(p=0.0, inplace=False)
+            (proj_dropout): Dropout(p=0.0, inplace=False)
+            (softmax): Softmax(dim=-1)
+          )
+        )
+        (7): Block(
+          (attention_norm): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+          (ffn_norm): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+          (ffn): MLP(
+            (fc1): Linear(in_features=768, out_features=3072, bias=True)
+            (fc2): Linear(in_features=3072, out_features=768, bias=True)
+            (act_fn): GELU()
+            (dropout): Dropout(p=0.1, inplace=False)
+          )
+          (attn): Attention(
+            (query): Linear(in_features=768, out_features=768, bias=True)
+            (key): Linear(in_features=768, out_features=768, bias=True)
+            (value): Linear(in_features=768, out_features=768, bias=True)
+            (out): Linear(in_features=768, out_features=768, bias=True)
+            (attn_dropout): Dropout(p=0.0, inplace=False)
+            (proj_dropout): Dropout(p=0.0, inplace=False)
+            (softmax): Softmax(dim=-1)
+          )
+        )
+        (8): Block(
+          (attention_norm): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+          (ffn_norm): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+          (ffn): MLP(
+            (fc1): Linear(in_features=768, out_features=3072, bias=True)
+            (fc2): Linear(in_features=3072, out_features=768, bias=True)
+            (act_fn): GELU()
+            (dropout): Dropout(p=0.1, inplace=False)
+          )
+          (attn): Attention(
+            (query): Linear(in_features=768, out_features=768, bias=True)
+            (key): Linear(in_features=768, out_features=768, bias=True)
+            (value): Linear(in_features=768, out_features=768, bias=True)
+            (out): Linear(in_features=768, out_features=768, bias=True)
+            (attn_dropout): Dropout(p=0.0, inplace=False)
+            (proj_dropout): Dropout(p=0.0, inplace=False)
+            (softmax): Softmax(dim=-1)
+          )
+        )
+        (9): Block(
+          (attention_norm): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+          (ffn_norm): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+          (ffn): MLP(
+            (fc1): Linear(in_features=768, out_features=3072, bias=True)
+            (fc2): Linear(in_features=3072, out_features=768, bias=True)
+            (act_fn): GELU()
+            (dropout): Dropout(p=0.1, inplace=False)
+          )
+          (attn): Attention(
+            (query): Linear(in_features=768, out_features=768, bias=True)
+            (key): Linear(in_features=768, out_features=768, bias=True)
+            (value): Linear(in_features=768, out_features=768, bias=True)
+            (out): Linear(in_features=768, out_features=768, bias=True)
+            (attn_dropout): Dropout(p=0.0, inplace=False)
+            (proj_dropout): Dropout(p=0.0, inplace=False)
+            (softmax): Softmax(dim=-1)
+          )
+        )
+        (10): Block(
+          (attention_norm): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+          (ffn_norm): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+          (ffn): MLP(
+            (fc1): Linear(in_features=768, out_features=3072, bias=True)
+            (fc2): Linear(in_features=3072, out_features=768, bias=True)
+            (act_fn): GELU()
+            (dropout): Dropout(p=0.1, inplace=False)
+          )
+          (attn): Attention(
+            (query): Linear(in_features=768, out_features=768, bias=True)
+            (key): Linear(in_features=768, out_features=768, bias=True)
+            (value): Linear(in_features=768, out_features=768, bias=True)
+            (out): Linear(in_features=768, out_features=768, bias=True)
+            (attn_dropout): Dropout(p=0.0, inplace=False)
+            (proj_dropout): Dropout(p=0.0, inplace=False)
+            (softmax): Softmax(dim=-1)
+          )
+        )
+      )
+      (part_select): Part_Attention()
+      (part_layer): Block(
+        (attention_norm): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+        (ffn_norm): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+        (ffn): MLP(
+          (fc1): Linear(in_features=768, out_features=3072, bias=True)
+          (fc2): Linear(in_features=3072, out_features=768, bias=True)
+          (act_fn): GELU()
+          (dropout): Dropout(p=0.1, inplace=False)
+        )
+        (attn): Attention(
+          (query): Linear(in_features=768, out_features=768, bias=True)
+          (key): Linear(in_features=768, out_features=768, bias=True)
+          (value): Linear(in_features=768, out_features=768, bias=True)
+          (out): Linear(in_features=768, out_features=768, bias=True)
+          (attn_dropout): Dropout(p=0.0, inplace=False)
+          (proj_dropout): Dropout(p=0.0, inplace=False)
+          (softmax): Softmax(dim=-1)
+        )
+      )
+      (part_norm): LayerNorm((768,), eps=1e-06, elementwise_affine=True)
+    )
+  )
+)  ... <===
+05/29/2022 16:14:35 - INFO - root - ===> Model parameters :	 86.40404 M ... <===
+05/29/2022 16:14:35 - INFO - root - ===> Create transforms successful  ... <===
+05/29/2022 16:14:35 - INFO - root - ===> train transforms:	Compose(
+    Resize(size=(600, 600), interpolation=bilinear)
+    RandomCrop(size=(448, 448), padding=None)
+    RandomHorizontalFlip(p=0.5)
+    ToTensor()
+    Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+) <===
+05/29/2022 16:14:35 - INFO - root - ===> val transforms:	Compose(
+    Resize(size=(600, 600), interpolation=bilinear)
+    CenterCrop(size=(448, 448))
+    RandomHorizontalFlip(p=0.5)
+    ToTensor()
+    Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+) <===
+05/29/2022 16:14:35 - INFO - root - ====>  Creating dataset with 5994 examples   <=====
+05/29/2022 16:14:35 - INFO - root - ====>  Creating dataset with 5794 examples   <=====
+05/29/2022 16:14:35 - INFO - root - ===>  Create train loader successful, size: 499 x batch size: 12 <===
+05/29/2022 16:14:35 - INFO - root - ===>  Create val loader successful, size: 483 x batch size: 12  <===
+05/29/2022 16:14:35 - INFO - root - 
+***** Train params *****
+05/29/2022 16:14:35 - INFO - root - ====>  dataset: {'name': 'CUB_200_2011', 'root': '/home/datassd_2T/sqj/CUB_200_2011/CUB_200_2011', 'train': None, 'val': None}   <=====
+05/29/2022 16:14:35 - INFO - root - ====>  train_transforms: {'Resize': [600, 600], 'RandomCrop': [448, 448], 'RandomHorizontalFlip': None, 'ToTensor': None, 'Normalize': [[0.485, 0.456, 0.406], [0.229, 0.224, 0.225]]}   <=====
+05/29/2022 16:14:35 - INFO - root - ====>  val_transforms: {'Resize': [600, 600], 'CenterCrop': [448, 448], 'RandomHorizontalFlip': None, 'ToTensor': None, 'Normalize': [[0.485, 0.456, 0.406], [0.229, 0.224, 0.225]]}   <=====
+05/29/2022 16:14:35 - INFO - root - ====>  model: {'name': 'ViT-B_16', 'image_size': [448, 448], 'patches': {'patch_size': 16, 'slide_step': 12, 'split_type': 'non-overlap', 'hidden_size': 768}, 'transformer': {'mlp_dim': 3072, 'num_heads': 12, 'num_layers': 12, 'attention_dropout_rate': 0.0, 'dropout_rate': 0.1, 'action': 'gelu'}, 'classifier': 'token', 'representation': None}   <=====
+05/29/2022 16:14:35 - INFO - root - ====>  train: {'logging_name': 'TransFG_CUB', 'local_rank': -1, 'device': device(type='cuda'), 'nprocs': 1, 'batch_size': 12, 'num_workers': 4, 'data_len': None, 'num_classes': 200, 'np_weights': 'pretrain_weights/imagenet21k_ViT-B_16.npz', 'pretrain_weights': None, 'fp16': False, 'gradient_accumulation_steps': 1, 'max_grad_norm': 1.0, 'eval_every': 300, 'smoothing_value': 0}   <=====
+05/29/2022 16:14:35 - INFO - root - ====>  optimizer: {'name': 'SGD', 'params': {'lr': 0.03, 'momentum': 0.9, 'weight_decay': 0.0001}}   <=====
+05/29/2022 16:14:35 - INFO - root - ====>  scheduler: {'name': 'WarmupCosine', 'params': {'warmup_steps': 500, 't_total': 10000}}   <=====
+05/29/2022 16:14:35 - INFO - root - ====>  criterion: None   <=====
+05/29/2022 16:14:35 - INFO - root - 
+***** Running training *****
+05/29/2022 16:14:35 - INFO - root - ===>  Total optimization steps = 10000  <===
+05/29/2022 16:14:35 - INFO - root - ===>  Instantaneous batch size per GPU = 12  <===
+05/29/2022 16:14:35 - INFO - root - ===>  Total train batch size (w. parallel, distributed & accumulation) = 12  <===
+05/29/2022 16:14:35 - INFO - root - ===>  Gradient Accumulation steps = 1  <===
+05/29/2022 16:16:32 - INFO - root - ***** Running Validation *****
+05/29/2022 16:16:32 - INFO - root - ===>  Num steps = 483  <===
+05/29/2022 16:16:32 - INFO - root - ===>  Batch size = 12  <===
+05/29/2022 16:17:55 - INFO - root - 
+
+05/29/2022 16:17:55 - INFO - root - Validation Results
+05/29/2022 16:17:55 - INFO - root - Global Steps: 300
+05/29/2022 16:17:55 - INFO - root - Valid Loss: 4.12600
+05/29/2022 16:17:55 - INFO - root - Valid Accuracy: 0.49482
+05/29/2022 16:17:56 - INFO - root - Saved model checkpoint to [DIR: weights/TransFG_CUB]
+05/29/2022 16:17:56 - INFO - root - best accuracy so far: 0.494822
+05/29/2022 16:19:13 - INFO - root - train accuracy so far: 0.295591
+05/29/2022 16:19:53 - INFO - root - ***** Running Validation *****
+05/29/2022 16:19:53 - INFO - root - ===>  Num steps = 483  <===
+05/29/2022 16:19:53 - INFO - root - ===>  Batch size = 12  <===
+05/29/2022 16:21:16 - INFO - root - 
+
+05/29/2022 16:21:16 - INFO - root - Validation Results
+05/29/2022 16:21:16 - INFO - root - Global Steps: 600
+05/29/2022 16:21:16 - INFO - root - Valid Loss: 1.10672
+05/29/2022 16:21:16 - INFO - root - Valid Accuracy: 0.73593
+05/29/2022 16:21:17 - INFO - root - Saved model checkpoint to [DIR: weights/TransFG_CUB]
+05/29/2022 16:21:17 - INFO - root - best accuracy so far: 0.735934
+05/29/2022 16:23:13 - INFO - root - ***** Running Validation *****
+05/29/2022 16:23:13 - INFO - root - ===>  Num steps = 483  <===
+05/29/2022 16:23:13 - INFO - root - ===>  Batch size = 12  <===
+05/29/2022 16:24:36 - INFO - root - 
+
+05/29/2022 16:24:36 - INFO - root - Validation Results
+05/29/2022 16:24:36 - INFO - root - Global Steps: 900
+05/29/2022 16:24:36 - INFO - root - Valid Loss: 0.63912
+05/29/2022 16:24:36 - INFO - root - Valid Accuracy: 0.82344
+05/29/2022 16:24:37 - INFO - root - Saved model checkpoint to [DIR: weights/TransFG_CUB]
+05/29/2022 16:24:37 - INFO - root - best accuracy so far: 0.823438
+05/29/2022 16:25:15 - INFO - root - train accuracy so far: 0.757849
+05/29/2022 16:26:34 - INFO - root - ***** Running Validation *****
+05/29/2022 16:26:34 - INFO - root - ===>  Num steps = 483  <===
+05/29/2022 16:26:34 - INFO - root - ===>  Batch size = 12  <===
+05/29/2022 16:27:57 - INFO - root - 
+
+05/29/2022 16:27:57 - INFO - root - Validation Results
+05/29/2022 16:27:57 - INFO - root - Global Steps: 1200
+05/29/2022 16:27:57 - INFO - root - Valid Loss: 0.50793
+05/29/2022 16:27:57 - INFO - root - Valid Accuracy: 0.86055
+05/29/2022 16:27:57 - INFO - root - Saved model checkpoint to [DIR: weights/TransFG_CUB]
+05/29/2022 16:27:57 - INFO - root - best accuracy so far: 0.860545
+05/29/2022 16:29:53 - INFO - root - train accuracy so far: 0.862057
+05/29/2022 16:29:55 - INFO - root - ***** Running Validation *****
+05/29/2022 16:29:55 - INFO - root - ===>  Num steps = 483  <===
+05/29/2022 16:29:55 - INFO - root - ===>  Batch size = 12  <===
+05/29/2022 16:31:17 - INFO - root - 
+
+05/29/2022 16:31:17 - INFO - root - Validation Results
+05/29/2022 16:31:17 - INFO - root - Global Steps: 1500
+05/29/2022 16:31:17 - INFO - root - Valid Loss: 0.46388
+05/29/2022 16:31:17 - INFO - root - Valid Accuracy: 0.86952
+05/29/2022 16:31:18 - INFO - root - Saved model checkpoint to [DIR: weights/TransFG_CUB]
+05/29/2022 16:31:18 - INFO - root - best accuracy so far: 0.869520
+05/29/2022 16:33:14 - INFO - root - ***** Running Validation *****
+05/29/2022 16:33:14 - INFO - root - ===>  Num steps = 483  <===
+05/29/2022 16:33:14 - INFO - root - ===>  Batch size = 12  <===
+05/29/2022 16:34:37 - INFO - root - 
+
+05/29/2022 16:34:37 - INFO - root - Validation Results
+05/29/2022 16:34:37 - INFO - root - Global Steps: 1800
+05/29/2022 16:34:37 - INFO - root - Valid Loss: 0.43599
+05/29/2022 16:34:37 - INFO - root - Valid Accuracy: 0.87539
+05/29/2022 16:34:38 - INFO - root - Saved model checkpoint to [DIR: weights/TransFG_CUB]
+05/29/2022 16:34:38 - INFO - root - best accuracy so far: 0.875388
+05/29/2022 16:35:54 - INFO - root - train accuracy so far: 0.899967
+05/29/2022 16:36:35 - INFO - root - ***** Running Validation *****
+05/29/2022 16:36:35 - INFO - root - ===>  Num steps = 483  <===
+05/29/2022 16:36:35 - INFO - root - ===>  Batch size = 12  <===
+05/29/2022 16:37:58 - INFO - root - 
+
+05/29/2022 16:37:58 - INFO - root - Validation Results
+05/29/2022 16:37:58 - INFO - root - Global Steps: 2100
+05/29/2022 16:37:58 - INFO - root - Valid Loss: 0.42812
+05/29/2022 16:37:58 - INFO - root - Valid Accuracy: 0.87970
+05/29/2022 16:37:58 - INFO - root - Saved model checkpoint to [DIR: weights/TransFG_CUB]
+05/29/2022 16:37:58 - INFO - root - best accuracy so far: 0.879703
+05/29/2022 16:39:55 - INFO - root - ***** Running Validation *****
+05/29/2022 16:39:55 - INFO - root - ===>  Num steps = 483  <===
+05/29/2022 16:39:55 - INFO - root - ===>  Batch size = 12  <===
+05/29/2022 16:41:18 - INFO - root - 
+
+05/29/2022 16:41:18 - INFO - root - Validation Results
+05/29/2022 16:41:18 - INFO - root - Global Steps: 2400
+05/29/2022 16:41:18 - INFO - root - Valid Loss: 0.47493
+05/29/2022 16:41:18 - INFO - root - Valid Accuracy: 0.86918
+05/29/2022 16:41:18 - INFO - root - best accuracy so far: 0.879703
+05/29/2022 16:41:55 - INFO - root - train accuracy so far: 0.921343
+05/29/2022 16:43:15 - INFO - root - ***** Running Validation *****
+05/29/2022 16:43:15 - INFO - root - ===>  Num steps = 483  <===
+05/29/2022 16:43:15 - INFO - root - ===>  Batch size = 12  <===
+05/29/2022 16:44:38 - INFO - root - 
+
+05/29/2022 16:44:38 - INFO - root - Validation Results
+05/29/2022 16:44:38 - INFO - root - Global Steps: 2700
+05/29/2022 16:44:38 - INFO - root - Valid Loss: 0.44449
+05/29/2022 16:44:38 - INFO - root - Valid Accuracy: 0.88143
+05/29/2022 16:44:38 - INFO - root - Saved model checkpoint to [DIR: weights/TransFG_CUB]
+05/29/2022 16:44:38 - INFO - root - best accuracy so far: 0.881429
+05/29/2022 16:46:33 - INFO - root - train accuracy so far: 0.941550
+05/29/2022 16:46:35 - INFO - root - ***** Running Validation *****
+05/29/2022 16:46:35 - INFO - root - ===>  Num steps = 483  <===
+05/29/2022 16:46:35 - INFO - root - ===>  Batch size = 12  <===
+05/29/2022 16:47:58 - INFO - root - 
+
+05/29/2022 16:47:58 - INFO - root - Validation Results
+05/29/2022 16:47:58 - INFO - root - Global Steps: 3000
+05/29/2022 16:47:58 - INFO - root - Valid Loss: 0.45790
+05/29/2022 16:47:58 - INFO - root - Valid Accuracy: 0.87919
+05/29/2022 16:47:58 - INFO - root - best accuracy so far: 0.881429
+05/29/2022 16:49:55 - INFO - root - ***** Running Validation *****
+05/29/2022 16:49:55 - INFO - root - ===>  Num steps = 483  <===
+05/29/2022 16:49:55 - INFO - root - ===>  Batch size = 12  <===
+05/29/2022 16:51:17 - INFO - root - 
+
+05/29/2022 16:51:17 - INFO - root - Validation Results
+05/29/2022 16:51:17 - INFO - root - Global Steps: 3300
+05/29/2022 16:51:17 - INFO - root - Valid Loss: 0.42384
+05/29/2022 16:51:17 - INFO - root - Valid Accuracy: 0.89230
+05/29/2022 16:51:18 - INFO - root - Saved model checkpoint to [DIR: weights/TransFG_CUB]
+05/29/2022 16:51:18 - INFO - root - best accuracy so far: 0.892302
+05/29/2022 16:52:33 - INFO - root - train accuracy so far: 0.961924
+05/29/2022 16:53:15 - INFO - root - ***** Running Validation *****
+05/29/2022 16:53:15 - INFO - root - ===>  Num steps = 483  <===
+05/29/2022 16:53:15 - INFO - root - ===>  Batch size = 12  <===
+05/29/2022 16:54:38 - INFO - root - 
+
+05/29/2022 16:54:38 - INFO - root - Validation Results
+05/29/2022 16:54:38 - INFO - root - Global Steps: 3600
+05/29/2022 16:54:38 - INFO - root - Valid Loss: 0.45283
+05/29/2022 16:54:38 - INFO - root - Valid Accuracy: 0.88661
+05/29/2022 16:54:38 - INFO - root - best accuracy so far: 0.892302
+05/29/2022 16:56:34 - INFO - root - ***** Running Validation *****
+05/29/2022 16:56:34 - INFO - root - ===>  Num steps = 483  <===
+05/29/2022 16:56:34 - INFO - root - ===>  Batch size = 12  <===
+05/29/2022 16:57:57 - INFO - root - 
+
+05/29/2022 16:57:57 - INFO - root - Validation Results
+05/29/2022 16:57:57 - INFO - root - Global Steps: 3900
+05/29/2022 16:57:57 - INFO - root - Valid Loss: 0.43950
+05/29/2022 16:57:57 - INFO - root - Valid Accuracy: 0.89299
+05/29/2022 16:57:57 - INFO - root - Saved model checkpoint to [DIR: weights/TransFG_CUB]
+05/29/2022 16:57:57 - INFO - root - best accuracy so far: 0.892993
+05/29/2022 16:58:33 - INFO - root - train accuracy so far: 0.972779
+05/29/2022 16:59:54 - INFO - root - ***** Running Validation *****
+05/29/2022 16:59:54 - INFO - root - ===>  Num steps = 483  <===
+05/29/2022 16:59:54 - INFO - root - ===>  Batch size = 12  <===
+05/29/2022 17:01:17 - INFO - root - 
+
+05/29/2022 17:01:17 - INFO - root - Validation Results
+05/29/2022 17:01:17 - INFO - root - Global Steps: 4200
+05/29/2022 17:01:17 - INFO - root - Valid Loss: 0.44178
+05/29/2022 17:01:17 - INFO - root - Valid Accuracy: 0.89524
+05/29/2022 17:01:18 - INFO - root - Saved model checkpoint to [DIR: weights/TransFG_CUB]
+05/29/2022 17:01:18 - INFO - root - best accuracy so far: 0.895236
+05/29/2022 17:03:11 - INFO - root - train accuracy so far: 0.984636
+05/29/2022 17:03:15 - INFO - root - ***** Running Validation *****
+05/29/2022 17:03:15 - INFO - root - ===>  Num steps = 483  <===
+05/29/2022 17:03:15 - INFO - root - ===>  Batch size = 12  <===
+05/29/2022 17:04:37 - INFO - root - 
+
+05/29/2022 17:04:37 - INFO - root - Validation Results
+05/29/2022 17:04:37 - INFO - root - Global Steps: 4500
+05/29/2022 17:04:37 - INFO - root - Valid Loss: 0.46255
+05/29/2022 17:04:37 - INFO - root - Valid Accuracy: 0.88920
+05/29/2022 17:04:37 - INFO - root - best accuracy so far: 0.895236
+05/29/2022 17:06:34 - INFO - root - ***** Running Validation *****
+05/29/2022 17:06:34 - INFO - root - ===>  Num steps = 483  <===
+05/29/2022 17:06:34 - INFO - root - ===>  Batch size = 12  <===
+05/29/2022 17:07:57 - INFO - root - 
+
+05/29/2022 17:07:57 - INFO - root - Validation Results
+05/29/2022 17:07:57 - INFO - root - Global Steps: 4800
+05/29/2022 17:07:57 - INFO - root - Valid Loss: 0.46491
+05/29/2022 17:07:57 - INFO - root - Valid Accuracy: 0.89282
+05/29/2022 17:07:57 - INFO - root - best accuracy so far: 0.895236
+05/29/2022 17:09:10 - INFO - root - train accuracy so far: 0.992652
+05/29/2022 17:09:53 - INFO - root - ***** Running Validation *****
+05/29/2022 17:09:53 - INFO - root - ===>  Num steps = 483  <===
+05/29/2022 17:09:53 - INFO - root - ===>  Batch size = 12  <===
+05/29/2022 17:11:16 - INFO - root - 
+
+05/29/2022 17:11:16 - INFO - root - Validation Results
+05/29/2022 17:11:16 - INFO - root - Global Steps: 5100
+05/29/2022 17:11:16 - INFO - root - Valid Loss: 0.44106
+05/29/2022 17:11:16 - INFO - root - Valid Accuracy: 0.90197
+05/29/2022 17:11:17 - INFO - root - Saved model checkpoint to [DIR: weights/TransFG_CUB]
+05/29/2022 17:11:17 - INFO - root - best accuracy so far: 0.901968
+05/29/2022 17:13:13 - INFO - root - ***** Running Validation *****
+05/29/2022 17:13:13 - INFO - root - ===>  Num steps = 483  <===
+05/29/2022 17:13:13 - INFO - root - ===>  Batch size = 12  <===
+05/29/2022 17:14:36 - INFO - root - 
+
+05/29/2022 17:14:36 - INFO - root - Validation Results
+05/29/2022 17:14:36 - INFO - root - Global Steps: 5400
+05/29/2022 17:14:36 - INFO - root - Valid Loss: 0.44477
+05/29/2022 17:14:36 - INFO - root - Valid Accuracy: 0.90128
+05/29/2022 17:14:36 - INFO - root - best accuracy so far: 0.901968
+05/29/2022 17:15:11 - INFO - root - train accuracy so far: 0.995825
+05/29/2022 17:16:33 - INFO - root - ***** Running Validation *****
+05/29/2022 17:16:33 - INFO - root - ===>  Num steps = 483  <===
+05/29/2022 17:16:33 - INFO - root - ===>  Batch size = 12  <===
+05/29/2022 17:17:56 - INFO - root - 
+
+05/29/2022 17:17:56 - INFO - root - Validation Results
+05/29/2022 17:17:56 - INFO - root - Global Steps: 5700
+05/29/2022 17:17:56 - INFO - root - Valid Loss: 0.44837
+05/29/2022 17:17:56 - INFO - root - Valid Accuracy: 0.90007
+05/29/2022 17:17:56 - INFO - root - best accuracy so far: 0.901968
+05/29/2022 17:19:47 - INFO - root - train accuracy so far: 0.996994
+05/29/2022 17:19:53 - INFO - root - ***** Running Validation *****
+05/29/2022 17:19:53 - INFO - root - ===>  Num steps = 483  <===
+05/29/2022 17:19:53 - INFO - root - ===>  Batch size = 12  <===
+05/29/2022 17:21:15 - INFO - root - 
+
+05/29/2022 17:21:15 - INFO - root - Validation Results
+05/29/2022 17:21:15 - INFO - root - Global Steps: 6000
+05/29/2022 17:21:15 - INFO - root - Valid Loss: 0.44142
+05/29/2022 17:21:15 - INFO - root - Valid Accuracy: 0.90628
+05/29/2022 17:21:16 - INFO - root - Saved model checkpoint to [DIR: weights/TransFG_CUB]
+05/29/2022 17:21:16 - INFO - root - best accuracy so far: 0.906282
+05/29/2022 17:23:12 - INFO - root - ***** Running Validation *****
+05/29/2022 17:23:12 - INFO - root - ===>  Num steps = 483  <===
+05/29/2022 17:23:12 - INFO - root - ===>  Batch size = 12  <===
+05/29/2022 17:24:35 - INFO - root - 
+
+05/29/2022 17:24:35 - INFO - root - Validation Results
+05/29/2022 17:24:35 - INFO - root - Global Steps: 6300
+05/29/2022 17:24:35 - INFO - root - Valid Loss: 0.43821
+05/29/2022 17:24:35 - INFO - root - Valid Accuracy: 0.90456
+05/29/2022 17:24:35 - INFO - root - best accuracy so far: 0.906282
+05/29/2022 17:25:47 - INFO - root - train accuracy so far: 0.998664
+05/29/2022 17:26:32 - INFO - root - ***** Running Validation *****
+05/29/2022 17:26:32 - INFO - root - ===>  Num steps = 483  <===
+05/29/2022 17:26:32 - INFO - root - ===>  Batch size = 12  <===
+05/29/2022 17:27:54 - INFO - root - 
+
+05/29/2022 17:27:54 - INFO - root - Validation Results
+05/29/2022 17:27:54 - INFO - root - Global Steps: 6600
+05/29/2022 17:27:54 - INFO - root - Valid Loss: 0.44020
+05/29/2022 17:27:54 - INFO - root - Valid Accuracy: 0.90335
+05/29/2022 17:27:54 - INFO - root - best accuracy so far: 0.906282
+05/29/2022 17:29:51 - INFO - root - ***** Running Validation *****
+05/29/2022 17:29:51 - INFO - root - ===>  Num steps = 483  <===
+05/29/2022 17:29:51 - INFO - root - ===>  Batch size = 12  <===
+05/29/2022 17:31:13 - INFO - root - 
+
+05/29/2022 17:31:13 - INFO - root - Validation Results
+05/29/2022 17:31:13 - INFO - root - Global Steps: 6900
+05/29/2022 17:31:13 - INFO - root - Valid Loss: 0.43539
+05/29/2022 17:31:13 - INFO - root - Valid Accuracy: 0.90749
+05/29/2022 17:31:14 - INFO - root - Saved model checkpoint to [DIR: weights/TransFG_CUB]
+05/29/2022 17:31:14 - INFO - root - best accuracy so far: 0.907491
+05/29/2022 17:31:47 - INFO - root - train accuracy so far: 0.998998
+05/29/2022 17:33:11 - INFO - root - ***** Running Validation *****
+05/29/2022 17:33:11 - INFO - root - ===>  Num steps = 483  <===
+05/29/2022 17:33:11 - INFO - root - ===>  Batch size = 12  <===
+05/29/2022 17:34:33 - INFO - root - 
+
+05/29/2022 17:34:33 - INFO - root - Validation Results
+05/29/2022 17:34:33 - INFO - root - Global Steps: 7200
+05/29/2022 17:34:33 - INFO - root - Valid Loss: 0.44178
+05/29/2022 17:34:33 - INFO - root - Valid Accuracy: 0.90784
+05/29/2022 17:34:34 - INFO - root - Saved model checkpoint to [DIR: weights/TransFG_CUB]
+05/29/2022 17:34:34 - INFO - root - best accuracy so far: 0.907836
+05/29/2022 17:36:24 - INFO - root - train accuracy so far: 0.999332
+05/29/2022 17:36:31 - INFO - root - ***** Running Validation *****
+05/29/2022 17:36:31 - INFO - root - ===>  Num steps = 483  <===
+05/29/2022 17:36:31 - INFO - root - ===>  Batch size = 12  <===
+05/29/2022 17:37:53 - INFO - root - 
+
+05/29/2022 17:37:53 - INFO - root - Validation Results
+05/29/2022 17:37:53 - INFO - root - Global Steps: 7500
+05/29/2022 17:37:53 - INFO - root - Valid Loss: 0.44015
+05/29/2022 17:37:53 - INFO - root - Valid Accuracy: 0.90628
+05/29/2022 17:37:53 - INFO - root - best accuracy so far: 0.907836
+05/29/2022 17:39:50 - INFO - root - ***** Running Validation *****
+05/29/2022 17:39:50 - INFO - root - ===>  Num steps = 483  <===
+05/29/2022 17:39:50 - INFO - root - ===>  Batch size = 12  <===
+05/29/2022 17:41:12 - INFO - root - 
+
+05/29/2022 17:41:12 - INFO - root - Validation Results
+05/29/2022 17:41:12 - INFO - root - Global Steps: 7800
+05/29/2022 17:41:12 - INFO - root - Valid Loss: 0.44331
+05/29/2022 17:41:12 - INFO - root - Valid Accuracy: 0.90680
+05/29/2022 17:41:12 - INFO - root - best accuracy so far: 0.907836
+05/29/2022 17:42:24 - INFO - root - train accuracy so far: 0.999666
+05/29/2022 17:43:09 - INFO - root - ***** Running Validation *****
+05/29/2022 17:43:09 - INFO - root - ===>  Num steps = 483  <===
+05/29/2022 17:43:09 - INFO - root - ===>  Batch size = 12  <===
+05/29/2022 17:44:32 - INFO - root - 
+
+05/29/2022 17:44:32 - INFO - root - Validation Results
+05/29/2022 17:44:32 - INFO - root - Global Steps: 8100
+05/29/2022 17:44:32 - INFO - root - Valid Loss: 0.44388
+05/29/2022 17:44:32 - INFO - root - Valid Accuracy: 0.90904
+05/29/2022 17:44:33 - INFO - root - Saved model checkpoint to [DIR: weights/TransFG_CUB]
+05/29/2022 17:44:33 - INFO - root - best accuracy so far: 0.909044
+05/29/2022 17:46:29 - INFO - root - ***** Running Validation *****
+05/29/2022 17:46:29 - INFO - root - ===>  Num steps = 483  <===
+05/29/2022 17:46:29 - INFO - root - ===>  Batch size = 12  <===
+05/29/2022 17:47:51 - INFO - root - 
+
+05/29/2022 17:47:51 - INFO - root - Validation Results
+05/29/2022 17:47:51 - INFO - root - Global Steps: 8400
+05/29/2022 17:47:51 - INFO - root - Valid Loss: 0.44821
+05/29/2022 17:47:51 - INFO - root - Valid Accuracy: 0.90801
+05/29/2022 17:47:51 - INFO - root - best accuracy so far: 0.909044
+05/29/2022 17:48:24 - INFO - root - train accuracy so far: 0.999666
+05/29/2022 17:49:48 - INFO - root - ***** Running Validation *****
+05/29/2022 17:49:48 - INFO - root - ===>  Num steps = 483  <===
+05/29/2022 17:49:48 - INFO - root - ===>  Batch size = 12  <===
+05/29/2022 17:51:11 - INFO - root - 
+
+05/29/2022 17:51:11 - INFO - root - Validation Results
+05/29/2022 17:51:11 - INFO - root - Global Steps: 8700
+05/29/2022 17:51:11 - INFO - root - Valid Loss: 0.44489
+05/29/2022 17:51:11 - INFO - root - Valid Accuracy: 0.90594
+05/29/2022 17:51:11 - INFO - root - best accuracy so far: 0.909044
+05/29/2022 17:53:00 - INFO - root - train accuracy so far: 0.999666
+05/29/2022 17:53:07 - INFO - root - ***** Running Validation *****
+05/29/2022 17:53:07 - INFO - root - ===>  Num steps = 483  <===
+05/29/2022 17:53:07 - INFO - root - ===>  Batch size = 12  <===
+05/29/2022 17:54:30 - INFO - root - 
+
+05/29/2022 17:54:30 - INFO - root - Validation Results
+05/29/2022 17:54:30 - INFO - root - Global Steps: 9000
+05/29/2022 17:54:30 - INFO - root - Valid Loss: 0.44360
+05/29/2022 17:54:30 - INFO - root - Valid Accuracy: 0.90801
+05/29/2022 17:54:30 - INFO - root - best accuracy so far: 0.909044
+05/29/2022 17:56:26 - INFO - root - ***** Running Validation *****
+05/29/2022 17:56:26 - INFO - root - ===>  Num steps = 483  <===
+05/29/2022 17:56:26 - INFO - root - ===>  Batch size = 12  <===
+05/29/2022 17:57:49 - INFO - root - 
+
+05/29/2022 17:57:49 - INFO - root - Validation Results
+05/29/2022 17:57:49 - INFO - root - Global Steps: 9300
+05/29/2022 17:57:49 - INFO - root - Valid Loss: 0.44411
+05/29/2022 17:57:49 - INFO - root - Valid Accuracy: 0.90853
+05/29/2022 17:57:49 - INFO - root - best accuracy so far: 0.909044
+05/29/2022 17:58:59 - INFO - root - train accuracy so far: 0.999666
+05/29/2022 17:59:46 - INFO - root - ***** Running Validation *****
+05/29/2022 17:59:46 - INFO - root - ===>  Num steps = 483  <===
+05/29/2022 17:59:46 - INFO - root - ===>  Batch size = 12  <===
+05/29/2022 18:01:09 - INFO - root - 
+
+05/29/2022 18:01:09 - INFO - root - Validation Results
+05/29/2022 18:01:09 - INFO - root - Global Steps: 9600
+05/29/2022 18:01:09 - INFO - root - Valid Loss: 0.43971
+05/29/2022 18:01:09 - INFO - root - Valid Accuracy: 0.90922
+05/29/2022 18:01:09 - INFO - root - Saved model checkpoint to [DIR: weights/TransFG_CUB]
+05/29/2022 18:01:09 - INFO - root - best accuracy so far: 0.909216
+05/29/2022 18:03:05 - INFO - root - ***** Running Validation *****
+05/29/2022 18:03:05 - INFO - root - ===>  Num steps = 483  <===
+05/29/2022 18:03:05 - INFO - root - ===>  Batch size = 12  <===
+05/29/2022 18:04:28 - INFO - root - 
+
+05/29/2022 18:04:28 - INFO - root - Validation Results
+05/29/2022 18:04:28 - INFO - root - Global Steps: 9900
+05/29/2022 18:04:28 - INFO - root - Valid Loss: 0.44181
+05/29/2022 18:04:28 - INFO - root - Valid Accuracy: 0.90870
+05/29/2022 18:04:28 - INFO - root - best accuracy so far: 0.909216
+05/29/2022 18:04:59 - INFO - root - train accuracy so far: 0.999666
+05/29/2022 18:05:07 - INFO - root - train accuracy so far: 1.000000
+05/29/2022 18:05:07 - INFO - root - ====>  Best Accuracy: 	0.909216  <===
+05/29/2022 18:05:07 - INFO - root - ******End Training!*****
+05/29/2022 18:05:07 - INFO - root - ====>  Total Training Time: 	1.842214   <====
