@@ -163,7 +163,7 @@ class Attention(nn.Module):
         self.attn_dropout = nn.Dropout(attention_dropout_rate)
         self.proj_dropout = nn.Dropout(proj_dropout_rate)
 
-        self.softmax = nn.Softmax(dim=1)
+        self.softmax = nn.Softmax(dim=-1)
 
     def forward(self, x):
         mixed_query_layer = self.query(x)
