@@ -143,7 +143,8 @@ def build_model(cfg='config/example.yaml', num_classes=20):
         config["model"]["transformer"]["num_heads"] = 1
         config["model"]["transformer"]["num_layers"] = 1
 
-    model = MODEL[model_name](config, num_classes=num_classes)
+    smoothing_value = config["train"]["smoothing_value"]
+    model = MODEL[model_name](config, num_classes=num_classes, smoothing_value=smoothing_value)
 
     np_weights = config["train"]["np_weights"]
     if np_weights is not None:
