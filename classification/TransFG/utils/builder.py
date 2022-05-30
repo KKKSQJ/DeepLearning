@@ -289,6 +289,11 @@ def build_loader(cfg='config/example.yaml', train_transforms=None, val_transform
         trainset = DATASET[dataset_name](root=root, split='train', transform=train_transforms)
         valset = DATASET[dataset_name](root=root, split='val', transform=val_transforms)
 
+    elif dataset_name == 'MySet':
+        root = config["dataset"]["root"]
+        trainset = DATASET[dataset_name](root=root, data_len=data_len, train=True, transform=train_transforms)
+        valset = DATASET[dataset_name](root=root, data_len=data_len, train=False, transform=val_transforms)
+
     batch_size = config["train"]["batch_size"]
     nw = config["train"]["num_workers"]
     if config["train"]["local_rank"] not in [-1, 0]:

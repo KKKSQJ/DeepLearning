@@ -1,10 +1,12 @@
 import json
+import random
 
 import torch
 from torch.utils.data import Dataset
 from torchvision.datasets.utils import download_url, list_dir, check_integrity, extract_archive, verify_str_arg
 from torchvision.datasets.folder import default_loader
 from torchvision.datasets import VisionDataset
+from tqdm import tqdm
 
 from dataLoader.base_dataset import BasicDataset
 
@@ -45,7 +47,7 @@ class CUB(BasicDataset):
         with open(os.path.join(root, "classes.txt")) as f:
             for line in f.readlines():
                 line = line.strip().split(" ")
-                data[str(int(line[0]) - 1)]=line[1]
+                data[str(int(line[0]) - 1)] = line[1]
         json_str = json.dumps(data, indent=4)
         json_file.write(json_str)
         json_file.close()
@@ -513,10 +515,70 @@ class INat2017(VisionDataset):
 
 
 class MyDataset(BasicDataset):
-    def __init__(self, root, train=True, transform=None):
-        # todo
+    def __init__(self, root, data_len=None, train=True, transform=None):
+        random.seed(0)  # 保证随机结果可复现
+        assert os.path.exists(root), "data path:{} does not exists".format(root)
 
-        super(MyDataset, self).__init__()
+        # 遍历文件夹，一个文件夹对应一个类别
+        classes = [cla for cla in os.listdir(root) if os.path.isdir(os.path.join(root, cla))]
+        # 排序，保证顺序一致
+        classes.sort()
+
+        # 生成类别名称以及对应的数字索引
+        class_indices = dict((k, v) for v, k in enumerate(classes))
+        json_str = json.dumps(dict((val, key) for key, val in class_indices.items()), indent=4)
+        with open('class_indices.json', 'w') as json_file:
+            json_file.write(json_str)
+
+        train_images_path = []  # 存储训练集的所有图片路径
+        train_images_label = []  # 存储训练集图片对应索引信息
+        val_images_path = []  # 存储验证集的所有图片路径
+        val_images_label = []  # 存储验证集图片对应索引信息
+        every_class_num = []  # 存储每个类别的样本总数
+        supported = [".jpg", ".JPG", ".png", ".PNG"]  # 支持的文件后缀类型
+
+        # 遍历每个文件夹下的文件
+        for cla in tqdm(classes):
+            cla_path = os.path.join(root, cla)
+            # 遍历获取supported支持的所有文件路径
+            images = [os.path.join(root, cla, i) for i in os.listdir(cla_path) if
+                      os.path.splitext(i)[-1] in supported]
+            # 获取该类别对应的索引
+            image_class = class_indices[cla]
+            # 记录该类别的样本数量
+            every_class_num.append(len(images))
+            # 按比例随机采样验证样本
+            val_path = random.sample(images, k=int(len(images) * 0.2))
+
+            train_txt = open('train.txt', 'w')
+            val_txt = open('val.txt', 'w')
+            for img_path in images:
+                if img_path in val_path:  # 如果该路径在采样的验证集样本中则存入验证集
+                    val_txt.write(img_path + "\n")
+                    val_images_path.append(img_path)
+                    val_images_label.append(image_class)
+                else:  # 否则存入训练集
+                    train_txt.write(img_path + "\n")
+                    train_images_path.append(img_path)
+                    train_images_label.append(image_class)
+            train_txt.close()
+            val_txt.close()
+
+        if train:
+            _ids = train_images_path[:data_len]
+            _images = train_images_path[:data_len]
+            _labels = train_images_label[:data_len]
+        else:
+            _ids = val_images_path[:data_len]
+            _images = val_images_path[:data_len]
+            _labels = val_images_label[:data_len]
+
+
+
+        print("{} images were found in the dataset.".format(sum(every_class_num)))
+        print("{} images for training.".format(len(train_images_path)))
+        print("{} images for validation.".format(len(val_images_path)))
+        super(MyDataset, self).__init__(ids=_ids, images=_images, labels=_labels, transforms=transform)
 
 
 if __name__ == '__main__':
@@ -539,6 +601,9 @@ if __name__ == '__main__':
 
     dataset = CUB(root=r'E:\dataset\classifition\CUB_200_2011\CUB_200_2011', data_len=None, train=True,
                   transforms=transform)
+
+    # dataset = MyDataset(root=r'E:\dataset\classifition\flow_data\train', data_len=None, train=True,
+    #                     transform=transform)
 
     for index, data in enumerate(dataset):
         image = data[0]

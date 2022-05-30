@@ -48,7 +48,7 @@ train:
 
   # dataloader
   batch_size: 16                  # batch_size, train and eval is same
-  num_workers: 4                  # num_worker
+  num_workers: 4                  # num_worker, windows change num_workers=0
   data_len:                       # if empty,use all data
 
   # model
