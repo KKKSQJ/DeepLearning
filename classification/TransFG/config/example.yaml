@@ -1,5 +1,5 @@
 dataset:
-  name: CUB_200_2011
+  name: CUB_200_2011  # choice: CUB_200_2011,car,nabirds,dog,INat2017,MySet, default CUB_200_2011
   root: E:\dataset\classifition\CUB_200_2011\CUB_200_2011
   train:
   val:
