@@ -31,15 +31,15 @@
 
 ## detection
 - [x] RetinaNet (包含focal_loss)
-- [x] FPN (实现resnet50 + fpn)
+- [x] [FPN](https://zhuanlan.zhihu.com/p/543486836) (实现resnet50 + fpn)
 - [x] YOLOV5 V5.0 (实现注释，更新pt->onnx代码)
 - [x] yolox (修改了voc数据读取方式)
 - [x] FCOS
+- [x] [Faster-rcnn](https://zhuanlan.zhihu.com/p/543486836)
 - [ ] yoloF
 - [ ] yoloR
 - [ ] detr
 - [ ] ssd
-- [ ] Faster-rcnn
 - [ ] Mask-rcnn
 - [ ] Cascade-rcnn
 - [ ] SPPNet
