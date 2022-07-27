@@ -20,7 +20,7 @@ class Pyramid_Encoder(nn.Module):
         assert len(out_channels) == 6
 
         if activation is None:
-            activation = nn.LeakyReLU()
+            activation = nn.LeakyReLU(0.2)
 
         names = []
         layers = OrderedDict()
@@ -191,7 +191,7 @@ class Disparity_Decoder(nn.Module):
             out_channels = [128, 128, 96, 64, 32, 1]
         assert len(out_channels) == 6
         if activation is None:
-            activation = nn.LeakyReLU()
+            activation = nn.LeakyReLU(0.2)
 
         names = []
         layers = OrderedDict()
@@ -261,7 +261,7 @@ class Refinement_Module(nn.Module):
     def __init__(self, in_channel=33, out_channel=None, dilation_rate=None, activation=None, BN=False):
         super(Refinement_Module, self).__init__()
         if activation is None:
-            activation = nn.LeakyReLU()
+            activation = nn.LeakyReLU(0.2)
         if out_channel is None:
             out_channel = [128, 128, 128, 96, 64, 32, 1]
         assert len(out_channel) == 7
