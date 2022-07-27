@@ -40,7 +40,7 @@ def get_args():
     parser.add_argument('--crop_shape', default=(320, 1216),
                         help='two int for the size of the crop extracted from each image [height,width]')
 
-    parser.add_argument('--mode', default='FULL',
+    parser.add_argument('--mode', default='MAD',
                         help='online adaptation mode: NONE - perform only inference, FULL - full online backprop, MAD - backprop only on portions of the network')
 
     parser.add_argument('--lr', default=0.0001, type=float,
@@ -51,7 +51,7 @@ def get_args():
     parser.add_argument('--save_disparity', default=True, type=bool,
                         help='whether store the result of disparity')
 
-    parser.add_argument('--weight', default="", type=str,
+    parser.add_argument('--weight', default="out/model.pth", type=str,
                         help="path to the initial weights for the disparity estimation network")
 
     parser.add_argument('--sampleMode', default='PROBABILITY', choices=sampler_factory.AVAILABLE_SAMPLER,
@@ -260,7 +260,7 @@ def main(args):
                 optimizer.step()
                 optimizer.zero_grad()
                 scheduler.step()
-
+                step += 1
             epe_accumulator.append(abs_err)
             bad3_accumulator.append(bad_pixel_prec)
 
@@ -269,8 +269,8 @@ def main(args):
                 os.makedirs(out, exist_ok=True)
                 dispy = full_res_disp.detach().cpu().numpy()
                 dispy_to_save = np.clip(dispy[0], 0, MAX_DISP)
-                dispy_to_save = (dispy_to_save * 255.0).astype('uint8')
-                dispy_to_save = dispy_to_save.transpose(1, 2, 0).astype('uint8')
+                dispy_to_save = (dispy_to_save * 255.0).astype('uint16')
+                dispy_to_save = dispy_to_save.transpose(1, 2, 0).astype('uint16')
                 cv2.imwrite(os.path.join(args.output, "disparity/disparity_{}.png".format(step)), dispy_to_save)
 
 
