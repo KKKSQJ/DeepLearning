@@ -39,13 +39,15 @@ def resize_image_with_crop_or_pad(image, target_h, target_w):
         npad = ((0, padding), (0, 0), (0, 0))
         image = np.lib.pad(image, pad_width=npad, mode='constant', constant_values=0)
     else:
-        image = image[0:target_h, :, :]
+        #image = image[0:target_h, :, :]
+        image = image[int((h - target_h) / 2):int((h + target_h) / 2), :, :]
     if w < target_w:
         padding = target_w - w
         npad = ((0, 0), (0, padding), (0, 0))
         image = np.lib.pad(image, pad_width=npad, mode='constant', constant_values=0)
     else:
-        image = image[:, 0:target_w, :]
+        # image = image[:, 0:target_w, :]
+        image = image[:, int((w - target_w) / 2):int((w + target_w) / 2), :]
     return image
 
 
