@@ -76,11 +76,26 @@ def run(
     # Run once
     y = model(torch.rand(1, 3, 480, 480).to(device))
 
+    # 转成torch script
+    # trace_module = torch.jit.trace(model, torch.rand(1, 3, 224, 224).to(device))
+    # print(trace_module.code)  # 查看模型结构
+    # output = trace_module(torch.ones(1, 3, 224, 224).to(device))  # 测试
+    # print(output)
+    # trace_module.save('model_gpu.pt')  # 模型保存
+
+
+
+    # script_module = torch.jit.script(model)
+    # print(script_module.code)
+    # # output = script_module(torch.rand(1, 1, 224, 224))
+    # script_module.save('model.pt')
+
     # Data transform
-    data_transform = transforms.Compose([transforms.Resize(520),
+    data_transform = transforms.Compose([transforms.Resize(1024),
                                          transforms.ToTensor(),
                                          transforms.Normalize(mean=(0.485, 0.456, 0.406),
-                                                              std=(0.229, 0.224, 0.225))])
+                                                              std=(0.229, 0.224, 0.225))
+                                         ])
 
     # Load img
     assert os.path.exists(source), "data source: {} does not exists".format(source)
