@@ -77,13 +77,15 @@ def run(
     y = model(torch.rand(1, 3, 480, 480).to(device))
 
     # 转成torch script
+    # 如果libtorch版本太低的话，模型版本也不能太高，需要进行转换
+    # checkpoint = torch.load(weights, map_location='cpu')["model"]
+    # torch.save(checkpoint, "libtorch.pth", _use_new_zipfile_serialization=False)
+
     # trace_module = torch.jit.trace(model, torch.rand(1, 3, 224, 224).to(device))
     # print(trace_module.code)  # 查看模型结构
     # output = trace_module(torch.ones(1, 3, 224, 224).to(device))  # 测试
     # print(output)
     # trace_module.save('model_gpu.pt')  # 模型保存
-
-
 
     # script_module = torch.jit.script(model)
     # print(script_module.code)
