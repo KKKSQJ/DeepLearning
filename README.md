@@ -36,6 +36,7 @@
 - [x] yolox (修改了voc数据读取方式)
 - [x] FCOS
 - [x] [Faster-rcnn](https://zhuanlan.zhihu.com/p/543486836)
+- [x] [yolov7](https://zhuanlan.zhihu.com/p/547044250)
 - [ ] yoloF
 - [ ] yoloR
 - [ ] detr
