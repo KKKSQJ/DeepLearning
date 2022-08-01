@@ -530,7 +530,7 @@ class MadNet(nn.Module):
         im01 = gather_nd_torch(imgs, torch.cat([coord_b, y0_safe, x1_safe], dim=1)).float()
 
         # output = torch.add([wt_x0*im00,wt_x1*im01])
-        output = wt_x0 * im00.add(wt_x1 * im01)
+        output = (wt_x0 * im00).add(wt_x1 * im01)
         return output
 
     def _build_indeces(self, coords):

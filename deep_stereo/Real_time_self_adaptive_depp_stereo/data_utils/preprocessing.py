@@ -165,7 +165,7 @@ def bilinear_sampler(imgs, coords):
     w10 = wt_x1 * wt_y0
     w11 = wt_x1 * wt_y1
 
-    output = w00 * im00.add(w01 * im01).add(w10 * im10).add(w11 * im11)
+    output = (w00 * im00).add(w01 * im01).add(w10 * im10).add(w11 * im11)
     output = output.permute(0, 3, 1, 2).contiguous()
     return output
 

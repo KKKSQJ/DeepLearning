@@ -19,7 +19,7 @@ import torch
 import torch.nn as nn
 from torchvision import transforms
 
-MAX_DISP = 255
+MAX_DISP = 256
 PIXEL_TH = 3
 
 
@@ -181,10 +181,13 @@ def main(args):
             filtered_error = abs_err * valid_map
 
             abs_err = torch.sum(filtered_error) / torch.sum(valid_map)
+            print("abs_err:",abs_err.detach().cpu().numpy())
             bad_pixel_abs = torch.where(torch.gt(filtered_error, 3),
                                         torch.ones_like(filtered_error, dtype=torch.float32),
                                         torch.zeros_like(filtered_error, dtype=torch.float32))
             bad_pixel_prec = torch.sum(bad_pixel_abs) / torch.sum(valid_map)
+            print("bad_pixel_prec:", bad_pixel_prec.detach().cpu().numpy())
+            print()
 
             if args.mode == 'MAD':
                 predictions = predictions[:-1]
@@ -269,7 +272,7 @@ def main(args):
                 os.makedirs(out, exist_ok=True)
                 dispy = full_res_disp.detach().cpu().numpy()
                 dispy_to_save = np.clip(dispy[0], 0, MAX_DISP)
-                dispy_to_save = (dispy_to_save * 255.0).astype('uint16')
+                dispy_to_save = (dispy_to_save * 256.0).astype('uint16')
                 dispy_to_save = dispy_to_save.transpose(1, 2, 0).astype('uint16')
                 cv2.imwrite(os.path.join(args.output, "disparity/disparity_{}.png".format(step)), dispy_to_save)
 
