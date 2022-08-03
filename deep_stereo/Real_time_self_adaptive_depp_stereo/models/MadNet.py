@@ -8,7 +8,7 @@ from collections import OrderedDict
 
 from torch.autograd import Variable
 
-from utils.op_utils import stereo_cost_volume_correlation, gather_nd_torch, resize_image_with_crop_or_pad
+from utils.op_utils import stereo_cost_volume_correlation, gather_nd_torch, resize_image_with_crop_or_pad,resize_image_with_crop_or_pad_2
 from data_utils import preprocessing
 
 
@@ -486,7 +486,7 @@ class MadNet(nn.Module):
 
         rescaled_prediction = F.interpolate(v2, size=self.args['input_shape'], mode='bilinear', align_corners=False)
         rescaled_prediction = self.relu(rescaled_prediction * -20.)
-        restore_prediction = resize_image_with_crop_or_pad(rescaled_prediction, self.restore_shape[0],
+        restore_prediction = resize_image_with_crop_or_pad_2(rescaled_prediction, self.restore_shape[0],
                                                            self.restore_shape[1])
         _disparity.append(restore_prediction)
         return _disparity

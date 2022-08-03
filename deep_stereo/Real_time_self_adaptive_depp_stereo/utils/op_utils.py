@@ -44,16 +44,39 @@ def resize_image_with_crop_or_pad(image, target_h, target_w):
         npad = ((0, padding), (0, 0), (0, 0))
         image = np.lib.pad(image, pad_width=npad, mode='constant', constant_values=0)
     else:
-        image = image[0:target_h, :, :]
+        # image = image[0:target_h, :, :]
+        image = image[:, int((w - target_w) / 2):int((w + target_w) / 2), :]
     if w < target_w:
         padding = target_w - w
         npad = ((0, 0), (0, padding), (0, 0))
         image = np.lib.pad(image, pad_width=npad, mode='constant', constant_values=0)
     else:
-        image = image[:, 0:target_w, :]
+        # image = image[:, 0:target_w, :]
+        image = image[int((h - target_h) / 2):int((h + target_h) / 2), :, :]
     image = image.transpose((2, 0, 1))
     image = torch.tensor(image, requires_grad=requires_grad)
     image = image.unsqueeze(0).to(device)
+    return image
+
+
+def resize_image_with_crop_or_pad_2(image, target_h, target_w):
+    assert target_h > 0
+    assert target_w > 0
+
+    image = image.squeeze(0)
+    if image.shape[1] < target_h:
+        padding = target_h - image.shape[1]
+        npad = (0, 0, 0, padding, 0, 0)
+        image = F.pad(image, npad, mode='constant', value=0)
+    else:
+        image = image[:, int((image.shape[1] - target_h) / 2):int((image.shape[1] + target_h) / 2), :]
+    if image.shape[-1] < target_w:
+        padding = target_w - image.shape[-1]
+        npad = (0, 0, 0, 0, 0, padding)
+        image = F.pad(image, npad, mode='constant', value=0)
+    else:
+        image = image[:, :, int((image.shape[-1] - target_w) / 2):int((image.shape[-1] + target_w) / 2)]
+    image = image.unsqueeze(0)
     return image
 
 
@@ -65,7 +88,7 @@ if __name__ == '__main__':
             pixel_coords[0][1][i][j] = i
 
     yv, xv = torch.meshgrid([torch.arange(3), torch.arange(5)])
-    grid = torch.stack((xv, yv), 0).view(1, 2,3,5).type(torch.float32)
+    grid = torch.stack((xv, yv), 0).view(1, 2, 3, 5).type(torch.float32)
     print(1)
 
     a = torch.randn(1, 3, 5, 5)

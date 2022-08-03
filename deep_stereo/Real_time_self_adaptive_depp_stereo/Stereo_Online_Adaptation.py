@@ -48,7 +48,7 @@ def get_args():
 
     parser.add_argument('--device', default='gpu')
 
-    parser.add_argument('--save_disparity', default=True, type=bool,
+    parser.add_argument('--save_disparity', action="store_true",
                         help='whether store the result of disparity')
 
     parser.add_argument('--weight', default="out/model.pth", type=str,
@@ -68,6 +68,8 @@ def get_args():
     parser.add_argument('--SSIMTh', default=0.5, type=float,
                         help='reset network to initial configuration if loss is above this value')
 
+    parser.add_argument('--weights_output', default="weights", type=str, help="Path of output weights")
+
     args = parser.parse_args()
     return args
 
@@ -79,6 +81,9 @@ def main(args):
         train_config = json.load(json_data)
 
     device = torch.device("cuda" if torch.cuda.is_available() and args.device.lower() == 'gpu' else "cpu")
+
+    weights_dir = args.weights_output
+    os.makedirs(weights_dir, exist_ok=True)
 
     # 数据集初始化
     data_transform = transforms.Compose(
@@ -110,8 +115,6 @@ def main(args):
     model = model.to(device)
     print(model)
 
-
-
     if args.mode == 'MAD':
         for name, value in model.named_parameters():
             if not value.requires_grad:
@@ -123,9 +126,10 @@ def main(args):
     # 损失函数初始化
     # reconstruction loss between warped right image and original left image
     full_reconstruction_loss = loss_factory.get_reprojection_loss('mean_SSIM_l1', reduced=True)
+    # full_reconstruction_loss = loss_factory.get_reprojection_loss('mean_l1', reduced=True)
 
     # 优化器
-    pg = [p for p in model.parameters()]  # if p.requires_grad]
+    pg = [p for p in model.parameters() if p.requires_grad]  # if p.requires_grad]
     optimizer = torch.optim.SGD(pg, lr=args.lr, momentum=0.9, weight_decay=5e-5)
 
     # 学习率
@@ -156,6 +160,7 @@ def main(args):
     best_epoch = -1
 
     for epoch in range(args.epochs):
+        loss = 0.
         for left_image, right_image, gt_image in tqdm(dataloader):
             left_image = left_image.to(device)
             right_image = right_image.to(device)
@@ -172,7 +177,7 @@ def main(args):
             full_res_disp = predictions[-1]
             # print("5:{}".format(torch.cuda.memory_allocated(0)))
             full_rc_loss = full_reconstruction_loss(predictions, inputs)
-            print("loss:{}".format(full_rc_loss.detach().cpu()))
+            # print("loss:{}".format(full_rc_loss.detach().cpu()))
 
             # 验证误差
             abs_err = torch.abs(full_res_disp - gt_image)
@@ -181,13 +186,13 @@ def main(args):
             filtered_error = abs_err * valid_map
 
             abs_err = torch.sum(filtered_error) / torch.sum(valid_map)
-            print("abs_err:",abs_err.detach().cpu().numpy())
+            # print("abs_err:", abs_err.detach().cpu().numpy())
             bad_pixel_abs = torch.where(torch.gt(filtered_error, 3),
                                         torch.ones_like(filtered_error, dtype=torch.float32),
                                         torch.zeros_like(filtered_error, dtype=torch.float32))
             bad_pixel_prec = torch.sum(bad_pixel_abs) / torch.sum(valid_map)
-            print("bad_pixel_prec:", bad_pixel_prec.detach().cpu().numpy())
-            print()
+            # print("bad_pixel_prec:", bad_pixel_prec.detach().cpu().numpy())
+            # print()
 
             if args.mode == 'MAD':
                 predictions = predictions[:-1]
@@ -226,7 +231,7 @@ def main(args):
                 optimizer.zero_grad()
                 scheduler.step()
 
-                new_loss = reconstruction_loss.detach()
+                new_loss = full_rc_loss.detach()
                 if step == 0:
                     loss_t_2 = new_loss
                     loss_t_1 = new_loss
@@ -259,13 +264,13 @@ def main(args):
 
 
             elif args.mode == 'FULL':
+                loss += full_rc_loss.item()
                 full_rc_loss.backward()
                 optimizer.step()
                 optimizer.zero_grad()
                 scheduler.step()
                 step += 1
-            epe_accumulator.append(abs_err)
-            bad3_accumulator.append(bad_pixel_prec)
+
 
             if args.save_disparity:
                 out = os.path.join(args.output, "disparity")
@@ -275,6 +280,20 @@ def main(args):
                 dispy_to_save = (dispy_to_save * 256.0).astype('uint16')
                 dispy_to_save = dispy_to_save.transpose(1, 2, 0).astype('uint16')
                 cv2.imwrite(os.path.join(args.output, "disparity/disparity_{}.png".format(step)), dispy_to_save)
+
+        if args.mode == 'FULL':
+            loss = loss / len(dataloader)
+            print(f"epoch:{epoch}, loss:{loss}")
+
+            if loss < best_loss:
+                best_loss = loss
+                best_epoch = epoch
+                torch.save(model,
+                           os.path.join(weights_dir, f"{best_epoch}_{loss}.pt"))
+                print(f"===>epoch: {epoch} loss:{loss} model save:{weights_dir}")
+
+            # epe_accumulator.append(abs_err)
+            # bad3_accumulator.append(bad_pixel_prec)
 
 
 if __name__ == '__main__':
