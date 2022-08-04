@@ -51,7 +51,7 @@ def get_args():
     parser.add_argument('--save_disparity', action="store_true",
                         help='whether store the result of disparity')
 
-    parser.add_argument('--weight', default="out/model.pth", type=str,
+    parser.add_argument('--weight', default="pretrain_weights/model.pth", type=str,
                         help="path to the initial weights for the disparity estimation network")
 
     parser.add_argument('--sampleMode', default='PROBABILITY', choices=sampler_factory.AVAILABLE_SAMPLER,
@@ -129,7 +129,7 @@ def main(args):
     # full_reconstruction_loss = loss_factory.get_reprojection_loss('mean_l1', reduced=True)
 
     # 优化器
-    pg = [p for p in model.parameters() if p.requires_grad]  # if p.requires_grad]
+    pg = [p for p in model.parameters()]  # if p.requires_grad]
     optimizer = torch.optim.SGD(pg, lr=args.lr, momentum=0.9, weight_decay=5e-5)
 
     # 学习率
@@ -232,6 +232,7 @@ def main(args):
                 scheduler.step()
 
                 new_loss = full_rc_loss.detach()
+                print("loss:{}".format(full_rc_loss.detach().cpu()))
                 if step == 0:
                     loss_t_2 = new_loss
                     loss_t_1 = new_loss
@@ -271,7 +272,6 @@ def main(args):
                 scheduler.step()
                 step += 1
 
-
             if args.save_disparity:
                 out = os.path.join(args.output, "disparity")
                 os.makedirs(out, exist_ok=True)
@@ -281,16 +281,16 @@ def main(args):
                 dispy_to_save = dispy_to_save.transpose(1, 2, 0).astype('uint16')
                 cv2.imwrite(os.path.join(args.output, "disparity/disparity_{}.png".format(step)), dispy_to_save)
 
-        if args.mode == 'FULL':
-            loss = loss / len(dataloader)
-            print(f"epoch:{epoch}, loss:{loss}")
-
-            if loss < best_loss:
-                best_loss = loss
-                best_epoch = epoch
-                torch.save(model,
-                           os.path.join(weights_dir, f"{best_epoch}_{loss}.pt"))
-                print(f"===>epoch: {epoch} loss:{loss} model save:{weights_dir}")
+        # if args.mode == 'FULL':
+        #     loss = loss / len(dataloader)
+        #     # print(f"epoch:{epoch}, loss:{loss}")
+        #
+        #     if loss < best_loss and (epoch % 10 or epoch == args.epochs - 1) == 0:
+        #         best_loss = loss
+        #         best_epoch = epoch
+        #         torch.save(model.state_dict(),
+        #                    os.path.join(weights_dir, f"{best_epoch}_{loss}.pth"))
+        #         print(f"===>epoch: {epoch} loss:{loss} model save:{weights_dir}")
 
             # epe_accumulator.append(abs_err)
             # bad3_accumulator.append(bad_pixel_prec)
