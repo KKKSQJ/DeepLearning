@@ -11,6 +11,9 @@ from torch.autograd import Variable
 from utils.op_utils import stereo_cost_volume_correlation, gather_nd_torch, resize_image_with_crop_or_pad,resize_image_with_crop_or_pad_2
 from data_utils import preprocessing
 
+from models import conv2d as Conv2d
+
+
 
 class Pyramid_Encoder(nn.Module):
     def __init__(self, input_channel=3, layer_prefix='pyramid', out_channels=None, activation=None, BN=False):
@@ -28,7 +31,7 @@ class Pyramid_Encoder(nn.Module):
         # conv1
         names.append('{}/conv1'.format(layer_prefix))
         conv1 = nn.Sequential(
-            nn.Conv2d(input_channel, out_channels[0], 3, 2, 1),
+            Conv2d(input_channel, out_channels[0], 3, 2, 1),
             nn.BatchNorm2d(out_channels[0]) if BN else nn.Identity(),
             activation
         )
@@ -37,7 +40,7 @@ class Pyramid_Encoder(nn.Module):
         # conv2
         names.append('{}/conv2'.format(layer_prefix))
         conv2 = nn.Sequential(
-            nn.Conv2d(out_channels[0], out_channels[0], 3, 1, 1),
+            Conv2d(out_channels[0], out_channels[0], 3, 1, 1),
             nn.BatchNorm2d(out_channels[0]) if BN else nn.Identity(),
             activation
         )
@@ -46,7 +49,7 @@ class Pyramid_Encoder(nn.Module):
         # conv3
         names.append('{}/conv3'.format(layer_prefix))
         conv3 = nn.Sequential(
-            nn.Conv2d(out_channels[0], out_channels[1], 3, 2, 1),
+            Conv2d(out_channels[0], out_channels[1], 3, 2, 1),
             nn.BatchNorm2d(out_channels[1]) if BN else nn.Identity(),
             activation
         )
@@ -55,7 +58,7 @@ class Pyramid_Encoder(nn.Module):
         # conv4
         names.append('{}/conv4'.format(layer_prefix))
         conv4 = nn.Sequential(
-            nn.Conv2d(out_channels[1], out_channels[1], 3, 1, 1),
+            Conv2d(out_channels[1], out_channels[1], 3, 1, 1),
             nn.BatchNorm2d(out_channels[1]) if BN else nn.Identity(),
             activation
         )
@@ -64,7 +67,7 @@ class Pyramid_Encoder(nn.Module):
         # conv5
         names.append('{}/conv5'.format(layer_prefix))
         conv5 = nn.Sequential(
-            nn.Conv2d(out_channels[1], out_channels[2], 3, 2, 1),
+            Conv2d(out_channels[1], out_channels[2], 3, 2, 1),
             nn.BatchNorm2d(out_channels[2]) if BN else nn.Identity(),
             activation
         )
@@ -73,7 +76,7 @@ class Pyramid_Encoder(nn.Module):
         # conv6
         names.append('{}/conv6'.format(layer_prefix))
         conv6 = nn.Sequential(
-            nn.Conv2d(out_channels[2], out_channels[2], 3, 1, 1),
+            Conv2d(out_channels[2], out_channels[2], 3, 1, 1),
             nn.BatchNorm2d(out_channels[2]) if BN else nn.Identity(),
             activation
         )
@@ -82,7 +85,7 @@ class Pyramid_Encoder(nn.Module):
         # conv7
         names.append('{}/conv7'.format(layer_prefix))
         conv7 = nn.Sequential(
-            nn.Conv2d(out_channels[2], out_channels[3], 3, 2, 1),
+            Conv2d(out_channels[2], out_channels[3], 3, 2, 1),
             nn.BatchNorm2d(out_channels[3]) if BN else nn.Identity(),
             activation
         )
@@ -91,7 +94,7 @@ class Pyramid_Encoder(nn.Module):
         # conv8
         names.append('{}/conv8'.format(layer_prefix))
         conv8 = nn.Sequential(
-            nn.Conv2d(out_channels[3], out_channels[3], 3, 1, 1),
+            Conv2d(out_channels[3], out_channels[3], 3, 1, 1),
             nn.BatchNorm2d(out_channels[3]) if BN else nn.Identity(),
             activation
         )
@@ -100,7 +103,7 @@ class Pyramid_Encoder(nn.Module):
         # conv9
         names.append('{}/conv9'.format(layer_prefix))
         conv9 = nn.Sequential(
-            nn.Conv2d(out_channels[3], out_channels[4], 3, 2, 1),
+            Conv2d(out_channels[3], out_channels[4], 3, 2, 1),
             nn.BatchNorm2d(out_channels[4]) if BN else nn.Identity(),
             activation
         )
@@ -109,7 +112,7 @@ class Pyramid_Encoder(nn.Module):
         # conv10
         names.append('{}/conv10'.format(layer_prefix))
         conv10 = nn.Sequential(
-            nn.Conv2d(out_channels[4], out_channels[4], 3, 1, 1),
+            Conv2d(out_channels[4], out_channels[4], 3, 1, 1),
             nn.BatchNorm2d(out_channels[4]) if BN else nn.Identity(),
             activation
         )
@@ -118,7 +121,7 @@ class Pyramid_Encoder(nn.Module):
         # conv11
         names.append('{}/conv11'.format(layer_prefix))
         conv11 = nn.Sequential(
-            nn.Conv2d(out_channels[4], out_channels[5], 3, 2, 1),
+            Conv2d(out_channels[4], out_channels[5], 3, 2, 1),
             nn.BatchNorm2d(out_channels[5]) if BN else nn.Identity(),
             activation
         )
@@ -127,7 +130,7 @@ class Pyramid_Encoder(nn.Module):
         # conv12
         names.append('{}/conv12'.format(layer_prefix))
         conv12 = nn.Sequential(
-            nn.Conv2d(out_channels[5], out_channels[5], 3, 1, 1),
+            Conv2d(out_channels[5], out_channels[5], 3, 1, 1),
             nn.BatchNorm2d(out_channels[5]) if BN else nn.Identity(),
             activation
         )
@@ -199,7 +202,7 @@ class Disparity_Decoder(nn.Module):
         # disp-1
         names.append('{}/disp1'.format(scope))
         disp1 = nn.Sequential(
-            nn.Conv2d(in_channel, out_channels[0], 3, 1, 1),
+            Conv2d(in_channel, out_channels[0], 3, 1, 1),
             nn.BatchNorm2d(out_channels[0]) if BN else nn.Identity(),
             activation
         )
@@ -208,7 +211,7 @@ class Disparity_Decoder(nn.Module):
         # disp-2
         names.append('{}/disp2'.format(scope))
         disp2 = nn.Sequential(
-            nn.Conv2d(out_channels[0], out_channels[1], 3, 1, 1),
+            Conv2d(out_channels[0], out_channels[1], 3, 1, 1),
             nn.BatchNorm2d(out_channels[1]) if BN else nn.Identity(),
             activation
         )
@@ -217,7 +220,7 @@ class Disparity_Decoder(nn.Module):
         # disp-3
         names.append('{}/disp3'.format(scope))
         disp3 = nn.Sequential(
-            nn.Conv2d(out_channels[1], out_channels[2], 3, 1, 1),
+            Conv2d(out_channels[1], out_channels[2], 3, 1, 1),
             nn.BatchNorm2d(out_channels[2]) if BN else nn.Identity(),
             activation
         )
@@ -226,7 +229,7 @@ class Disparity_Decoder(nn.Module):
         # disp-4
         names.append('{}/disp4'.format(scope))
         disp4 = nn.Sequential(
-            nn.Conv2d(out_channels[2], out_channels[3], 3, 1, 1),
+            Conv2d(out_channels[2], out_channels[3], 3, 1, 1),
             nn.BatchNorm2d(out_channels[3]) if BN else nn.Identity(),
             activation
         )
@@ -235,7 +238,7 @@ class Disparity_Decoder(nn.Module):
         # disp-5
         names.append('{}/disp5'.format(scope))
         disp5 = nn.Sequential(
-            nn.Conv2d(out_channels[3], out_channels[4], 3, 1, 1),
+            Conv2d(out_channels[3], out_channels[4], 3, 1, 1),
             nn.BatchNorm2d(out_channels[4]) if BN else nn.Identity(),
             activation
         )
@@ -244,7 +247,7 @@ class Disparity_Decoder(nn.Module):
         # disp-6
         names.append('{}/disp6'.format(scope))
         disp6 = nn.Sequential(
-            nn.Conv2d(out_channels[4], out_channels[5], 3, 1, 1),
+            Conv2d(out_channels[4], out_channels[5], 3, 1, 1),
             nn.BatchNorm2d(out_channels[5]) if BN else nn.Identity(),
             nn.Identity()
         )
@@ -272,40 +275,40 @@ class Refinement_Module(nn.Module):
         names = []
         layers = OrderedDict()
         self.context1 = nn.Sequential(
-            nn.Conv2d(in_channel, out_channel[0], 3, 1, dilation_rate[0], dilation=dilation_rate[0]),
+            Conv2d(in_channel, out_channel[0], 3, 1, dilation_rate[0], dilation=dilation_rate[0]),
             nn.BatchNorm2d(out_channel[0]) if BN else nn.Identity(),
             activation
         )
 
         self.context2 = nn.Sequential(
-            nn.Conv2d(out_channel[0], out_channel[1], 3, 1, dilation_rate[1], dilation=dilation_rate[1]),
+            Conv2d(out_channel[0], out_channel[1], 3, 1, dilation_rate[1], dilation=dilation_rate[1]),
             nn.BatchNorm2d(out_channel[1]) if BN else nn.Identity(),
             activation
         )
 
         self.context3 = nn.Sequential(
-            nn.Conv2d(out_channel[1], out_channel[2], 3, 1, dilation_rate[2], dilation=dilation_rate[2]),
+            Conv2d(out_channel[1], out_channel[2], 3, 1, dilation_rate[2], dilation=dilation_rate[2]),
             nn.BatchNorm2d(out_channel[2]) if BN else nn.Identity(),
             activation
         )
 
         self.context4 = nn.Sequential(
-            nn.Conv2d(out_channel[2], out_channel[3], 3, 1, dilation_rate[3], dilation=dilation_rate[3]),
+            Conv2d(out_channel[2], out_channel[3], 3, 1, dilation_rate[3], dilation=dilation_rate[3]),
             nn.BatchNorm2d(out_channel[3]) if BN else nn.Identity(),
             activation
         )
         self.context5 = nn.Sequential(
-            nn.Conv2d(out_channel[3], out_channel[4], 3, 1, dilation_rate[4], dilation=dilation_rate[4]),
+            Conv2d(out_channel[3], out_channel[4], 3, 1, dilation_rate[4], dilation=dilation_rate[4]),
             nn.BatchNorm2d(out_channel[4]) if BN else nn.Identity(),
             activation
         )
         self.context6 = nn.Sequential(
-            nn.Conv2d(out_channel[4], out_channel[5], 3, 1, dilation_rate[5], dilation=dilation_rate[5]),
+            Conv2d(out_channel[4], out_channel[5], 3, 1, dilation_rate[5], dilation=dilation_rate[5]),
             nn.BatchNorm2d(out_channel[5]) if BN else nn.Identity(),
             activation
         )
         self.context7 = nn.Sequential(
-            nn.Conv2d(out_channel[5], out_channel[6], 3, 1, dilation_rate[6], dilation=dilation_rate[6]),
+            Conv2d(out_channel[5], out_channel[6], 3, 1, dilation_rate[6], dilation=dilation_rate[6]),
             nn.BatchNorm2d(out_channel[6]) if BN else nn.Identity(),
             nn.Identity()
         )
@@ -492,7 +495,7 @@ class MadNet(nn.Module):
         return _disparity
 
     def _init_weights(self,m):
-        if isinstance(m, nn.Conv2d):
+        if isinstance(m, Conv2d):
             nn.init.kaiming_normal_(m.weight, mode="fan_out")
             if m.bias is not None:
                 nn.init.zeros_(m.bias)
