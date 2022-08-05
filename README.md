@@ -55,6 +55,7 @@
 - [x] [HR-Net-Seg](https://zhuanlan.zhihu.com/p/501094171)
 - [x] [DeepLabv3](https://zhuanlan.zhihu.com/p/513233049)
 - [x] DeepLabv3Plus
+- [x] few_shot segmentation
 - [ ] Mask-rcnn
 - [ ] Cascade-rcnn
 - [ ] UNet++
