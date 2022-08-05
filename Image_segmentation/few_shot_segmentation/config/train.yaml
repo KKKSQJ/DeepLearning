@@ -1,0 +1,39 @@
+data:
+  data_name: pascal
+#  data_path: E:\dataset\VOC2012\VOCdevkit\VOC2012
+
+  img_path: E:\dataset\VOC2012\VOCdevkit\VOC2012\JPEGImages
+  mask_path: E:\practice\DeepLearning\Image_segmentation\few_shot_segmentation\SegmentationClass
+
+
+train:
+  # logging
+  project: runs/train
+  name: exp
+  exist_ok: False
+  # dataset
+  input_size: [473,473]
+  fold: 1
+  shot: 2
+  episode: 24000 # total episodes of training'
+  train_snapshot: 1200 # save the model after each snapshot episodes
+  test_snapshot: 1000
+  num_class: 20
+
+  # dataloader
+  batch_size: 3
+  num_workers: 0
+
+  # device
+  device: 0   # 'cuda device, i.e. 0 or 0,1,2,3 or cpu'
+
+  # model
+  model_name: resnet50
+  refine: True
+  weights: #voc_1_resnet50_1shot_67.80.pth
+
+  # lr
+  lr: 0.001
+  snapshot: 1200 # save the model after each snapshot episodes
+
+
