@@ -105,6 +105,7 @@ def run(
         pred_class = torch.max(pred, dim=1)[1]
         c = pred_class.cpu().numpy().item()
         prob = torch.squeeze(torch.softmax(pred, dim=1)).cpu().numpy()[int(c)]
+        # print("name:{}\tclass: {}\tprob: {:.3}\tinference time: {:.5f}s Done.".format(img_path.split(os.sep)[-1],c, prob, (t2 - t1)))
         print("class: {}\tprob: {:.3}\tinference time: {:.5f}s Done.".format(class_indict[str(c)], prob, (t2 - t1)))
 
         # 可视化图片
@@ -124,7 +125,7 @@ def run(
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--model-name', type=str, default='resnet50')
-    parser.add_argument('--weights', type=str, default='best_model.pth', help='the model path')
+    parser.add_argument('--weights', type=str, default='model_best.pth', help='the model path')
     parser.add_argument('--source', type=str, default='./data/test', help='test data path')
     parser.add_argument('--use-cuda', type=bool, default=True)
     parser.add_argument('--view-img', type=bool, default=False)
@@ -134,3 +135,21 @@ if __name__ == '__main__':
                         help='when train,the file will generate')
     opt = parser.parse_args()
     run(**vars(opt))
+
+
+    # import torchvision
+    # test_set = torchvision.datasets.CIFAR100(root="data", train=False, download=True)
+    # save_path = "data/test"
+    # os.makedirs(save_path,exist_ok=True)
+    # for i in range(10):
+    #     img, target = test_set[i]
+    #     name = str(target)+".jpg"
+    #     img.save(os.path.join(save_path,name))
+
+
+
+    # classes = test_set.classes
+    # class_indices = dict((k, v) for v, k in enumerate(classes))
+    # json_str = json.dumps(dict((val, key) for key, val in class_indices.items()), indent=4)
+    # with open('class_indices.json', 'w') as json_file:
+    #     json_file.write(json_str)

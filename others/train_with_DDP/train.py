@@ -45,9 +45,9 @@ def parser_args():
     parser.add_argument('--data_path', type=str, default='data/')
     parser.add_argument('--freeze_layers', action='store_true')
     parser.add_argument('--syncBN', action='store_true')
-    parser.add_argument('--batch_size', type=int, default=6)
+    parser.add_argument('--batch_size', type=int, default=128)
     parser.add_argument('--start_epochs', default=0)
-    parser.add_argument("--epochs", type=int, default=50)
+    parser.add_argument("--epochs", type=int, default=20)
     parser.add_argument("--device", type=str, default='', help="device = 'cpu' or '0' or '0,1,2,3'")
     parser.add_argument('--lr', type=float, default=0.001)
     parser.add_argument("--lrf", type=float, default=0.01)
@@ -157,13 +157,14 @@ def main(config):
             tb_writer.add_image("test_set", img, target)
 
     # Create model
+    checkpoint_path = ""
     model = resnet50(pretrained=False, num_classes=nclass)
     # pretrain weights
     if config["train"]["weights"] is not None and os.path.exists(config["train"]["weights"]):
         with torch_distributed_zero_first(LOCAL_RANK):
-            weights = config["train"]["weights"]
+            checkpoint_path = config["train"]["weights"]
 
-        ckpt = torch.load(weights, map_location='cpu')
+        ckpt = torch.load(checkpoint_path, map_location='cpu')
         ckpt_dict = {k: v for k, v in ckpt.items() if model.state_dict()[k].numel() == v.numel()}
         model.load_state_dict(ckpt_dict, strict=False)
     else:
@@ -305,7 +306,7 @@ def main(config):
                 torch.save(model.state_dict(), os.path.join(weights_dir, f"model_{epoch}.pth"))
 
     if WORLD_SIZE > 1 and RANK == 0:
-        if os.path.exists(checkpoint_path) is True:
+        if os.path.exists(checkpoint_path):
             os.remove(checkpoint_path)
 
         logging.info('Destroying process group... ')
