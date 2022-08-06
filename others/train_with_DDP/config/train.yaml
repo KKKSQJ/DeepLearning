@@ -1,0 +1,24 @@
+data:
+  data_path: data
+
+train:
+  # logging
+  project: runs/train
+  name: exp
+  exist_ok: False
+
+  # device
+  device: ''
+
+  batch_size: 4
+  freeze_layers: False
+  syncBN: True
+  warmup_epochs: 5
+  start_epochs: 0
+  epochs: 50
+  lr: 0.001
+  lrf: 0.01
+
+  # pretrain
+  weights: resnet50-19c8e357.pth
+
