@@ -84,3 +84,4 @@
 - [x] [label_convert](https://zhuanlan.zhihu.com/p/461488682) (三种不同标注文件之间的转换以及box可视化)
 - [x] class_Activation_Map_Visual (可视化CNN的类激活图)
 - [x] [normalization](https://zhuanlan.zhihu.com/p/524829507) (BN、LN、IN、GN、SN图解)
+- [x] [DDP](https://zhuanlan.zhihu.com/p/550554697)(模型分布式计算)
