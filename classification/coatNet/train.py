@@ -72,10 +72,10 @@ def main(opt):
 
     #   3.2 网络搭建：model
     classes = len(every_class_num)
-    model = coatnet_0(num_classes=classes).to(device)
+    model = coatnet_0(num_classes=classes)
     if opt.weights != '':
         assert os.path.exists(opt.weights), "weights file: '{}' not exist.".format(opt.weights)
-        weights_dict = torch.load(opt.weights, map_location=device)
+        weights_dict = torch.load(opt.weights, map_location="cpu")
         in_channel = model.fc.in_features
         model.fc = nn.Linear(in_channel, classes)
         del_keys = ['fc.weight', 'fc.bias']
@@ -89,6 +89,7 @@ def main(opt):
                 para.requires_grad(False)
             else:
                 print("training {}".format(name))
+    model = model.to(device)
 
     #   3.3 优化器，学习率，更新策略,损失函数
     pg = [p for p in model.parameters() if p.requires_grad]

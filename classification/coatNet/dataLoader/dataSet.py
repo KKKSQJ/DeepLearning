@@ -28,6 +28,8 @@ def read_split_data(data_root, save_dir, val_rate=0.2, plot_image=False):
     every_class_num = []  # 存储每个类别的样本总数
     supported = [".jpg", ".JPG", ".png", ".PNG"]  # 支持的文件后缀类型
 
+    train_txt = open(save_dir + '/train.txt', 'w')
+    val_txt = open(save_dir + '/val.txt', 'w')
     # 遍历每个文件夹下的文件
     for cla in tqdm(classes):
         cla_path = os.path.join(data_root, cla)
@@ -40,8 +42,6 @@ def read_split_data(data_root, save_dir, val_rate=0.2, plot_image=False):
         # 按比例随机采样验证样本
         val_path = random.sample(images, k=int(len(images) * val_rate))
 
-        train_txt = open(save_dir + '/train.txt', 'w')
-        val_txt = open(save_dir + '/val.txt', 'w')
         for img_path in images:
             if img_path in val_path:  # 如果该路径在采样的验证集样本中则存入验证集
                 val_txt.write(img_path + "\n")
@@ -51,8 +51,8 @@ def read_split_data(data_root, save_dir, val_rate=0.2, plot_image=False):
                 train_txt.write(img_path + "\n")
                 train_images_path.append(img_path)
                 train_images_label.append(image_class)
-        train_txt.close()
-        val_txt.close()
+    train_txt.close()
+    val_txt.close()
 
     print("{} images were found in the dataset.".format(sum(every_class_num)))
     print("{} images for training.".format(len(train_images_path)))
