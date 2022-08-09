@@ -17,6 +17,7 @@
 - [x] [convNext](https://zhuanlan.zhihu.com/p/473657956)
 - [x] [seNet](https://zhuanlan.zhihu.com/p/479992312)
 - [x] [TransFG](https://zhuanlan.zhihu.com/p/519173447)
+- [x] [RepVGG](https://zhuanlan.zhihu.com/p/551218736)
 - [ ] swin-transformer
 - [ ] inception
 - [ ] denseNet
