@@ -1,0 +1,28 @@
+data:
+  data_path: data
+
+train:
+  # logging
+  project: runs/train
+  name: exp
+  exist_ok: False
+
+  # device
+  device: 0
+
+  arch: RepVGG-A0
+  classes: 5
+  batch_size: 4
+  freeze_layers: False
+  syncBN: True
+  warmup_epochs: 5
+  start_epochs: 0
+  epochs: 120
+  lr: 0.1
+  lrf: 0.01
+  print_freq: 10
+
+  # pretrain
+  weights:
+  resume:
+
