@@ -195,8 +195,8 @@ def main(config):
 
         if RANK == 0:
             torch.save(model.state_dict(), checkpoint_path)
-            dist.barrier()
-            model.load_state_dict(torch.load(checkpoint_path, map_location='cpu'))
+        dist.barrier()
+        model.load_state_dict(torch.load(checkpoint_path, map_location='cpu'))
 
     model = model.to(device)
 
@@ -230,7 +230,6 @@ def main(config):
 
     best_acc = 0
 
-    print("resume begin")
     # Resume
     if config["train"]["resume"]:
         if os.path.isfile(config["train"]["resume"]):
@@ -253,10 +252,8 @@ def main(config):
     #     # evaluate
     #     return
 
-    print("train")
     # Train
     for epoch in range(config["train"]["start_epochs"], config["train"]["epochs"]):
-        print("start train")
         model.train()
 
         batch_time = AverageMeter('Time', ':6.3f')
