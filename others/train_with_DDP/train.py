@@ -172,8 +172,8 @@ def main(config):
 
         if RANK == 0:
             torch.save(model.state_dict(), checkpoint_path)
-            dist.barrier()
-            model.load_state_dict(torch.load(checkpoint_path, map_location='cpu'))
+        dist.barrier()
+        model.load_state_dict(torch.load(checkpoint_path, map_location='cpu'))
 
     model = model.to(device)
 
