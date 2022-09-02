@@ -2,6 +2,7 @@
 *.zip
 __pycache__
 *.pth
+*.onnx
 *__pycache__
 *save_weights
 *runs
