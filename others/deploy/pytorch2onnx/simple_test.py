@@ -57,7 +57,7 @@ def eval_onnxruntime():
 
 if __name__ == '__main__':
     # pt模型转onnx
-    # pt_to_onnx()
+    pt_to_onnx()
 
     # onnx验证
     eval_onnxruntime()
