@@ -86,3 +86,4 @@
 - [x] class_Activation_Map_Visual (可视化CNN的类激活图)
 - [x] [normalization](https://zhuanlan.zhihu.com/p/524829507) (BN、LN、IN、GN、SN图解)
 - [x] [DDP](https://zhuanlan.zhihu.com/p/550554697)(模型分布式计算)
+- [x] deploy (pytorch模型转onnx，支持自定义算子 示例)
