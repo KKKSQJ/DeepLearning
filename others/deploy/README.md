@@ -1,7 +1,7 @@
 # 目录
 - pytorch2onnx：用于将pytorch模型转换为onnx。自定义算子
 - onnx2ncnn
-- onn2tensorRT
+- onn2trt:用于将onnx模型转换为tensorRT。python实现、c++实现
 
 ## pytorch2onnx
 ### 参数讲解
