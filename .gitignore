@@ -3,6 +3,7 @@
 __pycache__
 *.pth
 *.onnx
+*.engine
 *__pycache__
 *save_weights
 *runs
