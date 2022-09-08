@@ -1,0 +1,46 @@
+data:
+  img_path: E:\dataset\pose_estimation\insulator\images
+  anno_path: E:\dataset\pose_estimation\insulator\annos
+
+train:
+  # logging
+  project: runs/train
+  name: exp
+  exist_ok: False
+
+  # data aug
+  scale: [ 0.65,1.35 ]
+  rotation: [ -90,90 ]
+  resolution: [ 224,224 ]  # w h
+
+  # model
+  base_channel: 32
+  num_joint: 1
+  freeze_layers: False
+  syncBN: False
+  use_offset: True
+
+  # device
+  device: 0
+
+  # dataloader
+  batch_size: 3
+
+  # lr
+  lr_steps: [40,80,120,200]
+  lr_gamma: 0.3
+  lr: 0.01
+  lrf: 0.01
+
+  start_epochs: 0
+  epochs: 200
+
+  print_freq: 10
+
+  # pretrain
+  weights: pretrain/hrnet_w32-36af842e.pth
+  resume:
+
+  # eval
+  conf_thresh: 0.6
+  dis_thresh: 2

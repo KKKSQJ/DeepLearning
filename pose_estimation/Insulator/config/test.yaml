@@ -1,0 +1,21 @@
+data:
+  img_path: E:\dataset\pose_estimation\insulator\images
+  anno_path: E:\dataset\pose_estimation\insulator\annos
+
+test:
+  resolution: [ 448,448 ]  # w h
+
+  # model
+  base_channel: 32
+  num_joint: 1
+  use_offset: True
+
+  # dataloader
+  batch_size: 4
+
+  # eval
+  conf_thresh: 0.6
+  dis_thresh: 2
+
+
+
