@@ -51,9 +51,9 @@
 - [ ] ATSS
 
 ## segmentation
-- [x] U-Net [paper read](https://zhuanlan.zhihu.com/p/485647940) [code](https://github.com/KKKSQJ/DeepLearning/tree/master/Image_segmentation/U-Net)
-- [x] HR-Net-Seg [paper read](https://zhuanlan.zhihu.com/p/501094171) [code](https://github.com/KKKSQJ/DeepLearning/tree/master/Image_segmentation/HR-Net-Seg)
-- [x] DeepLabv3 [paper read](https://zhuanlan.zhihu.com/p/513233049) [code](https://github.com/KKKSQJ/DeepLearning/tree/master/Image_segmentation/DeepLabV3)
+- [x] U-Net [paper read](https://zhuanlan.zhihu.com/p/485647940) / [code](https://github.com/KKKSQJ/DeepLearning/tree/master/Image_segmentation/U-Net)
+- [x] HR-Net-Seg [paper read](https://zhuanlan.zhihu.com/p/501094171) / [code](https://github.com/KKKSQJ/DeepLearning/tree/master/Image_segmentation/HR-Net-Seg)
+- [x] DeepLabv3 [paper read](https://zhuanlan.zhihu.com/p/513233049) / [code](https://github.com/KKKSQJ/DeepLearning/tree/master/Image_segmentation/DeepLabV3)
 - [x] DeepLabv3Plus [code](https://github.com/KKKSQJ/DeepLearning/tree/master/Image_segmentation/DeepLabV3Plus)
 - [x] few_shot segmentation [code](https://github.com/KKKSQJ/DeepLearning/tree/master/Image_segmentation/few_shot_segmentation)
 - [x] FCN [code](https://github.com/KKKSQJ/DeepLearning/tree/master/Image_segmentation/FCN)
@@ -79,11 +79,11 @@
 
 
 ## other
-- [x] label_convert (三种不同标注文件之间的转换以及box可视化) [paper read](https://zhuanlan.zhihu.com/p/461488682) [code](https://github.com/KKKSQJ/DeepLearning/tree/master/others/label_convert) 
-- [x] normalization (BN、LN、IN、GN、SN图解) [paper read](https://zhuanlan.zhihu.com/p/524829507) [code](https://github.com/KKKSQJ/DeepLearning/tree/master/others/normalization) 
-- [x] DDP (模型分布式计算) [paper read](https://zhuanlan.zhihu.com/p/550554697) [code](https://github.com/KKKSQJ/DeepLearning/tree/master/others/train_with_DDP) 
-- [x] tensorboard test (可视化网络，图片，训练过程以及卷积核) [code](https://github.com/KKKSQJ/DeepLearning/tree/master/others/tensorboard_test)
-- [x] load weights test (权重部分加载) [code](https://github.com/KKKSQJ/DeepLearning/tree/master/others/load_weights_test)
-- [x] visual weights map test (特征图、卷积核可视化分析) [code](https://github.com/KKKSQJ/DeepLearning/tree/master/others/visual_weight_feature_map_test)
-- [x] class_Activation_Map_Visual (可视化CNN的类激活图) [code]()
-- [x] deploy (pytorch模型转onnx，支持自定义算子 示例) [code](https://github.com/KKKSQJ/DeepLearning/tree/master/others/deploy)
+- [x] label_convert (三种不同标注文件之间的转换以及box可视化) [paper read](https://zhuanlan.zhihu.com/p/461488682) / [code](https://github.com/KKKSQJ/DeepLearning/tree/master/others/label_convert) 
+- [x] normalization (BN、LN、IN、GN、SN图解) [paper read](https://zhuanlan.zhihu.com/p/524829507) / [code](https://github.com/KKKSQJ/DeepLearning/tree/master/others/normalization) 
+- [x] DDP (模型分布式计算) [paper read](https://zhuanlan.zhihu.com/p/550554697) / [code](https://github.com/KKKSQJ/DeepLearning/tree/master/others/train_with_DDP) 
+- [x] tensorboard test (可视化网络，图片，训练过程以及卷积核) / [code](https://github.com/KKKSQJ/DeepLearning/tree/master/others/tensorboard_test)
+- [x] load weights test (权重部分加载) / [code](https://github.com/KKKSQJ/DeepLearning/tree/master/others/load_weights_test)
+- [x] visual weights map test (特征图、卷积核可视化分析) / [code](https://github.com/KKKSQJ/DeepLearning/tree/master/others/visual_weight_feature_map_test)
+- [x] class_Activation_Map_Visual (可视化CNN的类激活图) / [code]()
+- [x] deploy (pytorch模型转onnx，支持自定义算子 示例) / [code](https://github.com/KKKSQJ/DeepLearning/tree/master/others/deploy)
