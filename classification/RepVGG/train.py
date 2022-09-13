@@ -152,8 +152,8 @@ def main(config):
     with torch_distributed_zero_first(LOCAL_RANK):
         train_set = My_Dataset_with_txt('data', "train.txt", transform=data_transform["train"])
         test_set = My_Dataset_with_txt('data', "val.txt", transform=data_transform["val"])
-        # train_set.data = train_set.data[:1000]
-        # test_set.data = test_set.data[:1000]
+        # train_set.data = train_set.data[:100]
+        # test_set.data = test_set.data[:100]
 
     train_sampler = None if LOCAL_RANK == -1 else distributed.DistributedSampler(train_set, shuffle=True)
     test_sampler = None if LOCAL_RANK == -1 else distributed.DistributedSampler(test_set, shuffle=False)
@@ -168,7 +168,7 @@ def main(config):
                                  num_workers=nw, sampler=test_sampler, pin_memory=True, drop_last=False,
                                  collate_fn=test_set.collate_fn)
     nb = len(train_dataloader)
-    nwarmup = max(round(config["train"]["warmup_epochs"] * nb), 100)
+    # warmup_iters = max(round(config["train"]["warmup_epochs"] * nb), 100)
 
     # Write to tensorboard
     if RANK in {-1, 0}:
@@ -177,10 +177,9 @@ def main(config):
             tb_writer.add_image("test_set", img, target)
 
     # Create model
-    checkpoint_path = ""
     assert config["train"]["arch"] in func_dict
-    regvgg_build_func = get_RepVGG_func_by_name(config["train"]["arch"])
-    model = regvgg_build_func(deploy=False, num_classes=config["train"]["classes"])
+    model_build_func = get_RepVGG_func_by_name(config["train"]["arch"])
+    model = model_build_func(deploy=False, num_classes=config["train"]["classes"])
 
     # pretrain weights
     if config["train"]["weights"] is not None and os.path.exists(config["train"]["weights"]):
@@ -191,12 +190,14 @@ def main(config):
         ckpt_dict = {k: v for k, v in ckpt.items() if model.state_dict()[k].numel() == v.numel()}
         model.load_state_dict(ckpt_dict, strict=False)
     else:
-        checkpoint_path = os.path.join(tempfile.gettempdir(), "initial_weights.pt")
+        if RANK != -1:
+            checkpoint_path = os.path.join(tempfile.gettempdir(), "initial_weights.pt")
 
-        if RANK == 0:
-            torch.save(model.state_dict(), checkpoint_path)
-        dist.barrier()
-        model.load_state_dict(torch.load(checkpoint_path, map_location='cpu'))
+            if RANK == 0:
+                torch.save(model.state_dict(), checkpoint_path)
+
+            dist.barrier()
+            model.load_state_dict(torch.load(checkpoint_path, map_location='cpu'))
 
     model = model.to(device)
 
@@ -222,13 +223,20 @@ def main(config):
     lr = config["train"]["lr"] * WORLD_SIZE if RANK != -1 else config["train"]["lr"]
     pg = [p for p in model.parameters() if p.requires_grad]
     optimizer = torch.optim.SGD(pg, lr=lr, momentum=0.9, weight_decay=5e-4)
-    # Scheduler https://arxiv.org/pdf/1812.01187.pdf
-    lf = lambda x: ((1 + math.cos(x * math.pi / config["train"]["epochs"])) / 2) * (1 - config["train"]["lrf"]) + \
-                   config["train"]["lrf"]  # cosine
-    scheduler = torch.optim.lr_scheduler.LambdaLR(optimizer, lr_lambda=lf)
+
+    if config["train"]["scheduler"].lower() == 'cosine':
+        # Scheduler https://arxiv.org/pdf/1812.01187.pdf
+        lf = lambda x: ((1 + math.cos(x * math.pi / config["train"]["epochs"])) / 2) * (1 - config["train"]["lrf"]) + \
+                       config["train"]["lrf"]  # cosine
+        scheduler = torch.optim.lr_scheduler.LambdaLR(optimizer, lr_lambda=lf)
+    elif config["train"]["scheduler"].lower() == 'step':
+        scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer, milestones=config["train"]["lr_steps"],
+                                                         gamma=config["train"]["lr_gamma"])
+
     loss_function = torch.nn.CrossEntropyLoss()
 
     best_acc = 0
+    best_epoch = 0
 
     # Resume
     if config["train"]["resume"]:
@@ -258,26 +266,24 @@ def main(config):
 
         batch_time = AverageMeter('Time', ':6.3f')
         data_time = AverageMeter('Data', ':6.3f')
-        losses = AverageMeter('Loss', ':.4e')
-        top1 = AverageMeter('Acc@1', ':6.2f')
-        top5 = AverageMeter('Acc@5', ':6.2f')
+        losses = AverageMeter('Loss', ':6.5f')
+        top1 = AverageMeter('Acc@1', ':6.3f')
+        top5 = AverageMeter('Acc@5', ':6.3f')
+        lr = AverageMeter('Lr', ':6.6f')
+
+        pf = '%5s' + '%11s' * 5  # print format
+        logging.info(pf % ('Train', 'epoch', 'top1', 'top5', 'loss', 'lr'))
 
         if RANK != -1:
-            # train_sampler.set_epoch(epoch)
             train_dataloader.sampler.set_epoch(epoch)
-
-        # pbar = enumerate(train_dataloader)
-        # logging.info("Train Epoch\t\tgpu_mem\t\tloss\t\t")
-
-        # if RANK in {-1, 0}:
-        #     pbar = tqdm(pbar, total=nb, bar_format='{l_bar}{bar:10}{r_bar}{bar:-10}')
 
         progress = ProgressMeter(
             len(train_dataloader),
-            [batch_time, data_time, losses, top1, top5, ],
+            [batch_time, data_time, losses, top1, top5, lr],
             prefix="Epoch: [{}]".format(epoch))
 
         optimizer.zero_grad()
+        lr_scheduler = None
 
         end = time.time()
         for i, (imgs, targets) in enumerate(train_dataloader):
@@ -287,13 +293,8 @@ def main(config):
             targets = targets.to(device)
 
             # Warmup
-            if ni <= nwarmup:
-                optimizer.param_groups[0]['lr'] = ni / nwarmup * config["train"]["lr"]
-            #     xi = [0, nwarmup]
-            #     for j, x in enumerate(optimizer.param_groups):
-            # x['lr'] = np.interp(ni, xi, [hyp['warmup_bias_lr'] if j == 0 else 0.0, x['initial_lr'] * lf(epoch)])
-            # if 'momentum' in x:
-            #     x['momentum'] = np.interp(ni, xi, [hyp['warmup_momentum'], hyp['momentum']])
+            # if ni <= warmup_iters:
+            #     pass
 
             # Multi-scale
             # if config["train"]["multi_scale"]:
@@ -305,13 +306,11 @@ def main(config):
             pred = model(imgs)
             loss = loss_function(pred, targets)
             loss.backward()
-            # if RANK != -1:
-            #     loss = reduce_value(loss, WORLD_SIZE, average=True)
-            # mean_loss = (mean_loss * i + loss.detach()) / (i + 1)
             acc1, acc5 = accuracy(pred, targets, topk=(1, 5))
             losses.update(loss.item(), imgs.size(0))
             top1.update(acc1[0], imgs.size(0))
             top5.update(acc5[0], imgs.size(0))
+            lr.update(optimizer.param_groups[0]['lr'])
 
             optimizer.step()
             optimizer.zero_grad()
@@ -319,17 +318,13 @@ def main(config):
             batch_time.update(time.time() - end)
             end = time.time()
 
-            scheduler.step()
-
-            # Log
-            # if RANK in {-1, 0}:
-            #     mem = f'{torch.cuda.memory_reserved() / 1E9 if torch.cuda.is_available() else 0:.3g}G'  # (GB)
-            #     pbar.set_description(('epoch: %2s\t\t' + 'mem: %2s\t\t' + 'loss: %2.4g\t\t' + 'lr: %2f') %
-            #                          (f'{epoch}/{config["train"]["epochs"] - 1}', mem, mean_loss.item(),
-            #                           optimizer.param_groups[0]['lr']))
-            #     tb_writer.add_scalar("train_lr", optimizer.param_groups[0]["lr"], ni)
+            if lr_scheduler is not None:
+                lr_scheduler.step()
 
             if RANK in {-1, 0}:
+                pf = '%5s' + '%11i' * 1 + '%11.6g' * 4  # print format
+                logging.info(pf % ('Train', epoch, top1.avg, top5.avg, losses.avg, lr.avg))
+
                 if i % config["train"]["print_freq"] == 0:
                     progress.display(i)
                 tb_writer.add_scalar("train_lr", optimizer.param_groups[0]["lr"], ni)
@@ -356,6 +351,8 @@ def main(config):
             # sum_num = torch.zeros(1).to(device)
             # pbar = enumerate(test_dataloader)
             # pbar = tqdm(pbar, total=len(test_dataloader), bar_format='{l_bar}{bar:10}{r_bar}{bar:-10}')
+            pf = '%5s' + '%11s' * 4  # print format
+            logging.info(pf % ('Test', 'epoch', 'top1', 'top5', 'lr'))
 
             with torch.no_grad():
                 end = time.time()
@@ -375,22 +372,16 @@ def main(config):
                     batch_time.update(time.time() - end)
                     end = time.time()
 
-                    # pred = torch.max(pred, dim=1)[1]
-                    # sum_num += torch.eq(pred, targets).sum()
                     if i % config["train"]["print_freq"] == 0:
                         progress.display(i)
-
-            # acc = sum_num / len(test_dataloader.sampler)
 
             tags = ["acc1", "acc5", "learning_rate"]
             tb_writer.add_scalar(tags[0], top1.avg, epoch)
             tb_writer.add_scalar(tags[1], top5.avg, epoch)
             tb_writer.add_scalar(tags[2], optimizer.param_groups[0]["lr"], epoch)
-            # pbar.set_description(
-            #     ('test epoch: %2s\t\t' + "acc: %2s") % (f'{epoch}/{config["train"]["epochs"] - 1}', acc.item()))
-            logging.info("Test Epoch\t\tacc1\t\tacc5\t\tLr")
-            logging.info("{}\t\t{:.3}\t\t{:.3}\t\t{:.3}".format(epoch, top1.avg, top5.avg,
-                                                                optimizer.param_groups[0]["lr"]))
+
+            pf = '%5s' + '%11i' * 1 + '%11.6g' * 3  # print format
+            logging.info(pf % ('Test', epoch, top1.avg, top5.avg, optimizer.param_groups[0]['lr']))
 
             # Save model
             acc = top1.avg
@@ -398,7 +389,21 @@ def main(config):
             best_acc = max(acc, best_acc)
             if RANK == 0:
                 if is_best:
-                    save_checkpoint(
+                    best_epoch = epoch
+                    # save_checkpoint(
+                    #     {
+                    #         'epoch': epoch + 1,
+                    #         'arch': config["train"]["arch"],
+                    #         'state_dict': model.module.state_dict(),
+                    #         'best_acc': best_acc,
+                    #         'optimizer': optimizer.state_dict(),
+                    #         'scheduler': scheduler.state_dict(),
+                    #     },
+                    #     is_best=is_best,
+                    #     filename=os.path.join(weights_dir, '{}_{}.pth'.format(config["train"]["arch"], epoch)),
+                    #     best_filename=os.path.join(weights_dir, '{}_best.pth'.format(config["train"]["arch"]))
+                    # )
+                    torch.save(
                         {
                             'epoch': epoch + 1,
                             'arch': config["train"]["arch"],
@@ -407,14 +412,27 @@ def main(config):
                             'optimizer': optimizer.state_dict(),
                             'scheduler': scheduler.state_dict(),
                         },
-                        is_best=is_best,
-                        filename=os.path.join(weights_dir, '{}_{}.pth'.format(config["train"]["arch"], epoch)),
-                        best_filename=os.path.join(weights_dir, '{}_best.pth'.format(config["train"]["arch"]))
+                        os.path.join(weights_dir, '{}_best.pth'.format(config["train"]["arch"]))
                     )
+
 
             else:
                 if is_best:
-                    save_checkpoint(
+                    best_epoch = epoch
+                    # save_checkpoint(
+                    #     {
+                    #         'epoch': epoch + 1,
+                    #         'arch': config["train"]["arch"],
+                    #         'state_dict': model.state_dict(),
+                    #         'best_acc': best_acc,
+                    #         'optimizer': optimizer.state_dict(),
+                    #         'scheduler': scheduler.state_dict(),
+                    #     },
+                    #     is_best=is_best,
+                    #     filename=os.path.join(weights_dir, '{}_{}.pth'.format(config["train"]["arch"], epoch)),
+                    #     best_filename=os.path.join(weights_dir, '{}_best.pth'.format(config["train"]["arch"]))
+                    # )
+                    torch.save(
                         {
                             'epoch': epoch + 1,
                             'arch': config["train"]["arch"],
@@ -423,17 +441,21 @@ def main(config):
                             'optimizer': optimizer.state_dict(),
                             'scheduler': scheduler.state_dict(),
                         },
-                        is_best=is_best,
-                        filename=os.path.join(weights_dir, '{}_{}.pth'.format(config["train"]["arch"], epoch)),
-                        best_filename=os.path.join(weights_dir, '{}_best.pth'.format(config["train"]["arch"]))
+                        os.path.join(weights_dir, '{}_best.pth'.format(config["train"]["arch"]))
                     )
 
+    logging.info(f"best epoch:{best_epoch}, acc:{best_acc}")
     if WORLD_SIZE > 1 and RANK == 0:
         if os.path.exists(checkpoint_path):
             os.remove(checkpoint_path)
 
         logging.info('Destroying process group... ')
         dist.destroy_process_group()
+
+
+if __name__ == '__main__':
+    args = parser_args()
+    main(args)
 
 
 if __name__ == '__main__':
