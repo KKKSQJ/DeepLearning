@@ -1,0 +1,40 @@
+data:
+  data_path: data
+
+train:
+  # logging
+  project: runs/train
+  name: exp
+  exist_ok: False
+
+  # device
+  device: 0
+
+  # model
+  arch: shufflenet
+  classes: 5
+  freeze_layers: False
+  syncBN: True
+
+  # dataloader
+  batch_size: 4
+
+  start_epochs: 0
+  epochs: 120
+  print_freq: 10
+
+  # scheduler
+  scheduler: step  # cosine
+  # warmup_epochs: 0
+  lr: 0.1
+
+  lrf: 0.1  # cosine
+
+  lr_steps: [ 20,40,80,100 ]  # step
+  lr_gamma: 0.3
+
+
+  # pretrain
+  weights:
+  resume:
+
