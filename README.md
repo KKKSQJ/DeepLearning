@@ -8,9 +8,7 @@
 每个项目都有对应论文解读，解读详情搜 [知乎] - 琪小钧
 
 ## classification
-- [x] vision_transformer
 - [x] [mnist](https://zhuanlan.zhihu.com/p/459616884)
-- [x] efficientNet
 - [x] [vggNet](https://zhuanlan.zhihu.com/p/460777014)
 - [x] [resnet](https://zhuanlan.zhihu.com/p/462190341)
 - [x] [coatNet](https://zhuanlan.zhihu.com/p/463033740)
@@ -18,26 +16,28 @@
 - [x] [seNet](https://zhuanlan.zhihu.com/p/479992312)
 - [x] [TransFG](https://zhuanlan.zhihu.com/p/519173447)
 - [x] [RepVGG](https://zhuanlan.zhihu.com/p/551218736)
+- [x] efficientNet
+- [x] shuffleNet
+- [x] vision_transformer
 - [ ] swin-transformer
 - [ ] inception
 - [ ] denseNet
 - [ ] googleNet
 - [ ] CBAM
-- [ ] shuffleNet
 - [ ] mobileNet
 - [ ] resNeXt
 - [ ] Xception
 - [ ] SqueezeNet
-- [ ] RepVgg
+
 
 ## detection
-- [x] RetinaNet (包含focal_loss)
 - [x] [FPN](https://zhuanlan.zhihu.com/p/543486836) (实现resnet50 + fpn)
+- [x] [Faster-rcnn](https://zhuanlan.zhihu.com/p/543486836)
+- [x] [yolov7](https://zhuanlan.zhihu.com/p/547044250)
+- [x] RetinaNet (包含focal_loss)
 - [x] YOLOV5 V5.0 (实现注释，更新pt->onnx代码)
 - [x] yolox (修改了voc数据读取方式)
 - [x] FCOS
-- [x] [Faster-rcnn](https://zhuanlan.zhihu.com/p/543486836)
-- [x] [yolov7](https://zhuanlan.zhihu.com/p/547044250)
 - [ ] yoloF
 - [ ] yoloR
 - [ ] detr
@@ -51,12 +51,12 @@
 - [ ] ATSS
 
 ## segmentation
-- [x] FCN
 - [x] [U-Net](https://zhuanlan.zhihu.com/p/485647940)
 - [x] [HR-Net-Seg](https://zhuanlan.zhihu.com/p/501094171)
 - [x] [DeepLabv3](https://zhuanlan.zhihu.com/p/513233049)
 - [x] DeepLabv3Plus
 - [x] few_shot segmentation
+- [x] FCN
 - [ ] Mask-rcnn
 - [ ] Cascade-rcnn
 - [ ] UNet++
