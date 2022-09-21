@@ -184,6 +184,7 @@ def main(config):
     model = model_build_func(num_classes=config["train"]["classes"])
 
     # pretrain weights
+    mf = False
     if config["train"]["weights"] is not None and os.path.exists(config["train"]["weights"]):
         with torch_distributed_zero_first(LOCAL_RANK):
             checkpoint_path = config["train"]["weights"]
@@ -194,6 +195,7 @@ def main(config):
     else:
         if RANK != -1:
             checkpoint_path = os.path.join(tempfile.gettempdir(), "initial_weights.pt")
+            mf = True
 
             if RANK == 0:
                 torch.save(model.state_dict(), checkpoint_path)
@@ -448,7 +450,7 @@ def main(config):
 
     logging.info(f"best epoch:{best_epoch}, acc:{best_acc}")
     if WORLD_SIZE > 1 and RANK == 0:
-        if os.path.exists(checkpoint_path):
+        if os.path.exists(checkpoint_path) and mf:
             os.remove(checkpoint_path)
 
         logging.info('Destroying process group... ')
