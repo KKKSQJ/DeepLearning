@@ -18,8 +18,8 @@
 - [x] RepVGG [paper read](https://zhuanlan.zhihu.com/p/551218736) / [code](https://github.com/KKKSQJ/DeepLearning/tree/master/classification/RepVGG)
 - [x] efficientNet [code](https://github.com/KKKSQJ/DeepLearning/tree/master/classification/efficientNet)
 - [x] shuffleNet [code](https://github.com/KKKSQJ/DeepLearning/tree/master/classification/ShuffleNet)
-- [x] vision_transformer
-- [ ] swin-transformer
+- [x] vision_transformer [code](https://github.com/KKKSQJ/DeepLearning/tree/master/classification/vision_transformer)
+- [x] swin-transformer [code](https://github.com/KKKSQJ/DeepLearning/tree/master/classification/swin_transformer)
 - [ ] inception
 - [ ] denseNet
 - [ ] googleNet
@@ -37,7 +37,7 @@
 - [x] RetinaNet (包含focal_loss) [code](https://github.com/KKKSQJ/DeepLearning/tree/master/detection/RetinaNet)
 - [x] YOLOV5 V5.0 (实现注释，更新pt->onnx代码) [code](https://github.com/KKKSQJ/DeepLearning/tree/master/detection/yolov5)
 - [x] yolox (修改了voc数据读取方式) [code](https://github.com/KKKSQJ/DeepLearning/tree/master/detection/YOLOX)
-- [x] FCOS
+- [x] FCOS [code](https://github.com/KKKSQJ/DeepLearning/tree/master/detection/FCOS)
 - [ ] yoloF
 - [ ] yoloR
 - [ ] detr
