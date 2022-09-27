@@ -15,6 +15,7 @@ from tqdm import tqdm
 from torchvision.models import resnet50
 from models import build_model
 from config import get_predict_config
+from utils import select_device
 
 IMG_FORMATS = ['bmp', 'jpg', 'jpeg', 'png', 'tif', 'tiff', 'dng', 'webp', 'mpo']
 
@@ -32,13 +33,13 @@ def run(
         img_size=224,  # 模型输入大小
         weights='best_model.pth',  # 模型路径
         source='./data/test',  # 测试数据路径，可以是文件夹，可以是单张图片
-        use_cuda=True,  # 是否使用cuda
+        device='',  # 指定GPU
         view_img=False,  # 是否可视化测试图片
         save_txt=True,  # 是否将结果保存到txt
         project='runs/result',  # 结果输出路径
         class_indices='class_indices.json'  # json文件，存放类别和索引的关系。
 ):
-    device = torch.device("cuda" if torch.cuda.is_available() and use_cuda else "cpu")
+    device = select_device(device)
 
     data_transform = transforms.Compose(
         [transforms.Resize((img_size, img_size)),
@@ -143,7 +144,7 @@ def parse_option():
     parser.add_argument('--use_checkpoint', type=bool, default=False)
     parser.add_argument('--weights', type=str, default='model_best.pth', help='the model path')
     parser.add_argument('--source', type=str, default='./data/test', help='test data path')
-    parser.add_argument('--use-cuda', type=bool, default=True)
+    parser.add_argument("--device", type=str, default='', help="device = 'cpu' or '0' or '0,1,2,3'")
     parser.add_argument('-v', '--view-img', action='store_true')
     parser.add_argument('-s', '--save-txt', action='store_true')
     parser.add_argument('--project', type=str, default='runs/result', help='output path')
@@ -164,7 +165,7 @@ if __name__ == '__main__':
         img_size=args.img_size,  # 模型输入大小
         weights=args.weights,  # 模型路径
         source=args.source,  # 测试数据路径，可以是文件夹，可以是单张图片
-        use_cuda=args.use_cuda,  # 是否使用cuda
+        device=args.device,  # 指定GPU
         view_img=args.view_img,  # 是否可视化测试图片
         save_txt=args.save_txt,  # 是否将结果保存到txt
         project=args.project,  # 结果输出路径

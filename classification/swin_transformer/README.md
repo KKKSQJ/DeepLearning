@@ -165,7 +165,7 @@ python main.py --eval --cfg <config-file> --data-path <data-path> --dataset <dat
 # predict 推理跑图片
 
 ```
-python predict.py --weights <checkpoint> --cfg <cfg_file> --num-classes <classes> --source <data> --img-size <size> -v -s --class-indices <indices>
+python predict.py --weights <checkpoint> --cfg <cfg_file> --num-classes <classes> --source <data> --img-size <size> -v -s --class-indices <indices> --device <device>
 ```
 
 - weights:模型权重路径
@@ -176,6 +176,7 @@ python predict.py --weights <checkpoint> --cfg <cfg_file> --num-classes <classes
 - v:可视化图片
 - s:保存日志文件
 - class_indices：类别名字以及类别索引的json文件
+- device: 指定GPU测试
 
 # 吞吐量
 ```
