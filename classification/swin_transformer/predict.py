@@ -1,12 +1,8 @@
 import json
-from munch import DefaultMunch
-import matplotlib.pyplot as plt
 import torch
-import yaml
 from torchvision import transforms
 
 import cv2
-import sys
 import argparse
 import os
 from PIL import Image
@@ -155,14 +151,6 @@ def parse_option():
                         help='when train,the file will generate')
 
     args, unparsed = parser.parse_known_args()
-
-    # with open(args.cfg, 'r') as f:
-    #     yaml_cfg = yaml.load(f, Loader=yaml.FullLoader)
-    #
-    # yaml_cfg.update(dict(DATA={"IMG_SIZE": args.img_size}))
-    # yaml_cfg.update(dict(TRAIN={"USE_CHECKPOINT": args.use_checkpoint}))
-    # yaml_cfg = DefaultMunch.fromDict(yaml_cfg)
-    # yaml_cfg.DATA.IMG_SIZE = args.img_size
 
     config = get_predict_config(args)
 
