@@ -1,0 +1,10 @@
+MODEL:
+  TYPE: resnext
+  NAME: resnext101_32x8d
+  NUM_CLASSES: 1000
+  PRETRAINED: https://download.pytorch.org/models/resnext101_32x8d-8ba56ff5.pth
+
+  RESNEXT:
+    LAYERS: [3, 4, 23, 3]
+    GROUPS: 32
+    WIDTH_PER_GROUP: 8
