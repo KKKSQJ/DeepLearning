@@ -165,14 +165,17 @@ python main.py --eval --cfg <config-file> --data-path <data-path> --dataset <dat
 # predict 推理跑图片
 
 ```
-python predict.py --arch xx --weights xx --source xx --view-img --class_indices xx
+python predict.py --weights <checkpoint> --cfg <cfg_file> --num-classes <classes> --source <data> --img-size <size> -v -s --class-indices <indices>
 ```
 
-- arch：模型结构
 - weights:模型权重路径
+- cfg:模型配置文件
+- num-classes: 类别数量
 - source:测试图片路径，可以是文件夹，可以是单张图片
-- view_img #可视化图片
-- --class_indices：类别名字以及类别索引的json文件
+- img-size：输入图像大小
+- v:可视化图片
+- s:保存日志文件
+- class_indices：类别名字以及类别索引的json文件
 
 # 吞吐量
 ```
