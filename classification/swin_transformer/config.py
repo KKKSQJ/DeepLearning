@@ -320,3 +320,19 @@ def get_config(args):
     update_config(config, args)
 
     return config
+
+
+def get_predict_config(args):
+    config = _C.clone()
+
+    _update_config_from_file(config, args.cfg)
+    config.defrost()
+
+    if args.img_size:
+        config.DATA.IMG_SIZE = args.img_size
+    if args.use_checkpoint:
+        config.TRAIN.USE_CHECKPOINT = args.use_checkpoint
+    if args.num_classes:
+        config.MODEL.NUM_CLASSES = args.num_classes
+    config.freeze()
+    return config

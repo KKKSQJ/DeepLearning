@@ -1,7 +1,8 @@
 import json
-
+from munch import DefaultMunch
 import matplotlib.pyplot as plt
 import torch
+import yaml
 from torchvision import transforms
 
 import cv2
@@ -16,7 +17,8 @@ import shutil
 from tqdm import tqdm
 
 from torchvision.models import resnet50
-from models import get_model, model_dict
+from models import build_model
+from config import get_predict_config
 
 IMG_FORMATS = ['bmp', 'jpg', 'jpeg', 'png', 'tif', 'tiff', 'dng', 'webp', 'mpo']
 
@@ -30,7 +32,8 @@ def time_sync():
 
 @torch.no_grad()
 def run(
-        arch='shufflenet_v1_g3',  # 网络名字
+        config,  # 配置文件
+        img_size=224,  # 模型输入大小
         weights='best_model.pth',  # 模型路径
         source='./data/test',  # 测试数据路径，可以是文件夹，可以是单张图片
         use_cuda=True,  # 是否使用cuda
@@ -42,7 +45,7 @@ def run(
     device = torch.device("cuda" if torch.cuda.is_available() and use_cuda else "cpu")
 
     data_transform = transforms.Compose(
-        [transforms.Resize((224, 224)),
+        [transforms.Resize((img_size, img_size)),
          transforms.ToTensor(),
          transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])])
 
@@ -62,11 +65,24 @@ def run(
 
     # load model
     assert os.path.exists(weights), "model path: {} does not exists".format(weights)
-    assert arch in model_dict
-    model_function = get_model(arch)
-    model = model_function(num_classes=num_classes)
+    model = build_model(config)
+    if save_txt:
+        f.write(str(model) + '\n')
 
-    model.load_state_dict(torch.load(weights, map_location=device)["state_dict"], strict=True)
+    n_parameters = sum(p.numel() for p in model.parameters() if p.requires_grad)
+    if save_txt:
+        f.write(f"number of params: {n_parameters}" + '\n')
+    if hasattr(model, 'flops'):
+        flops = model.flops()
+        if save_txt:
+            f.write(f"number of GFLOPs: {flops / 1e9}" + '\n')
+
+    model.to(device)
+    model_without_ddp = model
+
+    if save_txt:
+        f.write(f"==============> Resuming form {weights}...................." + '\n')
+    model.load_state_dict(torch.load(weights, map_location=device)["model"], strict=False)
     model.eval().to(device)
 
     # run once
@@ -123,9 +139,12 @@ def run(
         f.close()
 
 
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--arch', type=str, default='shufflenet_v1_g3')
+def parse_option():
+    parser = argparse.ArgumentParser('Swin Transformer predict script', add_help=False)
+    parser.add_argument('--cfg', type=str, required=True, metavar="FILE", help='path to config file', )
+    parser.add_argument('--img-size', type=int, default=224, help='input img size')
+    parser.add_argument('--num-classes', type=int, default=1000, help='classes')
+    parser.add_argument('--use_checkpoint', type=bool, default=False)
     parser.add_argument('--weights', type=str, default='model_best.pth', help='the model path')
     parser.add_argument('--source', type=str, default='./data/test', help='test data path')
     parser.add_argument('--use-cuda', type=bool, default=True)
@@ -134,5 +153,32 @@ if __name__ == '__main__':
     parser.add_argument('--project', type=str, default='runs/result', help='output path')
     parser.add_argument('--class-indices', type=str, default='class_indices.json',
                         help='when train,the file will generate')
-    opt = parser.parse_args()
-    run(**vars(opt))
+
+    args, unparsed = parser.parse_known_args()
+
+    # with open(args.cfg, 'r') as f:
+    #     yaml_cfg = yaml.load(f, Loader=yaml.FullLoader)
+    #
+    # yaml_cfg.update(dict(DATA={"IMG_SIZE": args.img_size}))
+    # yaml_cfg.update(dict(TRAIN={"USE_CHECKPOINT": args.use_checkpoint}))
+    # yaml_cfg = DefaultMunch.fromDict(yaml_cfg)
+    # yaml_cfg.DATA.IMG_SIZE = args.img_size
+
+    config = get_predict_config(args)
+
+    return args, config
+
+
+if __name__ == '__main__':
+    args, config = parse_option()
+    run(
+        config=config,
+        img_size=args.img_size,  # 模型输入大小
+        weights=args.weights,  # 模型路径
+        source=args.source,  # 测试数据路径，可以是文件夹，可以是单张图片
+        use_cuda=args.use_cuda,  # 是否使用cuda
+        view_img=args.view_img,  # 是否可视化测试图片
+        save_txt=args.save_txt,  # 是否将结果保存到txt
+        project=args.project,  # 结果输出路径
+        class_indices='class_indices.json'  # json文件，存放类别和索引的关系。
+    )
