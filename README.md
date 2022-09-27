@@ -20,12 +20,12 @@
 - [x] shuffleNet [code](https://github.com/KKKSQJ/DeepLearning/tree/master/classification/ShuffleNet)
 - [x] vision_transformer [code](https://github.com/KKKSQJ/DeepLearning/tree/master/classification/vision_transformer)
 - [x] swin-transformer [code](https://github.com/KKKSQJ/DeepLearning/tree/master/classification/swin_transformer)
+- [x] resNeXt [code](https://github.com/KKKSQJ/DeepLearning/tree/master/classification/resnext)
 - [ ] inception
 - [ ] denseNet
 - [ ] googleNet
 - [ ] CBAM
 - [ ] mobileNet
-- [ ] resNeXt
 - [ ] Xception
 - [ ] SqueezeNet
 
