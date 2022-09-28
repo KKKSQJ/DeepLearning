@@ -1,0 +1,76 @@
+AMP_ENABLE: true
+AMP_OPT_LEVEL: ''
+AUG:
+  AUTO_AUGMENT: rand-m9-mstd0.5-inc1
+  COLOR_JITTER: 0.4
+  CUTMIX: 1.0
+  CUTMIX_MINMAX: null
+  MIXUP: 0.8
+  MIXUP_MODE: batch
+  MIXUP_PROB: 1.0
+  MIXUP_SWITCH_PROB: 0.5
+  RECOUNT: 1
+  REMODE: pixel
+  REPROB: 0.25
+BASE:
+- ''
+DATA:
+  BATCH_SIZE: 16
+  CACHE_MODE: part
+  DATASET: read_from_txt
+  DATA_PATH: E:\dataset\classifition\flow_data\train
+  IMG_SIZE: 224
+  INTERPOLATION: bicubic
+  NUM_WORKERS: 8
+  PIN_MEMORY: true
+  ZIP_MODE: false
+DEVICE: ''
+EVAL_MODE: false
+LOCAL_RANK: -1
+MODEL:
+  GOOGLENET:
+    AUX_LOGITS: true
+    INIT_WEIGHTS: true
+    MULTI_OUTPUTS:
+    - logits
+    - aux_logits2
+    - aux_logits1
+    TRANSFORM_INPUTS: true
+  LABEL_SMOOTHING: 0.1
+  NAME: inceptionv1
+  NUM_CLASSES: 5
+  PRETRAINED: https://download.pytorch.org/models/googlenet-1378be20.pth
+  RESUME: ''
+  TYPE: googlenet
+OUTPUT: output\inceptionv1\default
+PRINT_FREQ: 10
+SAVE_FREQ: 1
+SEED: 0
+TAG: default
+TEST:
+  CROP: true
+  SEQUENTIAL: false
+  SHUFFLE: false
+THROUGHPUT_MODE: false
+TRAIN:
+  ACCUMULATION_STEPS: 1
+  AUTO_RESUME: true
+  BASE_LR: 1.5625e-05
+  CLIP_GRAD: 5.0
+  EPOCHS: 300
+  LR_SCHEDULER:
+    DECAY_EPOCHS: 30
+    DECAY_RATE: 0.1
+    NAME: cosine
+  MIN_LR: 1.5625e-07
+  OPTIMIZER:
+    BETAS:
+    - 0.9
+    - 0.999
+    EPS: 1.0e-08
+    MOMENTUM: 0.9
+    NAME: adamw
+  START_EPOCH: 0
+  WARMUP_EPOCHS: 20
+  WARMUP_LR: 1.5625e-08
+  WEIGHT_DECAY: 0.05

@@ -1,0 +1,10 @@
+MODEL:
+  TYPE: googlenet
+  NAME: inceptionv1
+  NUM_CLASSES: 1000
+  PRETRAINED: https://download.pytorch.org/models/googlenet-1378be20.pth  # if AUX_LOGITS=True, use pretrained
+
+  GOOGLENET:
+    AUX_LOGITS: True
+    TRANSFORM_INPUTS: True
+    INIT_WEIGHTS: True
