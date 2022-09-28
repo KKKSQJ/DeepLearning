@@ -7,6 +7,9 @@
 
 每个项目都有对应论文解读，解读详情搜 [知乎] - 琪小钧
 
+- paper read: 知乎 论文解读（有些博主对于某些论文已经作了很深刻的理解，因此有些算法直接引用了他们的知乎文章。如有处理不当的地方，请联系我。）
+- code:对应项目代码
+
 ## classification
 - [x] mnist [paper read](https://zhuanlan.zhihu.com/p/459616884) / [code](https://github.com/KKKSQJ/DeepLearning/tree/master/classification/mnist)
 - [x] vggNet [paper read](https://zhuanlan.zhihu.com/p/460777014) / [code](https://github.com/KKKSQJ/DeepLearning/tree/master/classification/vggNet)
@@ -16,14 +19,14 @@
 - [x] seNet [paper read](https://zhuanlan.zhihu.com/p/479992312) / [code](https://github.com/KKKSQJ/DeepLearning/tree/master/classification/seNet)
 - [x] TransFG [paper read](https://zhuanlan.zhihu.com/p/519173447) / [code](https://github.com/KKKSQJ/DeepLearning/tree/master/classification/TransFG)
 - [x] RepVGG [paper read](https://zhuanlan.zhihu.com/p/551218736) / [code](https://github.com/KKKSQJ/DeepLearning/tree/master/classification/RepVGG)
-- [x] efficientNet [code](https://github.com/KKKSQJ/DeepLearning/tree/master/classification/efficientNet)
-- [x] shuffleNet [code](https://github.com/KKKSQJ/DeepLearning/tree/master/classification/ShuffleNet)
-- [x] vision_transformer [code](https://github.com/KKKSQJ/DeepLearning/tree/master/classification/vision_transformer)
-- [x] swin-transformer [code](https://github.com/KKKSQJ/DeepLearning/tree/master/classification/swin_transformer)
-- [x] resNeXt [code](https://github.com/KKKSQJ/DeepLearning/tree/master/classification/resnext)
+- [x] efficientNet [paper read](https://blog.csdn.net/weixin_45377629/article/details/124430796) / [code](https://github.com/KKKSQJ/DeepLearning/tree/master/classification/efficientNet)
+- [x] shuffleNet [paper read](https://zhuanlan.zhihu.com/p/32304419) / [code](https://github.com/KKKSQJ/DeepLearning/tree/master/classification/ShuffleNet)
+- [x] vision_transformer [paper read](https://blog.csdn.net/qq_39478403/article/details/118704747) / [code](https://github.com/KKKSQJ/DeepLearning/tree/master/classification/vision_transformer)
+- [x] swin-transformer [paper read](https://www.bilibili.com/video/BV13L4y1475U/?spm_id_from=333.999.0.0) / [code](https://github.com/KKKSQJ/DeepLearning/tree/master/classification/swin_transformer)
+- [x] resNeXt [paper read](https://zhuanlan.zhihu.com/p/51075096) / [code](https://github.com/KKKSQJ/DeepLearning/tree/master/classification/resnext)
+- [x] googleNet [paper read](https://zhuanlan.zhihu.com/p/73857137) / [code](https://github.com/KKKSQJ/DeepLearning/tree/master/classification/GoogleNet)
 - [ ] inception
 - [ ] denseNet
-- [ ] googleNet
 - [ ] CBAM
 - [ ] mobileNet
 - [ ] Xception
@@ -31,9 +34,9 @@
 
 
 ## detection
-- [x] FPN(实现resnet50 + fpn) [paper read](https://zhuanlan.zhihu.com/p/543486836) [code](https://github.com/KKKSQJ/DeepLearning/tree/master/detection/FPN) 
-- [x] Faster-rcnn [paper read](https://zhuanlan.zhihu.com/p/543486836) [code](https://github.com/KKKSQJ/DeepLearning/tree/master/detection/fasterRcnn)
-- [x] yolov7 [paper read](https://zhuanlan.zhihu.com/p/547044250) [code](https://github.com/WongKinYiu/yolov7)
+- [x] FPN(实现resnet50 + fpn) [paper read](https://zhuanlan.zhihu.com/p/543486836) / [code](https://github.com/KKKSQJ/DeepLearning/tree/master/detection/FPN) 
+- [x] Faster-rcnn [paper read](https://zhuanlan.zhihu.com/p/543486836) / [code](https://github.com/KKKSQJ/DeepLearning/tree/master/detection/fasterRcnn)
+- [x] yolov7 [paper read](https://zhuanlan.zhihu.com/p/547044250) / [code](https://github.com/WongKinYiu/yolov7)
 - [x] RetinaNet (包含focal_loss) [code](https://github.com/KKKSQJ/DeepLearning/tree/master/detection/RetinaNet)
 - [x] YOLOV5 V5.0 (实现注释，更新pt->onnx代码) [code](https://github.com/KKKSQJ/DeepLearning/tree/master/detection/yolov5)
 - [x] yolox (修改了voc数据读取方式) [code](https://github.com/KKKSQJ/DeepLearning/tree/master/detection/YOLOX)
@@ -54,7 +57,7 @@
 - [x] U-Net [paper read](https://zhuanlan.zhihu.com/p/485647940) / [code](https://github.com/KKKSQJ/DeepLearning/tree/master/Image_segmentation/U-Net)
 - [x] HR-Net-Seg [paper read](https://zhuanlan.zhihu.com/p/501094171) / [code](https://github.com/KKKSQJ/DeepLearning/tree/master/Image_segmentation/HR-Net-Seg)
 - [x] DeepLabv3 [paper read](https://zhuanlan.zhihu.com/p/513233049) / [code](https://github.com/KKKSQJ/DeepLearning/tree/master/Image_segmentation/DeepLabV3)
-- [x] DeepLabv3Plus [code](https://github.com/KKKSQJ/DeepLearning/tree/master/Image_segmentation/DeepLabV3Plus)
+- [x] DeepLabv3Plus [paper read](https://blog.csdn.net/u011974639/article/details/79518175) / [code](https://github.com/KKKSQJ/DeepLearning/tree/master/Image_segmentation/DeepLabV3Plus)
 - [x] few_shot segmentation [code](https://github.com/KKKSQJ/DeepLearning/tree/master/Image_segmentation/few_shot_segmentation)
 - [x] FCN [code](https://github.com/KKKSQJ/DeepLearning/tree/master/Image_segmentation/FCN)
 - [ ] Mask-rcnn
@@ -69,8 +72,8 @@
 
 
 ## self-supervised
-- [x] MAE (实现VIT+MAE) [code](https://github.com/KKKSQJ/DeepLearning/tree/master/self-supervised/MAE)
-- [x] SupCon (实现自对比学习+t-SNE可视化+swa) [code](https://github.com/KKKSQJ/DeepLearning/tree/master/self-supervised/SupCon)
+- [x] MAE (实现VIT+MAE) [paper read](https://www.bilibili.com/video/BV1sq4y1q77t/?spm_id_from=333.999.0.0) / [code](https://github.com/KKKSQJ/DeepLearning/tree/master/self-supervised/MAE)
+- [x] SupCon (实现自对比学习+t-SNE可视化+swa) [paper read](https://zhuanlan.zhihu.com/p/136332151) / [code](https://github.com/KKKSQJ/DeepLearning/tree/master/self-supervised/SupCon)
 - [ ] MoCo
 - [ ] SwAV
 
