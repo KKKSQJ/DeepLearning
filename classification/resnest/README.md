@@ -1,5 +1,5 @@
-# GoogleNet
-- [GoogleNet](https://arxiv.org/abs/1409.4842) :《Going Deeper with Convolutions》
+# ResNeSt
+- [ResNeSt](https://arxiv.org/abs/2004.08955) :《ResNeSt: Split-Attention Networks》
 
 # 环境安装
 - PyTorch>=1.8.0
