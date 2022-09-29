@@ -14,6 +14,8 @@
 - [x] mnist [paper read](https://zhuanlan.zhihu.com/p/459616884) / [code](https://github.com/KKKSQJ/DeepLearning/tree/master/classification/mnist)
 - [x] vggNet [paper read](https://zhuanlan.zhihu.com/p/460777014) / [code](https://github.com/KKKSQJ/DeepLearning/tree/master/classification/vggNet)
 - [x] resnet [paper read](https://zhuanlan.zhihu.com/p/462190341) / [code](https://github.com/KKKSQJ/DeepLearning/tree/master/classification/resnet)
+- [x] resNeXt [paper read](https://zhuanlan.zhihu.com/p/51075096) / [code](https://github.com/KKKSQJ/DeepLearning/tree/master/classification/resnext)
+- [x] resNeSt [paper read](https://zhuanlan.zhihu.com/p/133805433)
 - [x] coatNet [paper read](https://zhuanlan.zhihu.com/p/463033740) / [code](https://github.com/KKKSQJ/DeepLearning/tree/master/classification/coatNet)
 - [x] convNext [paper read](https://zhuanlan.zhihu.com/p/473657956) / [code](https://github.com/KKKSQJ/DeepLearning/tree/master/classification/convNext)
 - [x] seNet [paper read](https://zhuanlan.zhihu.com/p/479992312) / [code](https://github.com/KKKSQJ/DeepLearning/tree/master/classification/seNet)
@@ -23,7 +25,6 @@
 - [x] shuffleNet [paper read](https://zhuanlan.zhihu.com/p/32304419) / [code](https://github.com/KKKSQJ/DeepLearning/tree/master/classification/ShuffleNet)
 - [x] vision_transformer [paper read](https://blog.csdn.net/qq_39478403/article/details/118704747) / [code](https://github.com/KKKSQJ/DeepLearning/tree/master/classification/vision_transformer)
 - [x] swin-transformer [paper read](https://www.bilibili.com/video/BV13L4y1475U/?spm_id_from=333.999.0.0) / [code](https://github.com/KKKSQJ/DeepLearning/tree/master/classification/swin_transformer)
-- [x] resNeXt [paper read](https://zhuanlan.zhihu.com/p/51075096) / [code](https://github.com/KKKSQJ/DeepLearning/tree/master/classification/resnext)
 - [x] googleNet [paper read](https://zhuanlan.zhihu.com/p/73857137) / [code](https://github.com/KKKSQJ/DeepLearning/tree/master/classification/GoogleNet)
 - [ ] inception
 - [ ] denseNet

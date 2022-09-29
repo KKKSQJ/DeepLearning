@@ -1,0 +1,16 @@
+MODEL:
+  TYPE: resnest
+  NAME: resnest50_fast_1s2x40d
+  NUM_CLASSES: 1000
+  PRETRAINED: https://github.com/zhanghang1989/ResNeSt/releases/download/weights_step1/resnest50_fast_1s2x40d-32830b84.pth
+
+  RESNEST:
+    LAYERS: [3,4,6,3]
+    RADIX: 1
+    GROUPS: 2
+    BOTTLENECK_WIDTH: 40
+    DEEP_STEM: True
+    STEM_WIDTH: 32
+    AVG_DOWN: True
+    AVD: True
+    AVD_FIRST: True
