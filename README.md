@@ -15,7 +15,7 @@
 - [x] vggNet [paper read](https://zhuanlan.zhihu.com/p/460777014) / [code](https://github.com/KKKSQJ/DeepLearning/tree/master/classification/vggNet)
 - [x] resnet [paper read](https://zhuanlan.zhihu.com/p/462190341) / [code](https://github.com/KKKSQJ/DeepLearning/tree/master/classification/resnet)
 - [x] resNeXt [paper read](https://zhuanlan.zhihu.com/p/51075096) / [code](https://github.com/KKKSQJ/DeepLearning/tree/master/classification/resnext)
-- [x] resNeSt [paper read](https://zhuanlan.zhihu.com/p/133805433)
+- [x] resNeSt [paper read](https://zhuanlan.zhihu.com/p/133805433) / [code](https://github.com/KKKSQJ/DeepLearning/tree/master/classification/resnest)
 - [x] coatNet [paper read](https://zhuanlan.zhihu.com/p/463033740) / [code](https://github.com/KKKSQJ/DeepLearning/tree/master/classification/coatNet)
 - [x] convNext [paper read](https://zhuanlan.zhihu.com/p/473657956) / [code](https://github.com/KKKSQJ/DeepLearning/tree/master/classification/convNext)
 - [x] seNet [paper read](https://zhuanlan.zhihu.com/p/479992312) / [code](https://github.com/KKKSQJ/DeepLearning/tree/master/classification/seNet)
