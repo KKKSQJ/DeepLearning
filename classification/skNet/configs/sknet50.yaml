@@ -1,0 +1,15 @@
+MODEL:
+  TYPE: sknet
+  NAME: sknet50
+  NUM_CLASSES: 1000
+  PRETRAINED:
+
+  SKNET:
+    LAYERS: [3,4,6,3]
+    M: 2
+    G: 32
+    R: 16
+    STEM_WIDTH: 64
+    DEEP_STEM: False
+
+
