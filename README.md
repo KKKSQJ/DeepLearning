@@ -19,6 +19,7 @@
 - [x] coatNet [paper read](https://zhuanlan.zhihu.com/p/463033740) / [code](https://github.com/KKKSQJ/DeepLearning/tree/master/classification/coatNet)
 - [x] convNext [paper read](https://zhuanlan.zhihu.com/p/473657956) / [code](https://github.com/KKKSQJ/DeepLearning/tree/master/classification/convNext)
 - [x] seNet [paper read](https://zhuanlan.zhihu.com/p/479992312) / [code](https://github.com/KKKSQJ/DeepLearning/tree/master/classification/seNet)
+- [x] skNet [paper read](https://zhuanlan.zhihu.com/p/98869334) / [code](https://github.com/KKKSQJ/DeepLearning/tree/master/classification/skNet)
 - [x] TransFG [paper read](https://zhuanlan.zhihu.com/p/519173447) / [code](https://github.com/KKKSQJ/DeepLearning/tree/master/classification/TransFG)
 - [x] RepVGG [paper read](https://zhuanlan.zhihu.com/p/551218736) / [code](https://github.com/KKKSQJ/DeepLearning/tree/master/classification/RepVGG)
 - [x] efficientNet [paper read](https://blog.csdn.net/weixin_45377629/article/details/124430796) / [code](https://github.com/KKKSQJ/DeepLearning/tree/master/classification/efficientNet)
