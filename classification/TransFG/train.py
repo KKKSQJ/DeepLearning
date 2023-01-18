@@ -9,8 +9,8 @@ import numpy as np
 
 import torch
 from torch.utils.tensorboard import SummaryWriter
-from apex import amp
-from apex.parallel import DistributedDataParallel as DDP
+# from apex import amp
+# from apex.parallel import DistributedDataParallel as DDP
 import torch.distributed as dist
 from tqdm import tqdm
 
@@ -209,9 +209,9 @@ def run(hyperparams):
                     torch.nn.utils.clip_grad_norm_(amp.master_params(optimizer), hyperparams["train"]["max_grad_norm"])
                 else:
                     torch.nn.utils.clip_grad_norm_(model.parameters(), hyperparams["train"]["max_grad_norm"])
-                optimizer.zero_grad()
                 optimizer.step()
                 scheduler.step()
+                optimizer.zero_grad()
                 global_step += 1
 
                 epoch_iterator.set_description(

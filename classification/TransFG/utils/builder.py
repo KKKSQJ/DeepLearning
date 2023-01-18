@@ -16,7 +16,7 @@ import torch
 from torch.utils.data import DataLoader, RandomSampler, DistributedSampler, SequentialSampler
 import torchvision
 import torch.optim as optim
-import torch_optimizer as jettify_optim
+# import torch_optimizer as jettify_optim
 
 # model_name: model
 MODEL = {"ViT-B_16": VisionTransformer,
@@ -49,9 +49,9 @@ OPTIMIZERS = {
     "Adam": optim.Adam,
     'AdamW': optim.AdamW,
     "SGD": optim.SGD,
-    'LookAhead': jettify_optim.Lookahead,
-    'Ranger': jettify_optim.Ranger,
-    'RAdam': jettify_optim.RAdam,
+    # 'LookAhead': jettify_optim.Lookahead,
+    # 'Ranger': jettify_optim.Ranger,
+    # 'RAdam': jettify_optim.RAdam,
 }
 
 # scheduler_name: scheduler

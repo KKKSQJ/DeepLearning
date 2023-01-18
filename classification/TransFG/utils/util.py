@@ -4,7 +4,7 @@ import torch
 import torch.distributed as dist
 import os
 import logging
-from apex import amp
+# from apex import amp
 
 
 def set_seed(n_gpu, seed):
